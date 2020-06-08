@@ -7,7 +7,7 @@
 
 EntityManager::EntityManager()
 {
-    mIDmax = 0;
+    mIdMax = 0;
 }
 
 Entity EntityManager::CreateEntity()
@@ -18,26 +18,26 @@ Entity EntityManager::CreateEntity()
         mAvailableEntities.pop();
         return entity;
     }
-    Entity entity = mIDmax;
-    mIDmax++;
+    Entity entity = mIdMax;
+    mIdMax++;
     return entity;
 }
 
 void EntityManager::SetSignature(Entity entity, Signature signature)
 {
-    assert(entity < mIDmax);
+    assert(entity < mIdMax);
     mSignatures[entity] = signature;
 }
 
 Signature EntityManager::getSignature(Entity entity)
 {
-    assert(entity < mIDmax);
+    assert(entity < mIdMax);
     return mSignatures[entity];
 }
 
 void EntityManager::DestroyEntity(Entity entity)
 {
-    assert(entity < mIDmax);
+    assert(entity < mIdMax);
     mSignatures[entity].reset();
     mAvailableEntities.push(entity);
 }
