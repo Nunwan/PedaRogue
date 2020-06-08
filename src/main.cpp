@@ -1,4 +1,4 @@
-#include "Window.h"
+#include "Window.hpp"
 
 int main() {
         Window rootWindow = Window();

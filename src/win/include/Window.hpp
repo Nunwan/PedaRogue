@@ -2,8 +2,8 @@
 // Created by nunwan on 07/06/2020.
 //
 
-#ifndef PEDAROGUE_WINDOW_H
-#define PEDAROGUE_WINDOW_H
+#ifndef PEDAROGUE_WINDOW_HPP
+#define PEDAROGUE_WINDOW_HPP
 #include <vector>
 #include <libtcod.hpp>
 
@@ -45,4 +45,4 @@ public:
 };
 
 
-#endif //PEDAROGUE_WINDOW_H
+#endif //PEDAROGUE_WINDOW_HPP

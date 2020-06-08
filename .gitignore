@@ -1,3 +1,6 @@
 .gitignore
 /cmake-build-debug/
 /.idea/
+**/html/
+**/latex/
+**/.ccls-cache

@@ -2,7 +2,7 @@
 // Created by nunwan on 07/06/2020.
 //
 
-#include "include/Window.h"
+#include "Window.hpp"
 
 Window::Window() {
     TCODConsole::initRoot(WIDTH_MAP, HEIGHT_MAP, "PedaRogue");
