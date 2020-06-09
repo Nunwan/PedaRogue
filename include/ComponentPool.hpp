@@ -7,8 +7,13 @@
 #include <vector>
 #include "ECSTypes.hpp"
 
+class IComponentPool {
+
+};
+
 template<typename T>
-class ComponentPool {
+class ComponentPool :public IComponentPool
+{
 private:
     std::vector<T> packed;
     std::vector<int> sparse;
