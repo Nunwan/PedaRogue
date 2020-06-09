@@ -4,11 +4,14 @@
 
 #include <cassert>
 #include "EntityManager.hpp"
+#include "gtest/gtest.h"
+
 
 EntityManager::EntityManager()
 {
     mIdMax = 0;
 }
+
 
 Entity EntityManager::CreateEntity()
 {
