@@ -1,5 +1,5 @@
 #include "Window.hpp"
-#include "gtest/gtest.h"
+
 
 int main() {
     Window rootWindow = Window();
