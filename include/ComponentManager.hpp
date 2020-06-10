@@ -20,6 +20,9 @@ private:
     std::unordered_map<std::string, std::shared_ptr<IComponentPool>> mComponentsPools;
     std::unordered_map<std::string, ComponentType> mComponentTypes;
     ComponentType mNextComponentType;
+
+    template<typename T>
+    std::shared_ptr<ComponentPool<T>> GetComponentPool();
 public:
     ComponentManager();
 
@@ -27,7 +30,15 @@ public:
     void RegisterComponent();
 
     template<typename T>
+    void AddComponent(Entity entity,T component);
+
+    template<typename T>
+    void DelComponent(Entity entity);
+
+    template<typename T>
     T& GetComponent(Entity entity);
+
+    void EntityDestroyed(Entity entity);
 };
 
 template<typename T>
@@ -49,10 +60,39 @@ ComponentManager::ComponentManager()
 template<typename T>
 T &ComponentManager::GetComponent(Entity entity)
 {
+    return GetComponentPool<T>().Get(entity);
+}
+
+template<typename T>
+std::shared_ptr<ComponentPool<T>> ComponentManager::GetComponentPool()
+{
     std::string componentName = typeid(T).name();
     assert(mComponentsPools.count(componentName));
-    ComponentPool<T> componentPool = mComponentsPools[componentName];
-    return componentPool.Get(entity);
+    // Cast IComponentPool to ComponentPool<T>
+    return std::static_pointer_cast<ComponentPool<T>>(mComponentsPools[componentName]);
+}
+
+template<typename T>
+void ComponentManager::AddComponent(Entity entity, T component)
+{
+    std::string componentName = typeid(T).name();
+    assert(mComponentsPools.count(componentName));
+    GetComponentPool<T>()->link(entity, component);
+}
+
+template<typename T>
+void ComponentManager::DelComponent(Entity entity)
+{
+    GetComponentPool<T>().unlink(entity);
+}
+
+void ComponentManager::EntityDestroyed(Entity entity)
+{
+    for (auto const& pair: mComponentsPools) {
+        auto const& componentPool = pair.second;
+        componentPool->EntityDestroyed(entity);
+    }
+
 }
 
 #endif //PEDAROGUE_COMPONENTMANAGER_HPP

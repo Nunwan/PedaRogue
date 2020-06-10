@@ -8,7 +8,8 @@
 #include "ECSTypes.hpp"
 
 class IComponentPool {
-
+public:
+    virtual void EntityDestroyed(Entity entity);
 };
 
 template<typename T>
@@ -39,6 +40,8 @@ public:
     const std::vector<T> &getPacked() const;
 
     const std::vector<int> &getSparse() const;
+
+    void EntityDestroyed(Entity entity) override;
 
 };
 
@@ -118,6 +121,15 @@ template<typename T>
 typename std::vector<T>::iterator ComponentPool<T>::iterEndComp()
 {
     return packed.end();
+}
+
+template<typename T>
+void ComponentPool<T>::EntityDestroyed(Entity entity)
+{
+    if (this->exist(entity))
+    {
+        this->unlink(entity);
+    }
 }
 
 #endif //PEDAROGUE_COMPONENTPOOL_HPP
