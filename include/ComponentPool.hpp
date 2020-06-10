@@ -5,11 +5,13 @@
 #ifndef PEDAROGUE_COMPONENTPOOL_HPP
 #define PEDAROGUE_COMPONENTPOOL_HPP
 #include <vector>
+#include <typeinfo>
+#include <unordered_map>
 #include "ECSTypes.hpp"
 
 class IComponentPool {
 public:
-    virtual void EntityDestroyed(Entity entity);
+    virtual void EntityDestroyed(Entity entity) = 0;
 };
 
 template<typename T>
@@ -17,12 +19,10 @@ class ComponentPool :public IComponentPool
 {
 private:
     std::vector<T> packed;
-    std::vector<int> sparse;
-    std::vector<Entity> packedId;
+    std::unordered_map<Entity, int> sparse;
+    std::unordered_map<int, Entity> reverseSparse;
 
 public:
-    ComponentPool() = default;
-    virtual ~ComponentPool() = default;
 
     void link(Entity entity, T component);
     void unlink(Entity entity);
@@ -35,11 +35,9 @@ public:
     typename std::vector<T>::iterator iterEndComp();
 
     // Getters
-    const std::vector<Entity> &getPackedId() const;
-
     const std::vector<T> &getPacked() const;
 
-    const std::vector<int> &getSparse() const;
+    const std::unordered_map<Entity, int> &getSparse() const;
 
     void EntityDestroyed(Entity entity) override;
 
@@ -49,35 +47,32 @@ public:
 template<typename T>
 void ComponentPool<T>::link(Entity entity, T component)
 {
-    if (sparse.size() <= entity) {
-        sparse.resize(entity+1);
-    }
-    sparse[entity] = packed.size();
+    sparse.insert({entity, packed.size()});
+    reverseSparse.insert({packed.size(), entity});
     packed.push_back(component);
-    packedId.push_back(entity);
 }
 
 
 template<typename T>
 void ComponentPool<T>::unlink(Entity entity)
 {
-    assert(entity < sparse.size() && packedId[sparse[entity]] == entity);
-    Entity entity_back = packedId.back();
+    assert(sparse.count(entity));
+    Entity entity_back = reverseSparse[packed.size() -1];
+    reverseSparse.erase(sparse[entity]);
     T to_unlink;
     to_unlink = packed[sparse[entity]];
     sparse[entity_back] = sparse[entity];
     packed[sparse[entity]] = packed.back();
     packed.back() = to_unlink;
     packed.pop_back();
-    packedId[sparse[entity]] = -1;
-    sparse[entity] = -1;
+    sparse.erase(entity);
 }
 
 
 template<typename T>
 T& ComponentPool<T>::Get(Entity entity)
 {
-    assert(entity < sparse.size() && packedId[sparse[entity]] == entity);
+    assert(sparse.count(entity));
     return packed[sparse[entity]];
 }
 
@@ -85,14 +80,7 @@ T& ComponentPool<T>::Get(Entity entity)
 template<typename T>
 bool ComponentPool<T>::exist(Entity entity)
 {
-    return entity < sparse.size() && packedId[sparse[entity]] == entity;
-}
-
-
-template<typename T>
-const std::vector<Entity> &ComponentPool<T>::getPackedId() const
-{
-    return packedId;
+    return sparse.count(entity);
 }
 
 
@@ -104,7 +92,7 @@ const std::vector<T> &ComponentPool<T>::getPacked() const
 
 
 template<typename T>
-const std::vector<int> &ComponentPool<T>::getSparse() const
+const std::unordered_map<Entity, int> &ComponentPool<T>::getSparse() const
 {
     return sparse;
 }

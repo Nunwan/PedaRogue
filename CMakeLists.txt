@@ -7,7 +7,7 @@ add_subdirectory(tests)
 get_filename_component(ROOT_DIR     ${CMAKE_CURRENT_LIST_FILE} PATH)
 set(DOCS_DIR "${ROOT_DIR}/docs")
 
-set(CMAKE_CXX_STANDARD 14)
+set(CMAKE_CXX_STANDARD 17)
 include_directories(include/)
 include_directories(src/win/include)
 

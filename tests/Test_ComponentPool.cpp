@@ -33,12 +33,8 @@ TEST(ComponentPoolSuite, Unlink)
     Entity entity = entityManager.CreateEntity();
     struct Position posEntity = {2, 4};
     ComponentPoolPos.link(entity, posEntity);
-    int packedSize = ComponentPoolPos.getPacked().size();
-    int sparseEntityOld = ComponentPoolPos.getSparse()[entity];
     ComponentPoolPos.unlink(entity);
-    EXPECT_EQ(packedSize - 1, ComponentPoolPos.getPacked().size());
-    EXPECT_EQ(ComponentPoolPos.getSparse()[entity], -1);
-    EXPECT_EQ(ComponentPoolPos.getPackedId()[sparseEntityOld], -1);
+    EXPECT_FALSE(ComponentPoolPos.exist(entity));
 }
 
 
