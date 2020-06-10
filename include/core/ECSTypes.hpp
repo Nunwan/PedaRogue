@@ -15,6 +15,17 @@ using ComponentType = uint8_t;
 // Limit bitset length to 256 bc ComponentType is on 8 bits
 using Signature = std::bitset<256>;
 
+class System
+{
+private:
+    std::set<Entity> mEntities;
+public:
+    const std::set<Entity> &getEntities() const;
+};
 
+const std::set<Entity> &System::getEntities() const
+{
+    return mEntities;
+}
 
 #endif //PEDAROGUE_ECSTYPES_HPP

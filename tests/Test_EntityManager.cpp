@@ -1,7 +1,7 @@
 //
 // Created by nunwan on 09/06/2020.
 //
-#include "EntityManager.hpp"
+#include "core/EntityManager.hpp"
 #include "gtest/gtest.h"
 
 

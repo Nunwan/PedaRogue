@@ -8,6 +8,8 @@
 
 #include <unordered_map>
 #include <queue>
+#include <cassert>
+#include "core/EntityManager.hpp"
 #include "ECSTypes.hpp"
 
 
@@ -48,5 +50,43 @@ public:
     Signature getSignature(Entity entity);
 };
 
+
+EntityManager::EntityManager()
+{
+    mIdMax = 0;
+}
+
+
+Entity EntityManager::CreateEntity()
+{
+    if (!mAvailableEntities.empty())
+    {
+        Entity entity = mAvailableEntities.front();
+        mAvailableEntities.pop();
+        return entity;
+    }
+    Entity entity = mIdMax;
+    mIdMax++;
+    return entity;
+}
+
+void EntityManager::SetSignature(Entity entity, Signature signature)
+{
+    assert(entity < mIdMax);
+    mSignatures[entity] = signature;
+}
+
+Signature EntityManager::getSignature(Entity entity)
+{
+    assert(entity < mIdMax);
+    return mSignatures[entity];
+}
+
+void EntityManager::DestroyEntity(Entity entity)
+{
+    assert(entity < mIdMax);
+    mSignatures[entity].reset();
+    mAvailableEntities.push(entity);
+}
 
 #endif //PEDAROGUE_ENTITYMANAGER_HPP

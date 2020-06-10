@@ -2,8 +2,8 @@
 // Created by nunwan on 10/06/2020.
 //
 #include "gtest/gtest.h"
-#include "ComponentManager.hpp"
-#include "EntityManager.hpp"
+#include "core/ComponentManager.hpp"
+#include "core/EntityManager.hpp"
 
 struct Position {
     int x;

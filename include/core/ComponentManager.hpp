@@ -54,11 +54,10 @@ template<typename T>
 void ComponentManager::RegisterComponent()
 {
     std::string componentName = typeid(T).name();
-    if (!mComponentsPools.count(componentName)) {
-        mComponentsPools.insert({componentName, std::make_shared<ComponentPool<T>>()});
-        mComponentTypes.insert({componentName, mNextComponentType});
-        mNextComponentType++;
-    }
+    assert(mComponentsPools.count(componentName) == 0);
+    mComponentsPools.insert({componentName, std::make_shared<ComponentPool<T>>()});
+    mComponentTypes.insert({componentName, mNextComponentType});
+    mNextComponentType++;
 }
 
 ComponentManager::ComponentManager()

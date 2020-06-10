@@ -4,8 +4,8 @@
 
 #include <vector>
 #include "gtest/gtest.h"
-#include "ComponentPool.hpp"
-#include "EntityManager.hpp"
+#include "core/ComponentPool.hpp"
+#include "core/EntityManager.hpp"
 
 
 struct Position {
