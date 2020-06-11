@@ -22,7 +22,10 @@ private:
     ComponentType mNextComponentType;
 
 public:
-    ComponentManager();
+    ComponentManager()
+    {
+        mNextComponentType = 0;
+    }
 
     template<typename T>
     void RegisterComponent();
@@ -77,10 +80,6 @@ void ComponentManager::RegisterComponent()
     mNextComponentType++;
 }
 
-ComponentManager::ComponentManager()
-{
-    mNextComponentType = 0;
-}
 
 template<typename T>
 T &ComponentManager::GetComponent(Entity entity)

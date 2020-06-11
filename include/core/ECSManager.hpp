@@ -55,7 +55,6 @@ public:
         entitySignature.set(mComponentManager->GetComponentType<T>(), true);
         mEntityManager->SetSignature(entity, entitySignature);
         mSystemManager->EntitySignatureChanged(entity, entitySignature);
-
     }
 
 

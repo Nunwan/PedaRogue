@@ -18,9 +18,8 @@ using Signature = std::bitset<256>;
 
 class System
 {
-private:
-    std::set<Entity> mEntities;
 public:
+    std::set<Entity> mEntities;
     std::set<Entity> &getEntities()
     {
         return mEntities;

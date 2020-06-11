@@ -86,9 +86,8 @@ Signature SystemManager::GetSignature()
 {
     std::string systemName = typeid(T).name();
     assert(mSystems.count(systemName));
-    if (mSysSignature.count(systemName)) {
-        return mSysSignature[systemName];
-    }
+    assert(mSysSignature.count(systemName));
+    return mSysSignature[systemName];
 }
 
 
