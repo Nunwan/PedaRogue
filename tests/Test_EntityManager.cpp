@@ -1,8 +1,8 @@
 //
 // Created by nunwan on 09/06/2020.
 //
-#include "core/EntityManager.hpp"
 #include "gtest/gtest.h"
+#include "core/EntityManager.hpp"
 
 
 TEST(EntityManagerSuite, CreateEntity)

@@ -36,11 +36,28 @@ public:
     template<typename T>
     T& GetComponent(Entity entity);
 
+
+
+    template<typename T>
+    ComponentType GetComponentType()
+    {
+        std::string componentName = typeid(T).name();
+        assert(mComponentsPools.count(componentName));
+        return mComponentTypes[componentName];
+    }
+
     // Could be private but public for doing tests
     template<typename T>
     std::shared_ptr<ComponentPool<T>> GetComponentPool();
 
-    void EntityDestroyed(Entity entity);
+    void EntityDestroyed(Entity entity)
+    {
+        for (auto const& pair: mComponentsPools) {
+            auto const& componentPool = pair.second;
+            componentPool->EntityDestroyed(entity);
+        }
+
+    }
 
     //Iterators
     template<typename T>
@@ -71,6 +88,9 @@ T &ComponentManager::GetComponent(Entity entity)
     return GetComponentPool<T>()->Get(entity);
 }
 
+
+
+
 template<typename T>
 std::shared_ptr<ComponentPool<T>> ComponentManager::GetComponentPool()
 {
@@ -94,14 +114,6 @@ void ComponentManager::DelComponent(Entity entity)
     GetComponentPool<T>()->unlink(entity);
 }
 
-void ComponentManager::EntityDestroyed(Entity entity)
-{
-    for (auto const& pair: mComponentsPools) {
-        auto const& componentPool = pair.second;
-        componentPool->EntityDestroyed(entity);
-    }
-
-}
 
 template<typename T>
 typename std::vector<T>::iterator ComponentManager::beginIterateComp()

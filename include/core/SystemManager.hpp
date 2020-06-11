@@ -23,9 +23,36 @@ public:
     template<typename T>
     void SetSignature(Signature signature);
 
-    void EntityDestroyed(Entity entity);
 
-    void EntitySignatureChanged(Entity entity, Signature entitySignature);
+    template<typename T>
+    Signature GetSignature();
+
+    void EntityDestroyed(Entity entity)
+    {
+        for (auto const& pair : mSystems) {
+            auto const& system = pair.second;
+            system->getEntities().erase(entity);
+        }
+
+    }
+
+    void EntitySignatureChanged(Entity entity, Signature entitySignature)
+    {
+        for (auto const& pair : mSystems) {
+            auto const& systemName = pair.first;
+            auto const& system = pair.second;
+
+            auto const& systemSignature = mSysSignature[systemName];
+
+            if ((systemSignature & entitySignature) == systemSignature) {
+                system->getEntities().insert(entity);
+            }
+            else {
+                system->getEntities().erase(entity);
+            }
+        }
+
+    }
 
 };
 
@@ -36,6 +63,8 @@ std::shared_ptr<T> SystemManager::RegisterSystem()
     assert(mSystems.count(systemName) == 0);
     auto system = std::make_shared<T>();
     mSystems.insert({systemName, system});
+    Signature sysSignature;
+    SetSignature<T>(sysSignature);
     return system;
 }
 
@@ -51,31 +80,16 @@ void SystemManager::SetSignature(Signature signature)
     mSysSignature.insert({systemName, signature});
 }
 
-void SystemManager::EntityDestroyed(Entity entity)
-{
-    for (auto const& pair : mSystems) {
-        auto const& system = pair.second;
-        system->getEntities().erase(entity);
-    }
 
+template<typename T>
+Signature SystemManager::GetSignature()
+{
+    std::string systemName = typeid(T).name();
+    assert(mSystems.count(systemName));
+    if (mSysSignature.count(systemName)) {
+        return mSysSignature[systemName];
+    }
 }
 
-void SystemManager::EntitySignatureChanged(Entity entity, Signature entitySignature)
-{
-    for (auto const& pair : mSystems) {
-        auto const& systemName = pair.first;
-        auto const& system = pair.second;
-
-        auto const& systemSignature = mSysSignature[systemName];
-
-        if ((systemSignature & entitySignature) == systemSignature) {
-            system->getEntities().insert(entity);
-        }
-        else {
-            system->getEntities().erase(entity);
-        }
-    }
-
-}
 
 #endif //PEDAROGUE_SYSTEMMANAGER_HPP

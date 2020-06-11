@@ -6,6 +6,7 @@
 #define PEDAROGUE_ECSTYPES_HPP
 #include <cstdint>
 #include <bitset>
+#include <set>
 
 // Entity is only an id so an int. 32 bits have to be enough
 using Entity = uint32_t;
@@ -20,12 +21,13 @@ class System
 private:
     std::set<Entity> mEntities;
 public:
-    const std::set<Entity> &getEntities() const;
+    std::set<Entity> &getEntities()
+    {
+        return mEntities;
+    }
 };
 
-const std::set<Entity> &System::getEntities() const
-{
-    return mEntities;
-}
+
+
 
 #endif //PEDAROGUE_ECSTYPES_HPP
