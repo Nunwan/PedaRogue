@@ -8,6 +8,7 @@
 Engine::Engine()
 {
     mECSManager = std::make_shared<ECSManager>();
+    mWindow = std::make_shared<Window>();
 }
 
 
@@ -20,6 +21,8 @@ void Engine::initSystems()
     mRenderOthersSystem = mECSManager->RegisterSystem<RenderOthersSystem>();
     mECSManager->UseComponent<RenderOthersSystem, Transform>();
     mECSManager->UseComponent<RenderOthersSystem, Render>();
+    mInputHandler = mECSManager->RegisterSystem<InputHandler>();
+    mInputHandler->Init();
 }
 
 
@@ -29,13 +32,21 @@ void Engine::initComponents()
     mECSManager->RegisterComponent<Transform>();
     mECSManager->RegisterComponent<Map>();
     mECSManager->RegisterComponent<Others>();
+    mECSManager->RegisterComponent<Playable>();
 }
 
 
-void Engine::render(std::shared_ptr<Window> window)
+void Engine::render()
 {
-    window->clear();
-    mRenderMapSystem->render(window);
-    mRenderOthersSystem->render(window);
-    window->refresh();
+    mWindow->clear();
+    mRenderMapSystem->render(mWindow);
+    mRenderOthersSystem->render(mWindow);
+    mWindow->refresh();
+}
+
+
+int Engine::update()
+{
+    mWindow->nextEvent(0, true);
+    return mInputHandler->process_key(mWindow->event);
 }

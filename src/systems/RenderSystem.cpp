@@ -9,6 +9,6 @@ void RenderSystem::render(std::shared_ptr<Window> window)
     for (auto const &entity : mEntities) {
         Render entityRender = mECSManager->GetComponent<Render>(entity);
         Transform entityPos = mECSManager->GetComponent<Transform>(entity);
-        window->print(entityPos.x, entityPos.y, entityRender.glyph, entityRender.color);
+        window->print(entityPos.x, entityPos.y, entityRender.glyph);
     }
 }

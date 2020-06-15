@@ -7,8 +7,7 @@
 #include "Window.hpp"
 
 struct Render {
-    int glyph;
-    TCODColor  color;
+    char *glyph;
 };
 
 struct Transform {
@@ -19,5 +18,9 @@ struct Transform {
 
 struct Map {};
 struct Others {};
+
+struct Playable{
+    int id;
+};
 
 #endif //PEDAROGUE_COMPONENTS_HPP

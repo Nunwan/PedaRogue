@@ -12,7 +12,6 @@ class Game
 {
 private:
     std::unique_ptr<Engine> mEngine;
-    std::shared_ptr<Window> mWindow;
     std::vector<Entity> mPlayers;
 
 public:

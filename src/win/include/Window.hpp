@@ -5,7 +5,7 @@
 #ifndef PEDAROGUE_WINDOW_HPP
 #define PEDAROGUE_WINDOW_HPP
 #include <vector>
-#include <libtcod.hpp>
+#include <BearLibTerminal.h>
 
 /* Macro to manipulate principals win. */
 
@@ -28,9 +28,7 @@
 using std::vector;
 
 struct Event {
-        TCOD_event_t eventtype;
-        TCOD_key_t key;
-        TCOD_mouse_t mouse;
+    int key;
 };
 
 
@@ -43,7 +41,7 @@ public:
         void nextEvent(int eventMask, bool wait);
 
         void clear();
-        void print(int x, int y, int glyph, TCODColor color);
+        void print(int x, int y, char* glyph);
         void refresh();
 
 };

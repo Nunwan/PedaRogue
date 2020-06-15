@@ -9,7 +9,6 @@
 Game::Game()
 {
     mEngine = std::make_unique<Engine>();
-    mWindow = std::make_shared<Window>();
 }
 
 
@@ -20,13 +19,15 @@ void Game::Init()
     Entity player = mEngine->mECSManager->CreateEntity();
     Transform posPlayer = {10, 10, 0};
     mEngine->mECSManager->AddComponent(player, posPlayer);
-    Render renderPlayer = {'@', TCODColor::amber};
+    Render renderPlayer = {"@"};
     mEngine->mECSManager->AddComponent(player, renderPlayer);
     mEngine->mECSManager->AddComponent(player, Others());
+    mEngine->mECSManager->AddComponent(player, Playable());
+    // Player 2 for test
     Entity player2= mEngine->mECSManager->CreateEntity();
     Transform posPlayer2= {20, 20, 0};
     mEngine->mECSManager->AddComponent(player2, posPlayer2);
-    Render renderPlayer2= {'+', TCODColor::amber};
+    Render renderPlayer2= {"+"};
     mEngine->mECSManager->AddComponent(player2, renderPlayer2);
     mEngine->mECSManager->AddComponent(player2, Others());
 }
@@ -34,11 +35,10 @@ void Game::Init()
 
 void Game::run()
 {
-    while (true) {
-        if (mWindow->event.eventtype == TCOD_EVENT_KEY_RELEASE && mWindow->event.key.vk == TCODK_ESCAPE) {
-            break;
-        }
-        mEngine->render(mWindow);
-        mWindow->nextEvent(TCOD_EVENT_ANY, true);
+    int stop = 0;
+    while (!stop) {
+        mEngine->render();
+        stop = mEngine->update();
     }
+    terminal_close();
 }
