@@ -8,6 +8,7 @@
 #include "ComponentManager.hpp"
 #include "SystemManager.hpp"
 #include "EntityManager.hpp"
+#include "ECSTypes.hpp"
 
 
 class ECSManager {
@@ -95,7 +96,9 @@ public:
     template<typename T>
     std::shared_ptr<T> RegisterSystem()
     {
-        return mSystemManager->RegisterSystem<T>();
+        std::shared_ptr<T> system =  mSystemManager->RegisterSystem<T>();
+        system->registerManager(this);
+        return system;
     }
 
 

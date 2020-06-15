@@ -10,6 +10,7 @@
 #include <memory>
 #include <cassert>
 #include "ECSTypes.hpp"
+class System;
 
 
 class SystemManager {

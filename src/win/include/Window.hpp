@@ -14,8 +14,8 @@
 #define WIN_MSG 2
 #define WIN_STATUS 3
 
-#define HEIGHT_MAP 30
-#define WIDTH_MAP 200
+#define HEIGHT_MAP 600
+#define WIDTH_MAP 600
 #define NB_WIN 4
 
 #define COL_WHITE 0
@@ -41,6 +41,10 @@ public:
         struct Event event;
         Window();
         void nextEvent(int eventMask, bool wait);
+
+        void clear();
+        void print(int x, int y, int glyph, TCODColor color);
+        void refresh();
 
 };
 
