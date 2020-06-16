@@ -41,8 +41,12 @@ public:
         void nextEvent(int eventMask, bool wait);
 
         void clear();
-        void print(int x, int y, char* glyph);
+        void print(int x, int y, char* glyph, color_t color);
         void refresh();
+
+
+        color_t color_blue = color_from_argb(0xff, 0, 0, 0xff);
+        color_t color_white = color_from_name("white");
 
 };
 

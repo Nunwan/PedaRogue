@@ -16,20 +16,20 @@ void Game::Init()
 {
     mEngine->initComponents();
     mEngine->initSystems();
-    Entity player = mEngine->mECSManager->CreateEntity();
+    Entity player = mEngine->CreateEntity();
     Transform posPlayer = {10, 10, 0};
-    mEngine->mECSManager->AddComponent(player, posPlayer);
-    Render renderPlayer = {"@"};
-    mEngine->mECSManager->AddComponent(player, renderPlayer);
-    mEngine->mECSManager->AddComponent(player, Others());
-    mEngine->mECSManager->AddComponent(player, Playable());
+    mEngine->AddComponent(player, posPlayer);
+    Render renderPlayer = {"@", mEngine->getMWindow()->color_blue};
+    mEngine->AddComponent(player, renderPlayer);
+    mEngine->AddComponent(player, NotMap());
+    mEngine->AddComponent(player, Playable());
     // Player 2 for test
-    Entity player2= mEngine->mECSManager->CreateEntity();
+    Entity player2= mEngine->CreateEntity();
     Transform posPlayer2= {20, 20, 0};
-    mEngine->mECSManager->AddComponent(player2, posPlayer2);
-    Render renderPlayer2= {"+"};
-    mEngine->mECSManager->AddComponent(player2, renderPlayer2);
-    mEngine->mECSManager->AddComponent(player2, Others());
+    mEngine->AddComponent(player2, posPlayer2);
+    Render renderPlayer2= {"+", mEngine->getMWindow()->color_white};
+    mEngine->AddComponent(player2, renderPlayer2);
+    mEngine->AddComponent(player2, NotMap());
 }
 
 
@@ -40,5 +40,11 @@ void Game::run()
         mEngine->render();
         stop = mEngine->update();
     }
+    close();
+}
+
+
+void Game::close()
+{
     terminal_close();
 }

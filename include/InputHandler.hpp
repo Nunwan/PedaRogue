@@ -6,11 +6,10 @@
 #define PEDAROGUE_INPUTHANDLER_HPP
 #include <memory>
 #include <unordered_map>
-#include "core/ECSTypes.hpp"
-#include "core/ECSManager.hpp"
-#include "Window.hpp"
-#include "PlayerMovement.hpp"
-#include "Components.hpp"
+#include <core/ECSTypes.hpp>
+#include <Window.hpp>
+#include "systems/PlayerMovement.hpp"
+
 
 class InputHandler : public System
 {

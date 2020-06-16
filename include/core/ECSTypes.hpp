@@ -17,20 +17,21 @@ using ComponentType = uint8_t;
 // Limit bitset length to 256 bc ComponentType is on 8 bits
 using Signature = std::bitset<256>;
 
-class ECSManager;
+class Engine;
 class System
 {
 public:
-    ECSManager* mECSManager;
+    Engine* mEngine;
     std::set<Entity> mEntities;
     std::set<Entity> &getEntities()
     {
         return mEntities;
     }
-    void registerManager(ECSManager* ecsManager)
+    void registerManager(Engine* engine)
     {
-        mECSManager = ecsManager;
+        mEngine = engine;
     }
+
 };
 
 

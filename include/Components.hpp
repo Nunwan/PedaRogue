@@ -8,6 +8,7 @@
 
 struct Render {
     char *glyph;
+    color_t color;
 };
 
 struct Transform {
@@ -17,7 +18,7 @@ struct Transform {
 };
 
 struct Map {};
-struct Others {};
+struct NotMap {};
 
 struct Playable{
     int id;

@@ -2,13 +2,15 @@
 // Created by nunwan on 15/06/2020.
 //
 
-#include "PlayerMovement.hpp"
+#include "systems/PlayerMovement.hpp"
+#include "Components.hpp"
+#include "Engine.hpp"
 
 
 void PlayerMovement::update(CommandType commandType)
 {
     for (auto const& entity : mEntities) {
-        Transform& posEntity = mECSManager->GetComponent<Transform>(entity);
+        Transform& posEntity = mEngine->GetComponent<Transform>(entity);
         if (commandType == UpPlayer) {
             posEntity.y--;
         }

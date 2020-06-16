@@ -3,6 +3,7 @@
 //
 
 #include "InputHandler.hpp"
+#include "Engine.hpp"
 
 
 int InputHandler::process_key(Event event)
@@ -18,11 +19,11 @@ int InputHandler::process_key(Event event)
 
 void InputHandler::Init()
 {
-    mPlayerMovement = mECSManager->RegisterSystem<PlayerMovement>();
-    mECSManager->UseComponent<PlayerMovement, Playable>();
-    mECSManager->UseComponent<PlayerMovement, Transform>();
-    mECSManager->UseComponent<PlayerMovement, Others>();
-    mECSManager->UseComponent<PlayerMovement, Render>();
+    mPlayerMovement = mEngine->RegisterSystem<PlayerMovement>(mEngine);
+    mEngine->UseComponent<PlayerMovement, Playable>();
+    mEngine->UseComponent<PlayerMovement, Transform>();
+    mEngine->UseComponent<PlayerMovement, NotMap>();
+    mEngine->UseComponent<PlayerMovement, Render>();
 
     // Bind Default key
     mBindings.insert({TK_UP, UpPlayer});

@@ -5,7 +5,6 @@
 #ifndef PEDAROGUE_RENDERSYSTEM_HPP
 #define PEDAROGUE_RENDERSYSTEM_HPP
 #include "core/ECSTypes.hpp"
-#include "core/ECSManager.hpp"
 #include "Components.hpp"
 #include "Window.hpp"
 
@@ -13,7 +12,7 @@
 class RenderSystem : public System
 {
 public:
-    void render(std::shared_ptr<Window> window);
+    void render();
 };
 
 class RenderMapSystem : public RenderSystem

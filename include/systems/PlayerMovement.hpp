@@ -8,9 +8,7 @@
 
 #include <Window.hpp>
 #include "core/ECSTypes.hpp"
-#include "core/ECSManager.hpp"
 #include "Types.hpp"
-#include "Components.hpp"
 
 
 class PlayerMovement : public System

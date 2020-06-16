@@ -94,10 +94,10 @@ public:
 
     // System Management
     template<typename T>
-    std::shared_ptr<T> RegisterSystem()
+    std::shared_ptr<T> RegisterSystem(Engine* engine)
     {
         std::shared_ptr<T> system =  mSystemManager->RegisterSystem<T>();
-        system->registerManager(this);
+        system->registerManager(engine);
         return system;
     }
 

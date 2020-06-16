@@ -10,16 +10,17 @@
 
 class Game
 {
-private:
+public:
     std::unique_ptr<Engine> mEngine;
     std::vector<Entity> mPlayers;
 
-public:
     void Init();
 
     Game();
 
     void run();
+
+    void close();
 };
 
 
