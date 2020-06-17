@@ -23,13 +23,6 @@ void Game::Init()
     mEngine->AddComponent(player, renderPlayer);
     mEngine->AddComponent(player, NotMap());
     mEngine->AddComponent(player, Playable());
-    // Player 2 for test
-    Entity player2= mEngine->CreateEntity();
-    Transform posPlayer2= {20, 20, 0};
-    mEngine->AddComponent(player2, posPlayer2);
-    Render renderPlayer2= {"+", mEngine->getMWindow()->color_white};
-    mEngine->AddComponent(player2, renderPlayer2);
-    mEngine->AddComponent(player2, NotMap());
 }
 
 

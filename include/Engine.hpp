@@ -19,6 +19,7 @@ private:
     std::shared_ptr<RenderOthersSystem> mRenderOthersSystem;
     std::shared_ptr<InputHandler> mInputHandler;
 
+
 public:
     const std::shared_ptr<Window> &getMWindow() const;
     Engine();
@@ -27,6 +28,10 @@ public:
 
     int update();
     void render();
+
+    // Levels activators
+    void level_enable(int levelnumber);
+    void level_disable(int levelnumber);
 };
 
 

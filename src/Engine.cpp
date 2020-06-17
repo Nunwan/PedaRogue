@@ -55,3 +55,38 @@ const std::shared_ptr<Window> &Engine::getMWindow() const
 {
     return mWindow;
 }
+
+
+void Engine::level_enable(int levelnumber)
+{
+    Entity** map = mLevels[levelnumber].getMMap();
+    for (int i = 0; i < HEIGHT_MAP; ++i) {
+        for (int j = 0; j < WIDTH_MAP; ++j) {
+            AddComponent(map[i][j], Map());
+        }
+    }
+    for (auto const& entity : mLevels[levelnumber].getMObjects()) {
+        AddComponent(entity, NotMap());
+    }
+    for (auto const& entity : mLevels[levelnumber].getMMobs()) {
+        AddComponent(entity, NotMap());
+    }
+}
+
+
+void Engine::level_disable(int levelnumber)
+{
+    Entity** map = mLevels[levelnumber].getMMap();
+    for (int i = 0; i < HEIGHT_MAP; ++i) {
+        for (int j = 0; j < WIDTH_MAP; ++j) {
+            DelComponent<Map>(map[i][j]);
+        }
+    }
+    for (auto const& entity : mLevels[levelnumber].getMObjects()) {
+        DelComponent<NotMap>(entity);
+    }
+    for (auto const& entity : mLevels[levelnumber].getMMobs()) {
+        DelComponent<NotMap>(entity);
+    }
+
+}

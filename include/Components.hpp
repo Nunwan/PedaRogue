@@ -17,6 +17,10 @@ struct Transform {
     int levelMap;
 };
 
+struct RigidBody {
+    bool transparent;
+};
+
 struct Map {};
 struct NotMap {};
 

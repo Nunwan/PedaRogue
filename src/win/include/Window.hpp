@@ -14,7 +14,7 @@
 #define WIN_MSG 2
 #define WIN_STATUS 3
 
-#define HEIGHT_MAP 600
+#define HEIGHT_SCREEN 600
 #define WIDTH_MAP 600
 #define NB_WIN 4
 

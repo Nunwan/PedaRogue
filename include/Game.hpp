@@ -6,10 +6,13 @@
 #define PEDAROGUE_GAME_HPP
 #include <memory>
 #include "Engine.hpp"
+#include "Level.hpp"
 
 
 class Game
 {
+private:
+    std::vector<Level> mLevels;
 public:
     std::unique_ptr<Engine> mEngine;
     std::vector<Entity> mPlayers;
