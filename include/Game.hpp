@@ -12,7 +12,7 @@
 class Game
 {
 private:
-    std::vector<Level> mLevels;
+    std::vector<std::shared_ptr<Level>> mLevels;
 public:
     std::unique_ptr<Engine> mEngine;
     std::vector<Entity> mPlayers;

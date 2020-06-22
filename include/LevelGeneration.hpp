@@ -8,13 +8,13 @@
 #include <vector>
 
 #define MAX_DEPTH_TUNNEL 20
-#define MAX_SIZE 25
+#define MAX_SIZE 15
 #define MIN_SIZE 4
-#define CHANGE_DIRECTION_PARENT 0.3
-#define ROOM_PROBA_PARENT 0.4
+#define CHANGE_DIRECTION_PARENT 0.5
+#define ROOM_PROBA_PARENT 0.6
 #define TUNNEL_HALFWIDTH_PARENT 3
 #define PROBA_DOOR 0.2
-#define MAX_ROOMS 15
+#define MAX_ROOMS 5
 
 #define DIR_UP 3
 #define DIR_LEFT 2
@@ -59,7 +59,6 @@ private:
     int mHeight;
     int mWidth;
     float mProbaDoor;
-    int numberRooms;
 
 
     void CreateRectangularRoom(Dimension roomDimension);
@@ -74,7 +73,7 @@ private:
     int PlaceRoom(int tunneler);
     int PlaceTunnel(int tunneler);
 
-    void forward_until(int tunnerler);
+    void forward_until(int tunnerler, int limite = -1);
 
 public:
     int **getMToGenerate() const;

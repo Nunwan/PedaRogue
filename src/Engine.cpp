@@ -20,6 +20,7 @@ void Engine::initSystems()
     mRenderOthersSystem = RegisterSystem<RenderOthersSystem>(this);
     UseComponent<RenderOthersSystem, Transform>();
     UseComponent<RenderOthersSystem, Render>();
+    UseComponent<RenderOthersSystem, NotMap>();
     mInputHandler = RegisterSystem<InputHandler>(this);
     mInputHandler->Init();
 }
@@ -32,6 +33,7 @@ void Engine::initComponents()
     RegisterComponent<Map>();
     RegisterComponent<NotMap>();
     RegisterComponent<Playable>();
+    RegisterComponent<RigidBody>();
 }
 
 
@@ -57,35 +59,35 @@ const std::shared_ptr<Window> &Engine::getMWindow() const
 }
 
 
-void Engine::level_enable(int levelnumber)
+void Engine::level_enable(std::shared_ptr<Level> level)
 {
-    Entity** map = mLevels[levelnumber].getMMap();
+    Entity** map = level->getMMap();
     for (int i = 0; i < HEIGHT_MAP; ++i) {
         for (int j = 0; j < WIDTH_MAP; ++j) {
             AddComponent(map[i][j], Map());
         }
     }
-    for (auto const& entity : mLevels[levelnumber].getMObjects()) {
+    for (auto const& entity : level->getMObjects()) {
         AddComponent(entity, NotMap());
     }
-    for (auto const& entity : mLevels[levelnumber].getMMobs()) {
+    for (auto const& entity : level->getMMobs()) {
         AddComponent(entity, NotMap());
     }
 }
 
 
-void Engine::level_disable(int levelnumber)
+void Engine::level_disable(std::shared_ptr<Level> level)
 {
-    Entity** map = mLevels[levelnumber].getMMap();
+    Entity** map = level->getMMap();
     for (int i = 0; i < HEIGHT_MAP; ++i) {
         for (int j = 0; j < WIDTH_MAP; ++j) {
             DelComponent<Map>(map[i][j]);
         }
     }
-    for (auto const& entity : mLevels[levelnumber].getMObjects()) {
+    for (auto const& entity : level->getMObjects()) {
         DelComponent<NotMap>(entity);
     }
-    for (auto const& entity : mLevels[levelnumber].getMMobs()) {
+    for (auto const& entity : level->getMMobs()) {
         DelComponent<NotMap>(entity);
     }
 

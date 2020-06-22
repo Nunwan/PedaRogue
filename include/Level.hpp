@@ -7,6 +7,7 @@
 
 #include <vector>
 #include "core/ECSTypes.hpp"
+#include "LevelGeneration.hpp"
 
 #define HEIGHT_MAP 200
 #define WIDTH_MAP 200
@@ -22,12 +23,22 @@ public:
 
     virtual ~Level();
 
-    Level();
+    Level(int levelnumber, Engine* engine);
+
+    void GenerateMap();
 
 private:
+    Engine* mEngine;
+    int mLevelnumber;
     Entity** mMap;
     std::vector<Entity> mObjects;
     std::vector<Entity> mMobs;
+
+    void CreateMap(LevelGeneration& levelGen);
+
+    void ConfigFloor(Entity entity, int x, int y);
+    void ConfigWall(Entity entity, int x, int y);
+    void ConfigDoor(Entity entity, int x, int y);
 };
 
 

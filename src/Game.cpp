@@ -23,6 +23,9 @@ void Game::Init()
     mEngine->AddComponent(player, renderPlayer);
     mEngine->AddComponent(player, NotMap());
     mEngine->AddComponent(player, Playable());
+    mLevels.push_back(std::make_shared<Level>(0, mEngine.get()));
+    mLevels[0]->GenerateMap();
+    mEngine->level_enable(mLevels[0]);
 }
 
 

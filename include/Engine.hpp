@@ -9,6 +9,7 @@
 #include "Components.hpp"
 #include "systems/RenderSystem.hpp"
 #include "InputHandler.hpp"
+#include "Level.hpp"
 
 
 class Engine : public ECSManager
@@ -30,8 +31,8 @@ public:
     void render();
 
     // Levels activators
-    void level_enable(int levelnumber);
-    void level_disable(int levelnumber);
+    void level_enable(std::shared_ptr<Level> level);
+    void level_disable(std::shared_ptr<Level> level);
 };
 
 
