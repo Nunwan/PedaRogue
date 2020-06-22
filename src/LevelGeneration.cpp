@@ -4,6 +4,7 @@
 #include <stdlib.h>
 #include <time.h>
 #include <iostream>
+#include <fstream>
 #include "LevelGeneration.hpp"
 
 #define min(a,b) a<=b?a:b
@@ -16,6 +17,7 @@ LevelGeneration::LevelGeneration(int height_map, int width_map)
     srand(time(NULL));
     int x_dad = rand() % 15 + 2;
     int y_dad = rand() % 15 + 2;
+
     Tunnelers dadTunnelers = {x_dad, y_dad, 0, CHANGE_DIRECTION_PARENT, ROOM_PROBA_PARENT, TUNNEL_HALFWIDTH_PARENT};
     mTunnelers.push_back(dadTunnelers);
 
@@ -43,7 +45,7 @@ LevelGeneration::~LevelGeneration()
 }
 
 
-void LevelGeneration::CreateRectangularRoom(Dimension roomDimension)
+void LevelGeneration::CreateRectangularRoom(Rectangle roomDimension)
 {
     int x = roomDimension.x;
     int y = roomDimension.y;
@@ -65,79 +67,20 @@ void LevelGeneration::CreateRectangularRoom(Dimension roomDimension)
 }
 
 
-void LevelGeneration::place_opening(int tunneler_id)
+void LevelGeneration::place_opening(Tunnelers &tunneler)
 {
-    auto tunneler = mTunnelers[tunneler_id];
     bool is_door = 1/(rand() + 1) <= mProbaDoor;
     mToGenerate[tunneler.y][tunneler.x] = is_door?DOOR:FLOOR;
-    /*if (tunneler.direction % 2) {
-        int negative = tunneler.direction / 2 == 0 ? 1 : -1;
-        for (int x = tunneler.x - tunneler.tunnelHalfWidth; x < tunneler.x + tunneler.tunnelHalfWidth; ++x) {
-            mToGenerate[tunneler.y + negative*1][x] = FLOOR;
-        }
-    }
-    else {
-        int negative = tunneler.direction / 2 == 0 ? 1 : -1;
-        for (int y = tunneler.y - tunneler.tunnelHalfWidth; y < tunneler.y + tunneler.tunnelHalfWidth; ++y) {
-            mToGenerate[y][tunneler.x + negative*1] = FLOOR;
-        }
-    }
-    if (is_door) {
-        if (tunneler.direction % 2) {
-            int negative = tunneler.direction / 2 == 0 ? 1 : -1;
-            int x_door = tunneler.x - rand() % (2 * tunneler.tunnelHalfWidth ) + tunneler.tunnelHalfWidth;
-            mToGenerate[tunneler.y + negative*1][x_door] = DOOR;
-        }
-        else {
-            int negative = tunneler.direction / 2 == 0 ? 1 : -1;
-            int y_door = tunneler.y - rand() % (2 * tunneler.tunnelHalfWidth ) + tunneler.tunnelHalfWidth;
-            mToGenerate[y_door][tunneler.x + negative*1] = DOOR;
-        }
-    }*/
 }
 
 
-void LevelGeneration::CreateTunnel(Dimension dimension, int direction)
+bool LevelGeneration::verify_free(Rectangle rectangle)
 {
-    if (direction % 2 == 0) {
-        for (int y = dimension.y - dimension.h + 2; y < dimension.y + dimension.h - 1; ++y) {
-            for (int x = dimension.x + 1; x <= dimension.x + dimension.w+ 1; ++x) {
-                mToGenerate[y][x] = FLOOR;
-            }
-        }
-        for (int x = dimension.x + 1; x <= dimension.x + dimension.w +1 ; ++x) {
-            if (mToGenerate[dimension.y - dimension.h + 1][x] != FLOOR) {
-                mToGenerate[dimension.y - dimension.h + 1][x] = WALL_TUNNEL;
-            }
-            if (mToGenerate[dimension.y + dimension.h - 1][x] != FLOOR) {
-                mToGenerate[dimension.y +dimension.h - 1][x] = WALL_TUNNEL;
-            }
-        }
-    }
-    else {
-        for (int x = dimension.x - dimension.w + 2; x < dimension.x + dimension.w - 1; ++x) {
-            for (int y = dimension.y + 1; y <= dimension.y + dimension.h + 1; ++y) {
-                mToGenerate[y][x] = FLOOR;
-            }
-        }
-        for (int y = dimension.y + 1; y <= dimension.y + dimension.h +1 ; ++y) {
-            if (mToGenerate[y][dimension.x - dimension.w + 1] != FLOOR) {
-                mToGenerate[y][dimension.x - dimension.w + 1] = WALL_TUNNEL;
-            }
-            if (mToGenerate[y][dimension.x + dimension.w - 1] != FLOOR) {
-                mToGenerate[y][dimension.x + dimension.w - 1] = WALL_TUNNEL;
-            }
-        }
-    }
-}
-
-
-bool LevelGeneration::verify_free(Dimension rectangle)
-{
-    for (int x = rectangle.x; x <= rectangle.x + rectangle.w ; ++x) {
-        for (int y = rectangle.y; y < rectangle.y + rectangle.h; ++y) {
-            if (x >= mWidth || y >= mHeight || x < 0 || y < 0)  {return false;}
-            if (mToGenerate[y][x] != WALL_TUNNEL && mToGenerate[y][x] != EMPTY) {
+    if (rectangle.x < 0 || rectangle.y < 0) {return false;}
+    if (rectangle.x + rectangle.w >= mWidth || rectangle.y + rectangle.h >= mHeight) {return false;}
+    for (int x = rectangle.x + 1; x <= rectangle.x + rectangle.w ; ++x) {
+        for (int y = rectangle.y + 1 ; y < rectangle.y + rectangle.h; ++y) {
+            if (mToGenerate[y][x] != EMPTY) {
                 return false;
             }
         }
@@ -146,196 +89,197 @@ bool LevelGeneration::verify_free(Dimension rectangle)
 }
 
 
-void LevelGeneration::forward_until(int tunneler, int limite)
-{
-    int compteur = 0;
-    if (limite == -1) {
-        limite = max(2 * mWidth, 2 * mHeight);
-    }
-    auto& theTunneler = mTunnelers[tunneler];
-    if (theTunneler.direction == DIR_DOWN) {
-        while (compteur < limite && theTunneler.y + 1 < mHeight && mToGenerate[theTunneler.y + 1][theTunneler.x] != 0) {
-            theTunneler.y++;
-            compteur++;
-        }
-    }
-    else if (theTunneler.direction == DIR_RIGHT){
-        while (compteur < limite && theTunneler.x + 1< mWidth && mToGenerate[theTunneler.y][theTunneler.x + 1] != 0) {
-            theTunneler.x++;
-            compteur++;
-        }
-    }
-    else if (theTunneler.direction == DIR_UP) {
-        while (compteur < limite && theTunneler.y > 0 && mToGenerate[theTunneler.y - 1][theTunneler.x] != 0) {
-            theTunneler.y--;
-            compteur++;
-        }
-    }
-    else if (theTunneler.direction == DIR_LEFT){
-        while (compteur < limite && theTunneler.x > 0 && mToGenerate[theTunneler.y][theTunneler.x - 1] != 0) {
-            theTunneler.x--;
-            compteur++;
-        }
-    }
-}
-
-
 void LevelGeneration::run()
 {
     auto& tunneler = mTunnelers[0];
-    std::cout << tunneler.x << " "<< tunneler.y << std::endl;
     int numberRooms = 0;
     srand(time(NULL));
-    PlaceRoom(0);
-    forward_until(0);
-    place_opening(0);
-    mTunnelers[0].mLastWasTunnel = 0;
+    Rectangle** first_room;
+    Rectangle* room =  create_possible_feature(ROOM, tunneler);
+    first_room = &room;
+    while (!verify_free(**first_room)) {
+        delete  *first_room;
+        Rectangle* room = create_possible_feature(ROOM, tunneler);
+        first_room = &room;
+    }
+    push_feature(**first_room);
     while (numberRooms < MAX_ROOMS) {
-        std::cout << "debut\n";
-        int number_stop = 0;
-        int direction = 0;
-        for (int i = 0; i < mTunnelers.size(); i++)  {
-            auto& tunneler = mTunnelers[i];
-            if (tunneler.can_continue) {
-                if (tunneler.mLastWasTunnel && 1/rand() < tunneler.roomProba) {
-                    tunneler.can_continue = PlaceRoom(i);
-                    if (tunneler.can_continue) {
-                        forward_until(i, 1);
-                        place_opening(i);
-                        tunneler.mLastWasTunnel = 0;
-                        forward_until(i);
-                        place_opening(i);
-                        numberRooms++;
-                    }
-                    std::cout << "room " << tunneler.can_continue << std::endl;
+        for (auto& tunneler : mTunnelers) {
+            Rectangle ancient_rectangle = pick_wall(tunneler);
+            int feature_type = choose_feature(tunneler, ancient_rectangle);
+            Rectangle* new_feature = create_possible_feature(feature_type, tunneler);
+            if (verify_free(*new_feature)) {
+                std::cout << "libre sa mère " << feature_type<< std::endl;
+                push_feature(*new_feature);
+                place_opening(tunneler);
+                if (feature_type == ROOM) {
+                    numberRooms++;
+                    tunneler.mLastWasTunnel = 0;
                 }
-                else {
-                    tunneler.can_continue = PlaceTunnel(i);
-                    forward_until(i);
+                else if (feature_type == TUNNEL) {
                     tunneler.mLastWasTunnel = 1;
-                    std::cout << "Tunnel \n";
                 }
-                if (1/rand() < tunneler.changeDirection) {
-                    if (rand() % 2) {
-                        tunneler.direction = (tunneler.direction + 1) % 4;
-                    }
-                    else {
-                        tunneler.direction = (tunneler.direction - 1) % 4;
-                    }
-                    std::cout << "changedir \n";
-                    forward_until(i);
-                }
-                mToGenerate[tunneler.y][tunneler.x] = 6;
-            }
-            else {
-                number_stop++;
-            }
-        }
-        if (number_stop == mTunnelers.size()) {
-            break;
+            } else { std::cout << ":( " << feature_type << std::endl;}
+            delete new_feature;
         }
     }
 
-}
-
-
-int LevelGeneration::PlaceTunnel(int tunneler)
-{
-    Tunnelers theTunneler = mTunnelers[tunneler];
-    Dimension futureTunnel;
-    int try_number = 0;
-    do {
-        if (theTunneler.direction == 1) {
-            int x_off = theTunneler.tunnelHalfWidth;
-            futureTunnel.x = theTunneler.x - x_off;
-            futureTunnel.y = theTunneler.y + 1;
-            futureTunnel.w = 2 * x_off + 1;
-            futureTunnel.h = rand() % MAX_DEPTH_TUNNEL + MIN_SIZE;
-        }
-        else if (theTunneler.direction == 0) {
-            int y_off = theTunneler.tunnelHalfWidth;
-            futureTunnel.y = theTunneler.y - y_off;
-            futureTunnel.x = theTunneler.x + 1;
-            futureTunnel.h = 2 * y_off + 1;
-            futureTunnel.w = rand() % MAX_DEPTH_TUNNEL+ MIN_SIZE;
-        }
-        else if (theTunneler.direction == 2) {
-            int y_off = theTunneler.tunnelHalfWidth;
-            futureTunnel.y = theTunneler.y - y_off;
-            futureTunnel.h = 2 * y_off - 1;
-            futureTunnel.w = rand() % MAX_DEPTH_TUNNEL+ MIN_SIZE;
-            futureTunnel.x = theTunneler.x - futureTunnel.w;
-        }
-        else {
-            int x_off = theTunneler.tunnelHalfWidth;
-            futureTunnel.x = theTunneler.x - x_off;
-            futureTunnel.w = 2 * x_off + 1;
-            futureTunnel.h = rand() % MAX_DEPTH_TUNNEL+ MIN_SIZE;
-            futureTunnel.y = theTunneler.y - futureTunnel.h;
-        }
-        try_number++;
-    } while (try_number < 10 && !verify_free(futureTunnel));
-    if (try_number == 10) {return 0;}
-    // Return to tunnel coordinate
-    if (theTunneler.direction == DIR_RIGHT) {
-        futureTunnel.x = theTunneler.x;
-        futureTunnel.y = theTunneler.y;
-    }
-    if (theTunneler.direction % 2 == 0) {
-        futureTunnel.h = theTunneler.tunnelHalfWidth;
-    }
-    else {
-        futureTunnel.w = theTunneler.tunnelHalfWidth;
-    }
-    CreateTunnel(futureTunnel, theTunneler.direction);
-    return 1;
-}
-
-
-int LevelGeneration::PlaceRoom(int tunneler)
-{
-    Tunnelers theTunneler = mTunnelers[tunneler];
-    Dimension futureRoom;
-    int try_number = 0;
-    do {
-        if (theTunneler.direction == 1) {
-            int x_off = rand() % 10 + min(theTunneler.x, MIN_SIZE);
-            futureRoom.x = theTunneler.x - x_off;
-            futureRoom.y = theTunneler.y + 1;
-            futureRoom.w = rand() % MAX_SIZE + x_off + 1;
-            futureRoom.h = rand() % MAX_SIZE + MIN_SIZE;
-        }
-        else if (theTunneler.direction == 0) {
-            int y_off = rand() % 10 + min(theTunneler.y, MIN_SIZE);
-            futureRoom.y = theTunneler.y - y_off;
-            futureRoom.x = theTunneler.x + 1;
-            futureRoom.h = rand() % MAX_SIZE + y_off + 1;
-            futureRoom.w = rand() % MAX_SIZE + MIN_SIZE;
-        }
-        else if (theTunneler.direction == 2) {
-            int y_off = rand() % 10 + min(theTunneler.y, MIN_SIZE);
-            futureRoom.y = theTunneler.y - y_off;
-            futureRoom.h = rand() % MAX_SIZE + y_off + 1;
-            futureRoom.w = rand() % MAX_SIZE + MIN_SIZE;
-            futureRoom.x = theTunneler.x - futureRoom.w;
-        }
-        else {
-            int x_off = rand() % 10 + min(theTunneler.x, MIN_SIZE);
-            futureRoom.x = theTunneler.x - x_off;
-            futureRoom.w = rand() % MAX_SIZE + x_off + 1;
-            futureRoom.h = rand() % MAX_SIZE + MIN_SIZE;
-            futureRoom.y = theTunneler.y - futureRoom.h;
-        }
-        try_number++;
-    } while (try_number < 10 && !verify_free(futureRoom));
-    if (try_number == 10) {return 0;}
-    theTunneler.x--;
-    CreateRectangularRoom(futureRoom);
-    return 1;
 }
 
 
 int **LevelGeneration::getMToGenerate() const
 {
     return mToGenerate;
+}
+
+
+Rectangle& LevelGeneration::pick_wall(Tunnelers &tunnelers)
+{
+    int id_rectangle = rand() % mRectangles.size();
+    auto& rectangle_chosen = mRectangles[id_rectangle];
+    int chosen_wall;
+    if (1/(rand() + 1) < tunnelers.changeDirection) {
+        chosen_wall = rand() % 4;
+        tunnelers.direction = chosen_wall;
+    } else {
+        chosen_wall = tunnelers.direction;
+    }
+    switch (chosen_wall) {
+        case DIR_RIGHT:
+            tunnelers.x = rectangle_chosen.x + rectangle_chosen.w - 1;
+            tunnelers.y = rand() % (rectangle_chosen.h - 2) + rectangle_chosen.y + 1;
+            break;
+        case DIR_LEFT:
+            tunnelers.x = rectangle_chosen.x;
+            tunnelers.y = rand() % (rectangle_chosen.h - 2) + rectangle_chosen.y + 1;
+            break;
+        case DIR_DOWN:
+            tunnelers.x = rand() % (rectangle_chosen.w - 2) + rectangle_chosen.x + 1;
+            tunnelers.y = rectangle_chosen.y + rectangle_chosen.h - 1;
+            break;
+        case DIR_UP:
+            tunnelers.x = rand() % (rectangle_chosen.w - 2) + rectangle_chosen.x + 1;
+            tunnelers.y = rectangle_chosen.y;
+            break;
+        default:
+            break;
+    }
+    return rectangle_chosen;
+
+
+}
+
+
+int LevelGeneration::choose_feature(Tunnelers &tunnelers, Rectangle& ancient_rectangle)
+{
+    // bool is_room = tunnelers.tunnelWidth != ancient_rectangle.w && tunnelers.tunnelWidth != ancient_rectangle.w;
+    // bool is_room = !tunnelers.mLastWasTunnel;
+    bool is_room = ancient_rectangle.feature_type == ROOM;
+    if (is_room) {
+        return TUNNEL;
+    } else {
+        if (1/rand() < tunnelers.roomProba) {
+            return ROOM;
+        }
+        else {
+            return TUNNEL;
+        }
+    }
+}
+
+
+Rectangle* LevelGeneration::create_possible_feature(int type, Tunnelers &tunnelers)
+{
+    Rectangle* new_feature = new Rectangle;
+    new_feature->feature_type = type;
+    if (type == TUNNEL) {
+        if (tunnelers.direction % 2) {
+            new_feature->w = tunnelers.tunnelWidth;
+            new_feature->h = rand() % (MAX_SIZE - MIN_SIZE) + MIN_SIZE;
+        }
+        else {
+            new_feature->h = tunnelers.tunnelWidth;
+            new_feature->w = rand() % (MAX_SIZE - MIN_SIZE) + MIN_SIZE;
+        }
+    }
+    else {
+        new_feature->w = rand() % (MAX_SIZE - MIN_SIZE) + MIN_SIZE;
+        new_feature->h = rand() % (MAX_SIZE - MIN_SIZE) + MIN_SIZE;
+    }
+    switch (tunnelers.direction) {
+        case DIR_RIGHT:
+            new_feature->x = tunnelers.x;
+            new_feature->y = tunnelers.y - new_feature->h / 2;
+            break;
+        case DIR_DOWN:
+            new_feature->y = tunnelers.y;
+            new_feature->x = tunnelers.x - new_feature->w / 2;
+            break;
+        case DIR_LEFT:
+            new_feature->x = tunnelers.x - new_feature->w + 1 ;
+            new_feature->y = tunnelers.y - new_feature->h / 2;
+            break;
+        case DIR_UP:
+            new_feature->y = tunnelers.y - new_feature->h + 1;
+            new_feature->x = tunnelers.x - new_feature->w / 2;
+            break;
+        default:
+            break;
+    }
+    return new_feature;
+}
+
+
+void LevelGeneration::push_feature(Rectangle rectangle)
+{
+    mRectangles.push_back(rectangle);
+    int x = rectangle.x;
+    int y = rectangle.y;
+    int h = rectangle.h;
+    int w = rectangle.w;
+    for (int i = y+1; i < y+h - 1; ++i) {
+        for (int j = x+1; j < x+w - 1 ; ++j) {
+            mToGenerate[i][j] = FLOOR;
+        }
+    }
+    if (rectangle.feature_type == TUNNEL){
+        for (int i = x; i < x+w; ++i) {
+            mToGenerate[y][i] = WALL_TUNNEL;
+            mToGenerate[y+h-1][i] = WALL_TUNNEL;
+        }
+        for (int i = y; i < y+h; ++i) {
+            mToGenerate[i][x] = WALL_TUNNEL;
+            mToGenerate[i][x+w-1] = WALL_TUNNEL;
+        }
+        return;
+    }
+    for (int i = x; i < x+w; ++i) {
+        mToGenerate[y][i] = WALL;
+        mToGenerate[y+h-1][i] = WALL;
+    }
+    for (int i = y; i < y+h; ++i) {
+        mToGenerate[i][x] = WALL;
+        mToGenerate[i][x+w-1] = WALL;
+    }
+    if (LOG_MAP) {
+        write_log_map();
+    }
+}
+
+
+void LevelGeneration::write_log_map()
+{
+    std::ofstream os("log_map.txt");
+    if (os.is_open()) {
+        os << "\n";
+        os << "============ new step ======== \n";
+        for (int i = 0; i < mHeight; ++i) {
+            for (int j = 0; j < mWidth; ++j) {
+                os << mToGenerate[i][j];
+            }
+            os << "\n";
+        }
+    }
+
+
 }

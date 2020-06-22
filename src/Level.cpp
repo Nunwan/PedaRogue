@@ -67,8 +67,11 @@ void Level::CreateMap(LevelGeneration& levelGen)
             if (type == FLOOR) {
                 ConfigFloor(mMap[i][j], j, i);
             }
-            else if (type == WALL || type == WALL_TUNNEL) {
+            else if (type == WALL) {
                 ConfigWall(mMap[i][j], j, i);
+            }
+            else if (type == WALL_TUNNEL) {
+                ConfigWallTunnel(mMap[i][j], j, i);
             }
             else if (type == DOOR) {
                 ConfigDoor(mMap[i][j], j, i);
@@ -102,6 +105,17 @@ void Level::ConfigWall(Entity entity, int x, int y)
 {
     Transform entityPos = {x, y, mLevelnumber};
     Render entityRender = {"#", mEngine->getMWindow()->color_white};
+    RigidBody entityBody = {true};
+    mEngine->AddComponent(entity, entityPos);
+    mEngine->AddComponent(entity, entityRender);
+    mEngine->AddComponent(entity, entityBody);
+}
+
+
+void Level::ConfigWallTunnel(Entity entity, int x, int y)
+{
+    Transform entityPos = {x, y, mLevelnumber};
+    Render entityRender = {"#", mEngine->getMWindow()->color_blue};
     RigidBody entityBody = {true};
     mEngine->AddComponent(entity, entityPos);
     mEngine->AddComponent(entity, entityRender);

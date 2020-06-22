@@ -15,7 +15,7 @@
 #define WIN_STATUS 3
 
 #define HEIGHT_SCREEN 600
-#define WIDTH_MAP 600
+#define WIDTH_SCREEN 600
 #define NB_WIN 4
 
 #define COL_WHITE 0

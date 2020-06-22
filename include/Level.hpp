@@ -9,8 +9,8 @@
 #include "core/ECSTypes.hpp"
 #include "LevelGeneration.hpp"
 
-#define HEIGHT_MAP 200
-#define WIDTH_MAP 200
+#define HEIGHT_MAP 40
+#define WIDTH_MAP 120
 
 class Level
 {
@@ -38,6 +38,7 @@ private:
 
     void ConfigFloor(Entity entity, int x, int y);
     void ConfigWall(Entity entity, int x, int y);
+    void ConfigWallTunnel(Entity entity, int x, int y);
     void ConfigDoor(Entity entity, int x, int y);
 };
 
