@@ -8,6 +8,7 @@
 #include <vector>
 #include "core/ECSTypes.hpp"
 #include "LevelGeneration.hpp"
+#include "Components.hpp"
 
 #define HEIGHT_MAP 40
 #define WIDTH_MAP 120
@@ -33,6 +34,11 @@ private:
     Entity** mMap;
     std::vector<Entity> mObjects;
     std::vector<Entity> mMobs;
+    Transform beginMap;
+public:
+    const Transform &getBeginMap() const;
+
+private:
 
     void CreateMap(LevelGeneration& levelGen);
 
@@ -40,6 +46,8 @@ private:
     void ConfigWall(Entity entity, int x, int y);
     void ConfigWallTunnel(Entity entity, int x, int y);
     void ConfigDoor(Entity entity, int x, int y);
+
+    void place_player();
 };
 
 

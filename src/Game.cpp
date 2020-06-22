@@ -16,16 +16,15 @@ void Game::Init()
 {
     mEngine->initComponents();
     mEngine->initSystems();
+    mLevels.push_back(std::make_shared<Level>(0, mEngine.get()));
+    mLevels[0]->GenerateMap();
+    mEngine->level_enable(mLevels[0]);
     Entity player = mEngine->CreateEntity();
-    Transform posPlayer = {10, 10, 0};
-    mEngine->AddComponent(player, posPlayer);
+    mEngine->AddComponent(player, mLevels[0]->getBeginMap());
     Render renderPlayer = {"@", mEngine->getMWindow()->color_blue};
     mEngine->AddComponent(player, renderPlayer);
     mEngine->AddComponent(player, NotMap());
     mEngine->AddComponent(player, Playable());
-    mLevels.push_back(std::make_shared<Level>(0, mEngine.get()));
-    mLevels[0]->GenerateMap();
-    mEngine->level_enable(mLevels[0]);
 }
 
 

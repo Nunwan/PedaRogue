@@ -6,6 +6,7 @@
 #define PEDAROGUE_LEVELGENERATION_HPP
 
 #include <vector>
+#include "Components.hpp"
 
 #define MAX_DEPTH_TUNNEL 20
 #define MAX_SIZE 15
@@ -98,6 +99,8 @@ public:
     void push_feature(Rectangle rectangle);
 
     void write_log_map();
+
+    void place_player(Transform *pTransform);
 };
 
 

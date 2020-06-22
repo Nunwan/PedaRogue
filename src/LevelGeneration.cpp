@@ -283,3 +283,15 @@ void LevelGeneration::write_log_map()
 
 
 }
+
+
+void LevelGeneration::place_player(Transform *pTransform)
+{
+    int room_id = 0;
+    while (mRectangles[room_id].feature_type != ROOM) {
+        room_id++;
+    }
+    auto room = mRectangles[room_id];
+    pTransform->x = rand() % (room.w - 1) + room.x + 1;
+    pTransform->y = rand() % (room.h - 1) + room.y + 1;
+}

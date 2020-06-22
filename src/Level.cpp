@@ -54,6 +54,9 @@ void Level::GenerateMap()
 {
     auto levelGen = LevelGeneration(HEIGHT_MAP, WIDTH_MAP);
     levelGen.run();
+    if (mLevelnumber == 0) {
+        levelGen.place_player(&beginMap);
+    }
     CreateMap(levelGen);
 }
 
@@ -131,5 +134,11 @@ void Level::ConfigDoor(Entity entity, int x, int y)
     mEngine->AddComponent(entity, entityPos);
     mEngine->AddComponent(entity, entityRender);
     mEngine->AddComponent(entity, entityBody);
+}
+
+
+const Transform &Level::getBeginMap() const
+{
+    return beginMap;
 }
 
