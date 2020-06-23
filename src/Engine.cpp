@@ -22,6 +22,9 @@ void Engine::initSystems()
     UseComponent<RenderOthersSystem, Render>();
     UseComponent<RenderOthersSystem, NotMap>();
     mInputHandler = RegisterSystem<InputHandler>(this);
+    mCollisionSystem = RegisterSystem<CollisionSystem>(this);
+    UseComponent<CollisionSystem, Transform>();
+    UseComponent<CollisionSystem, RigidBody>();
     mInputHandler->Init();
 }
 
@@ -34,6 +37,7 @@ void Engine::initComponents()
     RegisterComponent<NotMap>();
     RegisterComponent<Playable>();
     RegisterComponent<RigidBody>();
+    RegisterComponent<Moveable>();
 }
 
 
@@ -49,7 +53,9 @@ void Engine::render()
 int Engine::update()
 {
     mWindow->nextEvent(0, true);
-    return mInputHandler->process_key(mWindow->event);
+    int finish = mInputHandler->process_key(mWindow->event);
+
+    return finish;
 }
 
 

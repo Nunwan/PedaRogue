@@ -1,7 +1,7 @@
 //
 // Created by nunwan on 17/06/2020.
 //
-#include <stdlib.h>
+#include <random>
 #include <time.h>
 #include <iostream>
 #include <fstream>
@@ -91,7 +91,6 @@ void LevelGeneration::run()
             bool is_free = (tunneler.direction % 2) ? verify_free(*new_feature, 1, 0) : verify_free(*new_feature, 0, 1);
             if (is_free) {
                 tried = 0;
-                std::cout << "libre sa mère " << feature_type<< std::endl;
                 push_feature(*new_feature);
                 place_opening(tunneler);
                 if (feature_type == ROOM) {
@@ -101,7 +100,7 @@ void LevelGeneration::run()
                 else if (feature_type == TUNNEL) {
                     tunneler.mLastWasTunnel = 1;
                 }
-            } else { std::cout << ":( " << feature_type << std::endl;}
+            }
             delete new_feature;
         }
     }
@@ -120,7 +119,7 @@ Rectangle& LevelGeneration::pick_wall(Tunnelers &tunnelers)
     int id_rectangle = rand() % mRectangles.size();
     auto& rectangle_chosen = mRectangles[id_rectangle];
     int chosen_wall;
-    if ((float)((float)rand()/RAND_MAX) < tunnelers.changeDirection) {
+    if (((float)rand()/RAND_MAX) < tunnelers.changeDirection) {
         chosen_wall = rand() % 4;
         tunnelers.direction = chosen_wall;
     } else {
@@ -154,8 +153,6 @@ Rectangle& LevelGeneration::pick_wall(Tunnelers &tunnelers)
 
 int LevelGeneration::choose_feature(Tunnelers &tunnelers, Rectangle& ancient_rectangle)
 {
-    // bool is_room = tunnelers.tunnelWidth != ancient_rectangle.w && tunnelers.tunnelWidth != ancient_rectangle.w;
-    // bool is_room = !tunnelers.mLastWasTunnel;
     bool is_room = ancient_rectangle.feature_type == ROOM;
     if (is_room) {
         return TUNNEL;
@@ -165,7 +162,6 @@ int LevelGeneration::choose_feature(Tunnelers &tunnelers, Rectangle& ancient_rec
             return ROOM;
         }
         else {
-            std::cout << "TUNNEL" <<std::endl;
             return TUNNEL;
         }
     }
@@ -279,4 +275,5 @@ void LevelGeneration::place_player(Transform *pTransform)
     auto room = mRectangles[room_id];
     pTransform->x = rand() % (room.w - 1) + room.x + 1;
     pTransform->y = rand() % (room.h - 1) + room.y + 1;
+    pTransform->levelMap = 0;
 }

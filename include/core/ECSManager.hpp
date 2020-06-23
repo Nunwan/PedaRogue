@@ -77,6 +77,13 @@ public:
         return mComponentManager->GetComponent<T>(entity);
     }
 
+    template<typename T>
+    bool HasComponent(Entity entity)
+    {
+        auto entitySignature = mEntityManager->getSignature(entity);
+        return entitySignature[mComponentManager->GetComponentType<T>()];
+    }
+
 
     template<typename T>
     typename std::vector<T>::iterator BeginComp()

@@ -15,9 +15,14 @@ struct Transform {
     int x;
     int y;
     int levelMap;
+    bool operator==(Transform t1) const
+    {
+        return t1.x == this->x && t1.y == this->y && t1.levelMap == this->levelMap;
+    }
 };
 
 struct RigidBody {
+    bool can_pass;
     bool transparent;
 };
 
@@ -26,6 +31,10 @@ struct NotMap {};
 
 struct Playable{
     int id;
+};
+
+struct Moveable {
+    int direction;
 };
 
 #endif //PEDAROGUE_COMPONENTS_HPP

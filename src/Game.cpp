@@ -24,7 +24,11 @@ void Game::Init()
     Render renderPlayer = {"@", mEngine->getMWindow()->color_blue};
     mEngine->AddComponent(player, renderPlayer);
     mEngine->AddComponent(player, NotMap());
+    Moveable playerMove = {DIR_LEFT};
+    mEngine->AddComponent(player, playerMove);
     mEngine->AddComponent(player, Playable());
+    RigidBody rigidPlayer = {false, false};
+    mEngine->AddComponent(player, rigidPlayer);
 }
 
 

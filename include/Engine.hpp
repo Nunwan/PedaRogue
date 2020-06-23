@@ -10,6 +10,7 @@
 #include "systems/RenderSystem.hpp"
 #include "InputHandler.hpp"
 #include "Level.hpp"
+#include "systems/CollisionSystem.hpp"
 
 
 class Engine : public ECSManager
@@ -33,6 +34,8 @@ public:
     // Levels activators
     void level_enable(std::shared_ptr<Level> level);
     void level_disable(std::shared_ptr<Level> level);
+
+    std::shared_ptr<CollisionSystem> mCollisionSystem;
 };
 
 

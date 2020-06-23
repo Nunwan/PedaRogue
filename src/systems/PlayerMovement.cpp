@@ -12,18 +12,41 @@ void PlayerMovement::update(CommandType commandType)
 {
     for (auto const& entity : mEntities) {
         Transform& posEntity = mEngine->GetComponent<Transform>(entity);
+        auto& MoveEntity = mEngine->GetComponent<Moveable>(entity);
         if (commandType == UpPlayer) {
             posEntity.y--;
+            MoveEntity.direction = DIR_UP;
         }
         else if (commandType == DownPlayer) {
             posEntity.y = posEntity.y + 1;
+            MoveEntity.direction = DIR_DOWN;
         }
         else if (commandType == RightPlayer) {
             posEntity.x++;
+            MoveEntity.direction = DIR_RIGHT;
         }
         else if (commandType == LeftPlayer) {
             posEntity.x--;
+            MoveEntity.direction = DIR_LEFT;
         }
-        std::cout << posEntity.x << posEntity.y << std::endl;
+        if (mEngine->mCollisionSystem->check(entity)) {
+            switch (MoveEntity.direction) {
+                case DIR_UP:
+                    posEntity.y++;
+                    break;
+                case DIR_DOWN:
+                    posEntity.y--;
+                    break;
+                case DIR_LEFT:
+                    posEntity.x++;
+                    break;
+                case DIR_RIGHT:
+                    posEntity.x--;
+                    break;
+                default:
+                    break;
+            }
+        }
+        // std::cout << posEntity.x << posEntity.y << std::endl;
     }
 }

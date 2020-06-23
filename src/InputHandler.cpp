@@ -24,6 +24,7 @@ void InputHandler::Init()
     mEngine->UseComponent<PlayerMovement, Transform>();
     mEngine->UseComponent<PlayerMovement, NotMap>();
     mEngine->UseComponent<PlayerMovement, Render>();
+    mEngine->UseComponent<PlayerMovement, Moveable>();
 
     // Bind Default key
     mBindings.insert({TK_UP, UpPlayer});

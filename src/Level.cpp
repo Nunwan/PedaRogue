@@ -97,10 +97,8 @@ void Level::ConfigFloor(Entity entity, int x, int y)
 {
     Transform entityPos = {x, y, mLevelnumber};
     Render entityRender = {".", mEngine->getMWindow()->color_white};
-    RigidBody entityBody = {true};
     mEngine->AddComponent(entity, entityPos);
     mEngine->AddComponent(entity, entityRender);
-    mEngine->AddComponent(entity, entityBody);
 }
 
 
@@ -108,7 +106,7 @@ void Level::ConfigWall(Entity entity, int x, int y)
 {
     Transform entityPos = {x, y, mLevelnumber};
     Render entityRender = {"#", mEngine->getMWindow()->color_white};
-    RigidBody entityBody = {true};
+    RigidBody entityBody = {false, false};
     mEngine->AddComponent(entity, entityPos);
     mEngine->AddComponent(entity, entityRender);
     mEngine->AddComponent(entity, entityBody);
@@ -119,7 +117,7 @@ void Level::ConfigWallTunnel(Entity entity, int x, int y)
 {
     Transform entityPos = {x, y, mLevelnumber};
     Render entityRender = {"#", mEngine->getMWindow()->color_blue};
-    RigidBody entityBody = {true};
+    RigidBody entityBody = {false};
     mEngine->AddComponent(entity, entityPos);
     mEngine->AddComponent(entity, entityRender);
     mEngine->AddComponent(entity, entityBody);
@@ -130,7 +128,7 @@ void Level::ConfigDoor(Entity entity, int x, int y)
 {
     Transform entityPos = {x, y, mLevelnumber};
     Render entityRender = {"-", mEngine->getMWindow()->color_white};
-    RigidBody entityBody = {true};
+    RigidBody entityBody = {true, false};
     mEngine->AddComponent(entity, entityPos);
     mEngine->AddComponent(entity, entityRender);
     mEngine->AddComponent(entity, entityBody);
