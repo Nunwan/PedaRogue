@@ -10,12 +10,14 @@
 
 #define MAX_DEPTH_TUNNEL 20
 #define MAX_SIZE 15
-#define MIN_SIZE 6
+#define MIN_SIZE_ROOM 8
+#define MIN_SIZE_TUNNEL 6
 #define CHANGE_DIRECTION_PARENT 0.5
-#define ROOM_PROBA_PARENT 0.6
+#define ROOM_PROBA_PARENT 0.8f
 #define TUNNEL_HALFWIDTH_PARENT 4
 #define PROBA_DOOR 0.2
 #define MAX_ROOMS 15
+#define MIN_ROOM 8
 
 #define ROOM 0
 #define TUNNEL 1
@@ -75,7 +77,7 @@ private:
     void CreateTunnel(Rectangle dimension, int direction);
 
     // Rectangle is seen like a room : x,y is the topleft corner
-    bool verify_free(Rectangle rectangle);
+    bool verify_free(Rectangle rectangle, int offset_x = 0, int offset_y = 0);
 
     int PlaceRoom(int tunneler);
     int PlaceTunnel(int tunneler);

@@ -45,41 +45,19 @@ LevelGeneration::~LevelGeneration()
 }
 
 
-void LevelGeneration::CreateRectangularRoom(Rectangle roomDimension)
-{
-    int x = roomDimension.x;
-    int y = roomDimension.y;
-    int h = roomDimension.h;
-    int w = roomDimension.w;
-    for (int i = y+1; i < y+h; ++i) {
-       for (int j = x+1; j < x+w; ++j) {
-           mToGenerate[i][j] = FLOOR;
-       }
-    }
-    for (int i = x; i <= x+w; ++i) {
-        mToGenerate[y][i] = WALL;
-        mToGenerate[y+h][i] = WALL;
-    }
-    for (int i = y; i <= y+h; ++i) {
-        mToGenerate[i][x] = WALL;
-        mToGenerate[i][x+w] = WALL;
-    }
-}
-
-
 void LevelGeneration::place_opening(Tunnelers &tunneler)
 {
-    bool is_door = 1/(rand() + 1) <= mProbaDoor;
+    bool is_door = ((double) rand() / (RAND_MAX)) <= mProbaDoor;
     mToGenerate[tunneler.y][tunneler.x] = is_door?DOOR:FLOOR;
 }
 
 
-bool LevelGeneration::verify_free(Rectangle rectangle)
+bool LevelGeneration::verify_free(Rectangle rectangle, int offset_x, int offset_y)
 {
-    if (rectangle.x < 0 || rectangle.y < 0) {return false;}
-    if (rectangle.x + rectangle.w >= mWidth || rectangle.y + rectangle.h >= mHeight) {return false;}
-    for (int x = rectangle.x + 1; x <= rectangle.x + rectangle.w ; ++x) {
-        for (int y = rectangle.y + 1 ; y < rectangle.y + rectangle.h; ++y) {
+    if (rectangle.x - offset_x < 0 || rectangle.y  - offset_y < 0) {return false;}
+    if (rectangle.x + rectangle.w + offset_x >= mWidth || rectangle.y + rectangle.h  + offset_y >= mHeight) {return false;}
+    for (int x = rectangle.x + 1 - offset_x; x <= rectangle.x + rectangle.w + offset_x; ++x) {
+        for (int y = rectangle.y + 1 - offset_y; y < rectangle.y + rectangle.h + offset_y; ++y) {
             if (mToGenerate[y][x] != EMPTY) {
                 return false;
             }
@@ -103,12 +81,16 @@ void LevelGeneration::run()
         first_room = &room;
     }
     push_feature(**first_room);
-    while (numberRooms < MAX_ROOMS) {
+    int tried = 0;
+    while (tried < 1000 && numberRooms < MAX_ROOMS) {
         for (auto& tunneler : mTunnelers) {
+            tried++;
             Rectangle ancient_rectangle = pick_wall(tunneler);
             int feature_type = choose_feature(tunneler, ancient_rectangle);
             Rectangle* new_feature = create_possible_feature(feature_type, tunneler);
-            if (verify_free(*new_feature)) {
+            bool is_free = (tunneler.direction % 2) ? verify_free(*new_feature, 1, 0) : verify_free(*new_feature, 0, 1);
+            if (is_free) {
+                tried = 0;
                 std::cout << "libre sa mère " << feature_type<< std::endl;
                 push_feature(*new_feature);
                 place_opening(tunneler);
@@ -138,7 +120,7 @@ Rectangle& LevelGeneration::pick_wall(Tunnelers &tunnelers)
     int id_rectangle = rand() % mRectangles.size();
     auto& rectangle_chosen = mRectangles[id_rectangle];
     int chosen_wall;
-    if (1/(rand() + 1) < tunnelers.changeDirection) {
+    if ((float)((float)rand()/RAND_MAX) < tunnelers.changeDirection) {
         chosen_wall = rand() % 4;
         tunnelers.direction = chosen_wall;
     } else {
@@ -178,10 +160,12 @@ int LevelGeneration::choose_feature(Tunnelers &tunnelers, Rectangle& ancient_rec
     if (is_room) {
         return TUNNEL;
     } else {
-        if (1/rand() < tunnelers.roomProba) {
+        float possible = ((float)rand()/RAND_MAX);
+        if (possible < tunnelers.roomProba) {
             return ROOM;
         }
         else {
+            std::cout << "TUNNEL" <<std::endl;
             return TUNNEL;
         }
     }
@@ -195,16 +179,16 @@ Rectangle* LevelGeneration::create_possible_feature(int type, Tunnelers &tunnele
     if (type == TUNNEL) {
         if (tunnelers.direction % 2) {
             new_feature->w = tunnelers.tunnelWidth;
-            new_feature->h = rand() % (MAX_SIZE - MIN_SIZE) + MIN_SIZE;
+            new_feature->h = rand() % (MAX_SIZE - MIN_SIZE_TUNNEL) + MIN_SIZE_TUNNEL;
         }
         else {
             new_feature->h = tunnelers.tunnelWidth;
-            new_feature->w = rand() % (MAX_SIZE - MIN_SIZE) + MIN_SIZE;
+            new_feature->w = rand() % (MAX_SIZE - MIN_SIZE_TUNNEL) + MIN_SIZE_TUNNEL;
         }
     }
     else {
-        new_feature->w = rand() % (MAX_SIZE - MIN_SIZE) + MIN_SIZE;
-        new_feature->h = rand() % (MAX_SIZE - MIN_SIZE) + MIN_SIZE;
+        new_feature->w = rand() % (MAX_SIZE - MIN_SIZE_ROOM) + MIN_SIZE_ROOM;
+        new_feature->h = rand() % (MAX_SIZE - MIN_SIZE_ROOM) + MIN_SIZE_ROOM;
     }
     switch (tunnelers.direction) {
         case DIR_RIGHT:
@@ -242,7 +226,8 @@ void LevelGeneration::push_feature(Rectangle rectangle)
             mToGenerate[i][j] = FLOOR;
         }
     }
-    if (rectangle.feature_type == TUNNEL){
+    // FOR DEBUG
+    /*if (rectangle.feature_type == TUNNEL){
         for (int i = x; i < x+w; ++i) {
             mToGenerate[y][i] = WALL_TUNNEL;
             mToGenerate[y+h-1][i] = WALL_TUNNEL;
@@ -252,7 +237,7 @@ void LevelGeneration::push_feature(Rectangle rectangle)
             mToGenerate[i][x+w-1] = WALL_TUNNEL;
         }
         return;
-    }
+    }*/
     for (int i = x; i < x+w; ++i) {
         mToGenerate[y][i] = WALL;
         mToGenerate[y+h-1][i] = WALL;
