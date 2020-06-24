@@ -9,7 +9,9 @@ void RenderSystem::render()
 {
     for (auto const &entity : mEntities) {
         Render entityRender = mEngine->GetComponent<Render>(entity);
-        Transform entityPos = mEngine->GetComponent<Transform>(entity);
-        mEngine->getMWindow()->print(entityPos.x, entityPos.y, entityRender.glyph,entityRender.color);
+        if (entityRender.to_display) {
+            Transform entityPos = mEngine->GetComponent<Transform>(entity);
+            mEngine->getMWindow()->print(entityPos.x, entityPos.y, entityRender.glyph, entityRender.color);
+        }
     }
 }

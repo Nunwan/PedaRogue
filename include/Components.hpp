@@ -9,6 +9,7 @@
 struct Render {
     char *glyph;
     color_t color;
+    bool to_display;
 };
 
 struct Transform {
@@ -37,4 +38,7 @@ struct Moveable {
     int direction;
 };
 
+struct Stats {
+    int visibility;
+};
 #endif //PEDAROGUE_COMPONENTS_HPP

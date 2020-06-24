@@ -47,6 +47,7 @@ public:
 
         color_t color_blue =  color_from_argb(0xff, 0, 0, 0xff);
         color_t color_white = color_from_name("white");
+        color_t color_red = color_from_argb(0xff,  0xff, 0, 0);
 
 };
 

@@ -5,6 +5,7 @@
 #include "Level.hpp"
 #include "Components.hpp"
 #include "Engine.hpp"
+#include "FOVTools.hpp"
 
 
 const std::vector<Entity> &Level::getMObjects() const
@@ -96,7 +97,7 @@ void Level::CreateMap(LevelGeneration& levelGen)
 void Level::ConfigFloor(Entity entity, int x, int y)
 {
     Transform entityPos = {x, y, mLevelnumber};
-    Render entityRender = {".", mEngine->getMWindow()->color_white};
+    Render entityRender = {".", mEngine->getMWindow()->color_white, false};
     mEngine->AddComponent(entity, entityPos);
     mEngine->AddComponent(entity, entityRender);
 }
@@ -105,7 +106,7 @@ void Level::ConfigFloor(Entity entity, int x, int y)
 void Level::ConfigWall(Entity entity, int x, int y)
 {
     Transform entityPos = {x, y, mLevelnumber};
-    Render entityRender = {"#", mEngine->getMWindow()->color_white};
+    Render entityRender = {"#", mEngine->getMWindow()->color_white, false};
     RigidBody entityBody = {false, false};
     mEngine->AddComponent(entity, entityPos);
     mEngine->AddComponent(entity, entityRender);
@@ -116,7 +117,7 @@ void Level::ConfigWall(Entity entity, int x, int y)
 void Level::ConfigWallTunnel(Entity entity, int x, int y)
 {
     Transform entityPos = {x, y, mLevelnumber};
-    Render entityRender = {"#", mEngine->getMWindow()->color_blue};
+    Render entityRender = {"#", mEngine->getMWindow()->color_blue, false};
     RigidBody entityBody = {false};
     mEngine->AddComponent(entity, entityPos);
     mEngine->AddComponent(entity, entityRender);
@@ -127,7 +128,7 @@ void Level::ConfigWallTunnel(Entity entity, int x, int y)
 void Level::ConfigDoor(Entity entity, int x, int y)
 {
     Transform entityPos = {x, y, mLevelnumber};
-    Render entityRender = {"-", mEngine->getMWindow()->color_white};
+    Render entityRender = {"-", mEngine->getMWindow()->color_white, false};
     RigidBody entityBody = {true, false};
     mEngine->AddComponent(entity, entityPos);
     mEngine->AddComponent(entity, entityRender);
@@ -138,5 +139,55 @@ void Level::ConfigDoor(Entity entity, int x, int y)
 const Transform &Level::getBeginMap() const
 {
     return beginMap;
+}
+
+
+void Level::ComputeFOV(int x, int y, int range)
+{
+#if DEBUG_MODE_FOV == 1
+    for (int i = 0; i < HEIGHT_MAP; ++i) {
+        for (int j = 0; j < WIDTH_MAP; ++j) {
+            auto& entity = mMap[i][j];
+            if (mEngine->HasComponent<Render>(entity)) {
+                auto& entityRender = mEngine->GetComponent<Render>(entity);
+                entityRender.color = mEngine->getMWindow()->color_white;
+            }
+        }
+
+    }
+#endif
+    std::vector<Transform> pointCircle;
+    almost_circle(pointCircle, x, y, WIDTH_MAP, HEIGHT_MAP, range);
+
+    for (auto const& point : pointCircle) {
+        Line(x, y, point.x, point.y, this);
+    }
+#if DEBUG_MODE_FOV == 1
+    for (auto const& point : pointCircle) {
+        auto& entity = mMap[point.y][point.x];
+        if (mEngine->HasComponent<Render>(entity)) {
+            auto& entityRender = mEngine->GetComponent<Render>(entity);
+            entityRender.color = mEngine->getMWindow()->color_red;
+        }
+    }
+#endif
+}
+
+
+int Level::to_display(int x, int y)
+{
+    Entity& entity = mMap[y][x];
+    if (mEngine->HasComponent<Render>(entity)) {
+        auto &entityRender = mEngine->GetComponent<Render>(entity);
+#if DEBUG_MODE_FOV == 1
+        entityRender.color = mEngine->getMWindow()->color_blue;
+#endif
+        entityRender.to_display = true;
+    }
+    if (mEngine->HasComponent<RigidBody>(entity)) {
+        auto& entityRigid = mEngine->GetComponent<RigidBody>(entity);
+        return !entityRigid.transparent;
+    }
+    return false;
 }
 

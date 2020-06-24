@@ -273,7 +273,7 @@ void LevelGeneration::place_player(Transform *pTransform)
         room_id++;
     }
     auto room = mRectangles[room_id];
-    pTransform->x = rand() % (room.w - 1) + room.x + 1;
-    pTransform->y = rand() % (room.h - 1) + room.y + 1;
+    pTransform->x = rand() % (room.w - 2) + room.x + 1;
+    pTransform->y = rand() % (room.h - 2) + room.y + 1;
     pTransform->levelMap = 0;
 }

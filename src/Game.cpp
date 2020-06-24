@@ -8,7 +8,7 @@
 
 Game::Game()
 {
-    mEngine = std::make_unique<Engine>();
+    mEngine = std::make_unique<Engine>(this);
 }
 
 
@@ -19,16 +19,7 @@ void Game::Init()
     mLevels.push_back(std::make_shared<Level>(0, mEngine.get()));
     mLevels[0]->GenerateMap();
     mEngine->level_enable(mLevels[0]);
-    Entity player = mEngine->CreateEntity();
-    mEngine->AddComponent(player, mLevels[0]->getBeginMap());
-    Render renderPlayer = {"@", mEngine->getMWindow()->color_blue};
-    mEngine->AddComponent(player, renderPlayer);
-    mEngine->AddComponent(player, NotMap());
-    Moveable playerMove = {DIR_LEFT};
-    mEngine->AddComponent(player, playerMove);
-    mEngine->AddComponent(player, Playable());
-    RigidBody rigidPlayer = {false, false};
-    mEngine->AddComponent(player, rigidPlayer);
+    PlayerCreation();
 }
 
 
@@ -36,8 +27,8 @@ void Game::run()
 {
     int stop = 0;
     while (!stop) {
-        mEngine->render();
         stop = mEngine->update();
+        mEngine->render();
     }
     close();
 }
@@ -46,4 +37,27 @@ void Game::run()
 void Game::close()
 {
     terminal_close();
+}
+
+
+const vector<std::shared_ptr<Level>> &Game::getMLevels() const
+{
+    return mLevels;
+}
+
+
+void Game::PlayerCreation()
+{
+    Entity player = mEngine->CreateEntity();
+    mEngine->AddComponent(player, mLevels[0]->getBeginMap());
+    Render renderPlayer = {"@", mEngine->getMWindow()->color_blue, true};
+    mEngine->AddComponent(player, renderPlayer);
+    mEngine->AddComponent(player, NotMap());
+    Moveable playerMove = {DIR_LEFT};
+    mEngine->AddComponent(player, playerMove);
+    mEngine->AddComponent(player, Playable());
+    RigidBody rigidPlayer = {false, false};
+    mEngine->AddComponent(player, rigidPlayer);
+    Stats statPlayer = {5};
+    mEngine->AddComponent(player, statPlayer);
 }

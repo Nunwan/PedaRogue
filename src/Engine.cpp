@@ -5,9 +5,10 @@
 #include "Engine.hpp"
 
 
-Engine::Engine()
+Engine::Engine(Game* game)
 {
     mWindow = std::make_shared<Window>();
+    mGame = game;
 }
 
 
@@ -25,6 +26,12 @@ void Engine::initSystems()
     mCollisionSystem = RegisterSystem<CollisionSystem>(this);
     UseComponent<CollisionSystem, Transform>();
     UseComponent<CollisionSystem, RigidBody>();
+    mFovComputeSystem = RegisterSystem<FoVCompute>(this);
+    UseComponent<FoVCompute, Transform>();
+    UseComponent<FoVCompute, Playable>();
+    UseComponent<FoVCompute, Stats>();
+
+
     mInputHandler->Init();
 }
 
@@ -38,6 +45,7 @@ void Engine::initComponents()
     RegisterComponent<Playable>();
     RegisterComponent<RigidBody>();
     RegisterComponent<Moveable>();
+    RegisterComponent<Stats>();
 }
 
 
@@ -54,7 +62,7 @@ int Engine::update()
 {
     mWindow->nextEvent(0, true);
     int finish = mInputHandler->process_key(mWindow->event);
-
+    mFovComputeSystem->compute();
     return finish;
 }
 
@@ -97,4 +105,10 @@ void Engine::level_disable(std::shared_ptr<Level> level)
         DelComponent<NotMap>(entity);
     }
 
+}
+
+
+std::shared_ptr<Level> Engine::GetLevel(int levelnumber)
+{
+    return mGame->getMLevels()[levelnumber];
 }

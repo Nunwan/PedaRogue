@@ -28,6 +28,11 @@ public:
 
     void GenerateMap();
 
+    const Transform &getBeginMap() const;
+
+    void ComputeFOV(int x, int y, int range);
+    int to_display(int x, int y);
+
 private:
     Engine* mEngine;
     int mLevelnumber;
@@ -35,10 +40,6 @@ private:
     std::vector<Entity> mObjects;
     std::vector<Entity> mMobs;
     Transform beginMap;
-public:
-    const Transform &getBeginMap() const;
-
-private:
 
     void CreateMap(LevelGeneration& levelGen);
 
@@ -47,7 +48,8 @@ private:
     void ConfigWallTunnel(Entity entity, int x, int y);
     void ConfigDoor(Entity entity, int x, int y);
 
-    void place_player();
+
+
 };
 
 

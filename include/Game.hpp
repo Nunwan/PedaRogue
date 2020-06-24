@@ -14,10 +14,14 @@ class Game
 private:
     std::vector<std::shared_ptr<Level>> mLevels;
 public:
+    const vector<std::shared_ptr<Level>> &getMLevels() const;
+
+public:
     std::unique_ptr<Engine> mEngine;
     std::vector<Entity> mPlayers;
 
     void Init();
+    void PlayerCreation();
 
     Game();
 
