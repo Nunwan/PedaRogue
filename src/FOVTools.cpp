@@ -8,7 +8,7 @@
 
 
 
-void Line(int x1, int y1, int x2, int y2, Level* level)
+void Line(std::vector<Transform> &pointLine, int x1, int y1, int x2, int y2)
 {
     const bool steep = abs(y2 - y1) > abs(x2 - x1);
     if (steep) {
@@ -32,10 +32,12 @@ void Line(int x1, int y1, int x2, int y2, Level* level)
     int stop = 0;
     for (int x = x1; x <= maxX; x++) {
         if (steep) {
-            stop = level->to_display(y, x);
+            Transform newPoint = {y ,x, -1};
+            pointLine.push_back(newPoint);
         }
         else {
-            stop = level->to_display(x, y);
+            Transform newPoint = {x, y, -1};
+            pointLine.push_back(newPoint);
         }
         error -= (float)dy;
         if (error < 0) {

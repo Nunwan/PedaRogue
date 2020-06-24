@@ -13,7 +13,7 @@
 #include "Components.hpp"
 #include "Level.hpp"
 
-void Line(int x1, int y1, int x2, int y2, Level* level);
+void Line(std::vector<Transform> &pointLine, int x1, int y1, int x2, int y2);
 
 void almost_circle(std::vector<Transform> &pointCircle, int x_or, int y_or, int x_max, int y_max, int range);
 #endif //PEDAROGUE_FOVTOOLS_HPP

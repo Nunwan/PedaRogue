@@ -30,8 +30,6 @@ public:
 
     const Transform &getBeginMap() const;
 
-    void ComputeFOV(int x, int y, int range);
-    int to_display(int x, int y);
 
 private:
     Engine* mEngine;
