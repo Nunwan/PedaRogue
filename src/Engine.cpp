@@ -112,3 +112,9 @@ std::shared_ptr<Level> Engine::GetLevel(int levelnumber)
 {
     return mGame->getMLevels()[levelnumber];
 }
+
+
+Entity &Engine::GetPlayer()
+{
+    return mGame->mPlayers[mGame->mPlayerLocalId];
+}

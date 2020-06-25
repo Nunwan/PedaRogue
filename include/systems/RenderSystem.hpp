@@ -8,9 +8,13 @@
 #include "Components.hpp"
 #include "Window.hpp"
 
+#define DIVIDE_SCREEN 4
+#define OFFSET_SCREEN 3
 
 class RenderSystem : public System
 {
+private:
+    static bool isInCamera(Transform tPlayer, Transform tEntity);
 public:
     void render();
 };

@@ -42,6 +42,8 @@ public:
     std::shared_ptr<CollisionSystem> mCollisionSystem;
 
     std::shared_ptr<Level> GetLevel(int levelnumber);
+
+    Entity& GetPlayer();
 };
 
 

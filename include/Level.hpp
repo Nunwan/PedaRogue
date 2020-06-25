@@ -10,8 +10,8 @@
 #include "LevelGeneration.hpp"
 #include "Components.hpp"
 
-#define HEIGHT_MAP 40
-#define WIDTH_MAP 120
+#define HEIGHT_MAP 200
+#define WIDTH_MAP 200
 
 class Level
 {

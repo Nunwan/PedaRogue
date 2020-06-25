@@ -14,8 +14,8 @@
 #define WIN_MSG 2
 #define WIN_STATUS 3
 
-#define HEIGHT_SCREEN 600
-#define WIDTH_SCREEN 600
+#define HEIGHT_SCREEN 40
+#define WIDTH_SCREEN 120
 #define NB_WIN 4
 
 #define COL_WHITE 0
