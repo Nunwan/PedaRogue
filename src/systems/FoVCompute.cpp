@@ -2,9 +2,9 @@
 // Created by nunwan on 24/06/2020.
 //
 
+#include <iostream>
 #include "systems/FoVCompute.hpp"
 #include "Engine.hpp"
-
 
 
 class Comparaison_Distance {
@@ -49,8 +49,12 @@ void FoVCompute::ComputeFoV(int x, int y, int range, int levelnumber)
     almost_circle(pointCircle, x, y, WIDTH_MAP, HEIGHT_MAP, range);
 
     for (auto const& point : pointCircle) {
+        pointLine.clear();
         Line(pointLine, x, y, point.x, point.y);
-        // std::sort(pointLine.begin(), pointLine.end(), Comparaison_Distance(x, y));
+        // print_vec(pointLine);
+        std::sort(pointLine.begin(), pointLine.end(), Comparaison_Distance(x, y));
+        // print_vec(pointLine);
+        del_after_block(pointLine, levelnumber);
         for (auto const& point : pointLine) {
             to_display(point.x, point.y, levelnumber);
         }
@@ -84,6 +88,28 @@ int FoVCompute::to_display(int x, int y, int levelnumber)
         return !entityRigid.transparent;
     }
     return false;
+}
+
+
+void FoVCompute::del_after_block(vector<Transform> &pointLine, int levelnumber)
+{
+    int i = 0;
+    while (i < pointLine.size()) {
+        auto point = pointLine[i];
+        auto map = mEngine->GetLevel(levelnumber)->getMMap();
+        Entity entity = map[point.y][point.x];
+        if (mEngine->HasComponent<RigidBody>(entity)) {
+            auto& entityRigid = mEngine->GetComponent<RigidBody>(entity);
+            if (!entityRigid.transparent) {
+                break;
+            }
+        }
+        i++;
+    }
+    if (i < pointLine.size()) {
+        pointLine.resize(i+1);
+    }
+
 }
 
 

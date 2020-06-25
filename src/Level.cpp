@@ -129,7 +129,7 @@ void Level::ConfigDoor(Entity entity, int x, int y)
 {
     Transform entityPos = {x, y, mLevelnumber};
     Render entityRender = {"-", mEngine->getMWindow()->color_white, false};
-    RigidBody entityBody = {true, false};
+    RigidBody entityBody = {true, true};
     mEngine->AddComponent(entity, entityPos);
     mEngine->AddComponent(entity, entityRender);
     mEngine->AddComponent(entity, entityBody);
