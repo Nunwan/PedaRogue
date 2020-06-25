@@ -80,6 +80,9 @@ void Level::CreateMap(LevelGeneration& levelGen)
             else if (type == DOOR) {
                 ConfigDoor(mMap[i][j], j, i);
             }
+            else if (type == FLOOR_LIGHT) {
+                ConfigFloorLight(mMap[i][j], j, i);
+            }
             else if (type == 6) {
                 auto entity = mMap[i][j];
                 Transform entityPos = {j, i, mLevelnumber};
@@ -139,6 +142,20 @@ void Level::ConfigDoor(Entity entity, int x, int y)
 const Transform &Level::getBeginMap() const
 {
     return beginMap;
+}
+
+
+void Level::ConfigFloorLight(Entity entity, int x, int y)
+{
+    Transform entityPos = {x, y, mLevelnumber};
+    Render entityRender = {".", mEngine->getMWindow()->color_red, false};
+    Stats statWall;
+    statWall.visibility = 5;
+    mEngine->AddComponent(entity, entityPos);
+    mEngine->AddComponent(entity, entityRender);
+    mEngine->AddComponent(entity, Light());
+    mEngine->AddComponent(entity, statWall);
+
 }
 
 

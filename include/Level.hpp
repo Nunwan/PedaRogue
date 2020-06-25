@@ -43,6 +43,7 @@ private:
 
     void ConfigFloor(Entity entity, int x, int y);
     void ConfigWall(Entity entity, int x, int y);
+    void ConfigFloorLight(Entity entity, int x, int y);
     void ConfigWallTunnel(Entity entity, int x, int y);
     void ConfigDoor(Entity entity, int x, int y);
 

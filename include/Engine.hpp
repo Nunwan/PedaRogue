@@ -12,6 +12,7 @@
 #include "Level.hpp"
 #include "systems/CollisionSystem.hpp"
 #include "systems/FoVCompute.hpp"
+#include "systems/LightSystem.hpp"
 #include "Game.hpp"
 
 class Game;
@@ -23,6 +24,7 @@ private:
     std::shared_ptr<RenderOthersSystem> mRenderOthersSystem;
     std::shared_ptr<InputHandler> mInputHandler;
     std::shared_ptr<FoVCompute> mFovComputeSystem;
+    std::shared_ptr<LightSystem> mLightSystem;
     Game* mGame;
 
 

@@ -15,7 +15,7 @@ class Comparaison_Distance;
 class FoVCompute : public System
 {
 public:
-    void compute();
+    virtual void compute();
     void ComputeFoV(int x, int y, int range, int levelnumber);
     int to_display(int x, int y, int levelnumber);
 

@@ -41,4 +41,6 @@ struct Moveable {
 struct Stats {
     int visibility;
 };
+
+struct Light {};
 #endif //PEDAROGUE_COMPONENTS_HPP

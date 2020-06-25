@@ -18,7 +18,7 @@ LevelGeneration::LevelGeneration(int height_map, int width_map)
     int x_dad = rand() % 15 + 2;
     int y_dad = rand() % 15 + 2;
 
-    Tunnelers dadTunnelers = {x_dad, y_dad, 0, CHANGE_DIRECTION_PARENT, ROOM_PROBA_PARENT, TUNNEL_HALFWIDTH_PARENT};
+    Tunnelers dadTunnelers = {x_dad, y_dad, 0, CHANGE_DIRECTION_PARENT, ROOM_PROBA_PARENT, TUNNEL_HALFWIDTH_PARENT, PROBA_LIGHT};
     mTunnelers.push_back(dadTunnelers);
 
     // Initialise map
@@ -217,6 +217,9 @@ void LevelGeneration::push_feature(Rectangle rectangle)
     int y = rectangle.y;
     int h = rectangle.h;
     int w = rectangle.w;
+    // Coordinate for the 4 internals corner to put some torch
+    int corner_x[2] = {x+1, x + w - 2};
+    int corner_y[2] = {y+1, y + h - 2};
     for (int i = y+1; i < y+h - 1; ++i) {
         for (int j = x+1; j < x+w - 1 ; ++j) {
             mToGenerate[i][j] = FLOOR;
@@ -237,6 +240,11 @@ void LevelGeneration::push_feature(Rectangle rectangle)
     for (int i = x; i < x+w; ++i) {
         mToGenerate[y][i] = WALL;
         mToGenerate[y+h-1][i] = WALL;
+    }
+    if (((float)rand() / RAND_MAX) < PROBA_LIGHT) {
+        int x_light = corner_x[rand()%2];
+        int y_light = corner_y[rand()%2];
+        mToGenerate[y_light][x_light] = FLOOR_LIGHT;
     }
     for (int i = y; i < y+h; ++i) {
         mToGenerate[i][x] = WALL;

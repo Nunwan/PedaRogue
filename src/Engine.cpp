@@ -30,6 +30,10 @@ void Engine::initSystems()
     UseComponent<FoVCompute, Transform>();
     UseComponent<FoVCompute, Playable>();
     UseComponent<FoVCompute, Stats>();
+    mLightSystem = RegisterSystem<LightSystem>(this);
+    UseComponent<LightSystem, Transform>();
+    UseComponent<LightSystem, Light>();
+    UseComponent<LightSystem, Stats>();
 
 
     mInputHandler->Init();
@@ -46,6 +50,7 @@ void Engine::initComponents()
     RegisterComponent<RigidBody>();
     RegisterComponent<Moveable>();
     RegisterComponent<Stats>();
+    RegisterComponent<Light>();
 }
 
 
@@ -63,6 +68,7 @@ int Engine::update()
     mWindow->nextEvent(0, true);
     int finish = mInputHandler->process_key(mWindow->event);
     mFovComputeSystem->compute();
+    mLightSystem->compute();
     return finish;
 }
 

@@ -18,6 +18,7 @@
 #define PROBA_DOOR 0.2
 #define MAX_ROOMS 15
 #define MIN_ROOM 8
+#define PROBA_LIGHT 0.5f
 
 #define ROOM 0
 #define TUNNEL 1
@@ -32,6 +33,7 @@
 #define WALL 2
 #define WALL_TUNNEL 4
 #define DOOR 3
+#define FLOOR_LIGHT 5
 
 #define LOG_MAP 0
 
@@ -44,6 +46,7 @@ struct Tunnelers {
     float roomProba;
     // Half width bc tunnel will always has an odd width : enable no difficulty
     int tunnelWidth;
+    float probaLight;
     int mLastWasTunnel;
     int can_continue = 1;
 };
@@ -70,19 +73,12 @@ private:
     float mProbaDoor;
 
 
-    void CreateRectangularRoom(Rectangle roomDimension);
-
     void place_opening(Tunnelers &tunneler);
 
-    void CreateTunnel(Rectangle dimension, int direction);
 
     // Rectangle is seen like a room : x,y is the topleft corner
     bool verify_free(Rectangle rectangle, int offset_x = 0, int offset_y = 0);
 
-    int PlaceRoom(int tunneler);
-    int PlaceTunnel(int tunneler);
-
-    void forward_until(int tunnerler, int limite = -1);
 
 public:
     int **getMToGenerate() const;

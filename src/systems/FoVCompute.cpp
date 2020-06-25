@@ -109,7 +109,6 @@ void FoVCompute::del_after_block(vector<Transform> &pointLine, int levelnumber)
     if (i < pointLine.size()) {
         pointLine.resize(i+1);
     }
-
 }
 
 
