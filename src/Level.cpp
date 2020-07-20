@@ -53,7 +53,7 @@ Level::~Level()
 
 void Level::GenerateMap()
 {
-    auto levelGen = LevelGeneration(HEIGHT_MAP, WIDTH_MAP);
+    auto levelGen = LevelGeneration(HEIGHT_MAP, WIDTH_MAP, mLevelnumber / 50, mLevelnumber / 50, 0);
     levelGen.run();
     if (mLevelnumber == 0) {
         levelGen.place_player(&beginMap);
@@ -82,6 +82,9 @@ void Level::CreateMap(LevelGeneration& levelGen)
             }
             else if (type == FLOOR_LIGHT) {
                 ConfigFloorLight(mMap[i][j], j, i);
+            }
+            else if (type == MONSTER) {
+                ConfigMonster(mMap[i][j], j, i);
             }
             else if (type == 6) {
                 auto entity = mMap[i][j];
@@ -156,6 +159,21 @@ void Level::ConfigFloorLight(Entity entity, int x, int y)
     mEngine->AddComponent(entity, Light());
     mEngine->AddComponent(entity, statWall);
 
+}
+
+
+void Level::ConfigMonster(Entity entity, int x, int y)
+{
+    Transform entityPos = {x, y, mLevelnumber};
+    char* glyph;
+    int r, g, b;
+    Render entityRender = {glyph, color_from_argb(0xff, r, g, b), false};
+    Stats statMonster;
+    RigidBody entityRigid = {false, false};
+    mEngine->AddComponent(entity, entityPos);
+    mEngine->AddComponent(entity, entityRender);
+    mEngine->AddComponent(entity, statMonster);
+    mEngine->AddComponent(entity, entityRigid);
 }
 
 

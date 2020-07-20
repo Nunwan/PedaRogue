@@ -18,16 +18,34 @@ private:
     std::unordered_map<std::string, std::shared_ptr<System>> mSystems;
     std::unordered_map<std::string, Signature> mSysSignature;
 public:
+    /**
+     * @brief       Create the system and save it in the map
+     * @tparam T    Type of the system to create
+     * @return      pointer to the new system
+     */
     template<typename T>
     std::shared_ptr<T> RegisterSystem();
 
+    /**
+     * @brief               Set the signature to the given system type
+     * @tparam T            Type of the system
+     * @param signature     Signature to this system
+     */
     template<typename T>
     void SetSignature(Signature signature);
 
-
+    /**
+     * @brief           get the signature of the given system type
+     * @tparam T        Type of the system which one wants the signature
+     * @return          The signature of the given system
+     */
     template<typename T>
     Signature GetSignature();
 
+    /**
+     * @brief           Notice that an entity has been destroyed and delete it for all the system
+     * @param entity    The entity which was destroyed
+     */
     void EntityDestroyed(Entity entity)
     {
         for (auto const& pair : mSystems) {
@@ -37,6 +55,11 @@ public:
 
     }
 
+    /**
+     * @brief                       Notice that the entity has a new signature and change entity list in all the system
+     * @param entity                Entity which has a new signature
+     * @param entitySignature       The new signature of the entity
+     */
     void EntitySignatureChanged(Entity entity, Signature entitySignature)
     {
         for (auto const& pair : mSystems) {

@@ -13,12 +13,26 @@
 #include "EntityManager.hpp"
 
 
-
+/**
+ * @brief   Manager of all components types : register, add, delete, check.
+ *          The manager creates as many pools as registered components and make an interface for the creation and
+ *          deletion of a certain type of components
+ */
 class ComponentManager
 {
 private:
+    /**
+     *  Map of the components pools : pools can be retrieve by the name of their ID type.
+     */
     std::unordered_map<std::string, std::shared_ptr<IComponentPool>> mComponentsPools;
+    /**
+     *  Map of the types in order to has an integer which identify the component type.
+     *  ID can be retrieve thanks to the name of their ID type.
+     */
     std::unordered_map<std::string, ComponentType> mComponentTypes;
+    /**
+     *  Incremental ID to give the next possible component type ID
+     */
     ComponentType mNextComponentType;
 
 public:
@@ -27,20 +41,44 @@ public:
         mNextComponentType = 0;
     }
 
+    /**
+     * @brief       Register the component : create the Pool, link it to the good name and ID.
+     * @tparam T    Type of the new component
+     */
     template<typename T>
     void RegisterComponent();
 
+    /**
+     * @brief               Link an entity and a component : select the pool and use link on this pool.
+     * @tparam T            Type of the component
+     * @param entity        Entity which will be linked to the component
+     * @param component     Component to add with datas.
+     */
     template<typename T>
     void AddComponent(Entity entity,T component);
 
+    /**
+     * @brief               Unlink an entity and a component : select the pool and use unlink on this pool
+     * @tparam T            Type of the component to unlinked
+     * @param entity        Entity which does not need te component
+     */
     template<typename T>
     void DelComponent(Entity entity);
 
+    /**
+     * @brief               Return reference to the component of type T of the entity : choose the pool and Get
+     * @tparam T            Type of the component to return
+     * @param entity        Entity which wants its component of type T
+     * @return              Reference to the selected component for the entity
+     */
     template<typename T>
     T& GetComponent(Entity entity);
 
-
-
+    /**
+     * @brief               Return the component type (ID) of the component
+     * @tparam T            Type of the component which wants its ID.
+     * @return              The ID of the selected type.
+     */
     template<typename T>
     ComponentType GetComponentType()
     {
@@ -50,16 +88,24 @@ public:
     }
 
     // Could be private but public for doing tests
+    /**
+     * @brief       Return the given pool of component
+     * @tparam T    Type of component for the pool
+     * @return      Pool of components
+     */
     template<typename T>
     std::shared_ptr<ComponentPool<T>> GetComponentPool();
 
+    /**
+     * @brief           Noticed all the pools that an entity was destroyed
+     * @param entity    The entity which was destroyed
+     */
     void EntityDestroyed(Entity entity)
     {
         for (auto const& pair: mComponentsPools) {
             auto const& componentPool = pair.second;
             componentPool->EntityDestroyed(entity);
         }
-
     }
 
     //Iterators

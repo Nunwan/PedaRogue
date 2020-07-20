@@ -14,6 +14,7 @@ include_directories(src/win/include)
 
 add_definitions(-Wl,-rpath -Wl,lib/BearLib/Linux64)
 add_executable(PedaRogue src/main.cpp src/win/Window.cpp include/core/ECSManager.hpp src/Engine.cpp include/Engine.hpp src/Game.cpp include/Game.hpp src/systems/RenderSystem.cpp include/systems/RenderSystem.hpp include/Components.hpp src/InputHandler.cpp include/InputHandler.hpp src/systems/PlayerMovement.cpp include/systems/PlayerMovement.hpp include/Types.hpp src/Level.cpp include/Level.hpp src/LevelGeneration.cpp include/LevelGeneration.hpp src/systems/CollisionSystem.cpp include/systems/CollisionSystem.hpp src/FOVTools.cpp include/FOVTools.hpp src/systems/FoVCompute.cpp include/systems/FoVCompute.hpp src/systems/LightSystem.cpp include/systems/LightSystem.hpp)
+add_executable(Json tests/json_test.cpp)
 add_library(PedaRogueLib src/win/Window.cpp src/Engine.cpp include/Engine.hpp src/Game.cpp include/Game.hpp src/systems/RenderSystem.cpp include/systems/RenderSystem.hpp include/Components.hpp src/InputHandler.cpp include/InputHandler.hpp src/systems/PlayerMovement.cpp include/systems/PlayerMovement.hpp include/Types.hpp src/Level.cpp include/Level.hpp src/LevelGeneration.cpp src/systems/CollisionSystem.cpp include/systems/CollisionSystem.hpp src/FOVTools.cpp include/FOVTools.hpp src/systems/FoVCompute.cpp include/systems/FoVCompute.hpp src/systems/LightSystem.cpp include/systems/LightSystem.hpp)
 find_library(BEARLIB NAMES libBearLibTerminal.so  PATHS lib/BearLib/Linux64)
 target_link_libraries(PedaRogue ${BEARLIB})

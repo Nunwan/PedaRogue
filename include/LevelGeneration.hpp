@@ -34,6 +34,7 @@
 #define WALL_TUNNEL 4
 #define DOOR 3
 #define FLOOR_LIGHT 5
+#define MONSTER 7
 
 #define LOG_MAP 0
 
@@ -67,38 +68,90 @@ private:
     std::vector<Tunnelers> mTunnelers;
     std::vector<Rectangle> mRectangles;
     Rectangle mLastRoom, mLastTunnel;
+    // The future map but with integers and not entities
     int** mToGenerate;
+    // Size of the map
     int mHeight;
     int mWidth;
+    // Probability of set a door in an opening
     float mProbaDoor;
+    float mProbaMonster;
+    float mProbaObjects;
+    int mMaxMonsters;
 
 
+    /**
+     * @brief               Place at the position of the tunneler an opening : can be a floor or a door
+     * @param tunneler      the tunneler who wants a new opening
+     */
     void place_opening(Tunnelers &tunneler);
 
 
     // Rectangle is seen like a room : x,y is the topleft corner
+    /**
+     * @brief               Take a rectangle and an offset and check if a room with offset margins can fit in the
+     *                      current map generation
+     * @param rectangle     New rectangle to generate
+     * @param offset_x      Margin each x side of the room
+     * @param offset_y      Margin each y side of the room
+     * @return              1 if it is possible to create the rectangle 0 if not
+     */
     bool verify_free(Rectangle rectangle, int offset_x = 0, int offset_y = 0);
 
 
 public:
+    // Getters
     int **getMToGenerate() const;
 
-    LevelGeneration(int height_map, int width_map);
+    LevelGeneration(int height_map, int width_map, float probaMonster, float probaObject,
+                    int maxMonster);
 
     virtual ~LevelGeneration();
+
+    /**
+     * @brief   Main generation function.
+     *          Create a map thanks to tunnelers and save it in mToGenerate
+     */
     void run();
 
-    Rectangle& pick_wall(Tunnelers &tunnelers);
+    /**
+     * @brief               Choose randomly a wall in all the possible walls of the current state of generation
+     * @param tunneler     The tunneler who want to create a new feature
+     * @return              The rectangle of the feature where the wall is
+     */
+    Rectangle& pick_wall(Tunnelers &tunneler);
 
-    static int choose_feature(Tunnelers &tunnelers, Rectangle& ancient_rectangle);
+    /**
+     * @brief                       Choose a feature between those which are possible
+     * @param tunneler             tunneler who want to create a new feature
+     * @param ancient_rectangle     The rectangle where the tunneler begin the construction
+     * @return                      The type (int) of the feature to create
+     */
+    static int choose_feature(Tunnelers &tunneler, Rectangle& ancient_rectangle);
 
-    Rectangle* create_possible_feature(int type, Tunnelers &tunnelers);
+    /**
+     * @brief               Create a randomly feature of the good type and return it
+     * @param type          Type of the feature to create
+     * @param tunneler     the tunneler who want to create this feature
+     * @return
+     */
+    Rectangle* create_possible_feature(int type, Tunnelers &tunneler);
 
+    /**
+     * @brief               With the consideration that the feature can be create (verify_free), push the feature
+     *                      to mToGenerate
+     * @param rectangle     Rectangle to create
+     */
     void push_feature(Rectangle rectangle);
 
-    void write_log_map();
-
+    /**
+     * @brief               Place a player in the map, randomly
+     * @param pTransform    The transform of the player
+     */
     void place_player(Transform *pTransform);
+
+    // Log functions
+    void write_log_map();
 };
 
 

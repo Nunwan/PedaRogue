@@ -16,6 +16,9 @@
 class Level
 {
 public:
+    // Getters
+    const Transform &getBeginMap() const;
+
     const std::vector<Entity> &getMObjects() const;
 
     const std::vector<Entity> &getMMobs() const;
@@ -26,9 +29,11 @@ public:
 
     Level(int levelnumber, Engine* engine);
 
+    /**
+     * @brief       generate the map with a random generation which will create a new map
+     */
     void GenerateMap();
 
-    const Transform &getBeginMap() const;
 
 
 private:
@@ -39,16 +44,19 @@ private:
     std::vector<Entity> mMobs;
     Transform beginMap;
 
+    /**
+     * @brief               Take a generation of a level and create the adequate entity
+     * @param levelGen      The level generation object which contains map data
+     */
     void CreateMap(LevelGeneration& levelGen);
 
+    /* Configuration of each type of tile in the map : create entity and add component */
     void ConfigFloor(Entity entity, int x, int y);
     void ConfigWall(Entity entity, int x, int y);
     void ConfigFloorLight(Entity entity, int x, int y);
     void ConfigWallTunnel(Entity entity, int x, int y);
     void ConfigDoor(Entity entity, int x, int y);
-
-
-
+    void ConfigMonster(Entity entity, int x, int y);
 };
 
 

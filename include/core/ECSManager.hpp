@@ -11,6 +11,10 @@
 #include "ECSTypes.hpp"
 
 
+/**
+ *  @brief Main class of the ECS Engine : merge all the manager into one
+ *  Each functions can be documented by sub functions in the appropriate sub manager
+ */
 class ECSManager {
 private:
     std::unique_ptr<ComponentManager> mComponentManager;

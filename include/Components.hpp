@@ -6,12 +6,24 @@
 #define PEDAROGUE_COMPONENTS_HPP
 #include "Window.hpp"
 
+/**
+ * @brief  Render component for display on screen
+ *
+ *          glyph       Symbol representing the Entity
+ *          color       Color to apply to the glyph
+ *          to_display  boolean to know if the entity has to be displayed
+ */
 struct Render {
     char *glyph;
     color_t color;
     bool to_display;
 };
 
+/**
+ * @brief   Transform component to the position in the world
+ *          x,y             2D Coordinates of the entity
+ *          levelMap        The level of the map in the entity is
+ */
 struct Transform {
     int x;
     int y;
@@ -22,25 +34,52 @@ struct Transform {
     }
 };
 
+/**
+ * @brief   RigidBody component for collision and transparency.
+ *          can_pass    represent if the entity is rigid
+ *          transparent give the possibility to see through the entity
+ */
 struct RigidBody {
     bool can_pass;
     bool transparent;
 };
 
+/**
+ * @brief   Map component to indicate to RenderSystem that the entity is an Map object to display
+ */
 struct Map {};
+
+/**
+ * @brief   Map component to indicate to RenderSystem that the entity is an NotMap (object, monsters) object to display
+ */
 struct NotMap {};
 
+/**
+ * @brief   Component representing the possibility to play this entity
+ *          id      Id in the vector of players.
+ */
 struct Playable{
     int id;
 };
 
+/**
+ * @brief   Component to indicate if the entity can be moved
+ *          direction   Represent the vector of direction between RIGHT, LEFT, UP, DOWN
+ */
 struct Moveable {
     int direction;
 };
 
+/**
+ * @brief   Stats for players : Differents values for different ability
+ *          visibility      Range of the vision circle of the entity
+ */
 struct Stats {
     int visibility;
 };
 
+/**
+ * @brief   Component which indicates that the entity is a lighting source.
+ */
 struct Light {};
 #endif //PEDAROGUE_COMPONENTS_HPP

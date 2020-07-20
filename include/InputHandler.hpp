@@ -15,6 +15,12 @@ class InputHandler : public System
 {
 public:
     void Init();
+
+    /**
+     * @brief           Take an event and create command needed
+     * @param event     The event at stakes
+     * @return          Return if the game has to quit
+     */
     int process_key(Event event);
 
 private:

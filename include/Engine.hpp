@@ -19,33 +19,84 @@ class Game;
 class Engine : public ECSManager
 {
 private:
+    // All the systems which need to be saved
     std::shared_ptr<Window> mWindow;
     std::shared_ptr<RenderMapSystem> mRenderMapSystem;
     std::shared_ptr<RenderOthersSystem> mRenderOthersSystem;
     std::shared_ptr<InputHandler> mInputHandler;
     std::shared_ptr<FoVCompute> mFovComputeSystem;
     std::shared_ptr<LightSystem> mLightSystem;
+    // Callback pointers of game which create the engine
     Game* mGame;
 
 
 public:
-    const std::shared_ptr<Window> &getMWindow() const;
+
+    /**
+     * @brief       Create the engine, initialize the subroutine and link the engine to a game.
+     * @param game  game which creates the engine
+     */
     Engine(Game* game);
+
+    // Sub initialisation of the engine
+    /**
+     * @brief       Initialize all the components needed
+     */
     void initComponents();
+    /**
+     * @brief       Initialize all the system and indicate the components needed for them.
+     */
     void initSystems();
 
+    // Main loop subfunction
+    /**
+     * @brief       Update all the entity to perform a step in the game
+     * @return      int which indicated if the game has to stop
+     */
     int update();
+    /**
+     * @brief       Render all the map
+     */
     void render();
 
     // Levels activators
+    /**
+     * @brief           Activate the level to be displayed
+     * @param level     shared_ptr to the level which has to be activate
+     */
     void level_enable(std::shared_ptr<Level> level);
+
+    /**
+     * @brief           disable the level to be displayed
+     * @param level     shared_ptr to the level which has to be desactivated
+     */
     void level_disable(std::shared_ptr<Level> level);
 
-    std::shared_ptr<CollisionSystem> mCollisionSystem;
 
+    // Getters
+    /**
+     * @brief               Return pointer to the selected level
+     * @param levelnumber   level to return
+     * @return              shared_ptr to the level
+     */
     std::shared_ptr<Level> GetLevel(int levelnumber);
 
+    /**
+     * @return              Window class of the game
+     */
+    const std::shared_ptr<Window> &getMWindow() const;
+
+    /**
+     * @return              Return the current player
+     */
     Entity& GetPlayer();
+
+
+    // Systems
+    /**
+     * @brief               return a shared_ptr to the collision system for the movement system
+     */
+    std::shared_ptr<CollisionSystem> mCollisionSystem;
 };
 
 

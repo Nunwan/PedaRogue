@@ -9,11 +9,25 @@
 #include <unordered_map>
 #include "ECSTypes.hpp"
 
+/**
+ * @brief   Virtual Interface of Component Pool to always have Entity Destroyed
+ */
 class IComponentPool {
 public:
+    /**
+     * @brief           Tell to the Pool that entity was destroyed
+     * @param entity    Entity which has been destroyed
+     */
     virtual void EntityDestroyed(Entity entity) = 0;
 };
 
+/**
+ * @brief       Component Pool to save components of a given type
+ *              The Pool works as a sparse array. the sparse and reverseSparse give coordinate and inverted coordinated
+ *              of the component of the entity in packed.
+ *              Packed is a continous vector of components of type T.
+ * @tparam T    Type of component to save
+ */
 template<typename T>
 class ComponentPool :public IComponentPool
 {
@@ -24,14 +38,44 @@ private:
 
 public:
 
+    /**
+     * @brief               Link an entity to its new component
+     * @param entity        Entity which gonna has a new component
+     * @param component     The new component
+     */
     void link(Entity entity, T component);
+
+    /**
+     * @brief               Unlink an entity to the component previously linked
+     * @param entity        Entity which will have a component deleted
+     */
     void unlink(Entity entity);
 
+    /**
+     * @brief               Check if an entity has a component in this pool
+     * @param entity        The entity to verify
+     * @return              1 if component exist 0 if not
+     */
     bool exist(Entity entity);
+
+    /**
+     * @brief               Return reference to the component for the entity
+     * @param entity        Entity which wants its component
+     * @return              Reference to the given component
+     */
     T& Get(Entity entity);
 
+    void EntityDestroyed(Entity entity) override;
+
     //Iterators
+    /**
+     * @return      begin of iterator of the components of type T
+     */
     typename std::vector<T>::iterator iterBeginComp();
+
+    /**
+     * @return      End of the iterator of the components of type T
+     */
     typename std::vector<T>::iterator iterEndComp();
 
     // Getters
@@ -39,7 +83,6 @@ public:
 
     const std::unordered_map<Entity, int> &getSparse() const;
 
-    void EntityDestroyed(Entity entity) override;
 
 };
 

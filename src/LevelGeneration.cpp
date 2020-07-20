@@ -10,7 +10,8 @@
 #define min(a,b) a<=b?a:b
 #define max(a,b) a>=b?a:b
 
-LevelGeneration::LevelGeneration(int height_map, int width_map)
+LevelGeneration::LevelGeneration(int height_map, int width_map, float probaMonster, float probaObject,
+                                 int maxMonster)
 {
     mProbaDoor = PROBA_DOOR;
     // Create the first tunnelers
@@ -34,6 +35,9 @@ LevelGeneration::LevelGeneration(int height_map, int width_map)
             mToGenerate[i][j] = 0;
         }
     }
+    mProbaMonster = probaMonster;
+    mProbaObjects = probaObject;
+    mMaxMonsters = maxMonster;
 }
 
 LevelGeneration::~LevelGeneration()
@@ -114,33 +118,33 @@ int **LevelGeneration::getMToGenerate() const
 }
 
 
-Rectangle& LevelGeneration::pick_wall(Tunnelers &tunnelers)
+Rectangle& LevelGeneration::pick_wall(Tunnelers &tunneler)
 {
     int id_rectangle = rand() % mRectangles.size();
     auto& rectangle_chosen = mRectangles[id_rectangle];
     int chosen_wall;
-    if (((float)rand()/RAND_MAX) < tunnelers.changeDirection) {
+    if (((float)rand()/RAND_MAX) < tunneler.changeDirection) {
         chosen_wall = rand() % 4;
-        tunnelers.direction = chosen_wall;
+        tunneler.direction = chosen_wall;
     } else {
-        chosen_wall = tunnelers.direction;
+        chosen_wall = tunneler.direction;
     }
     switch (chosen_wall) {
         case DIR_RIGHT:
-            tunnelers.x = rectangle_chosen.x + rectangle_chosen.w - 1;
-            tunnelers.y = rand() % (rectangle_chosen.h - 2) + rectangle_chosen.y + 1;
+            tunneler.x = rectangle_chosen.x + rectangle_chosen.w - 1;
+            tunneler.y = rand() % (rectangle_chosen.h - 2) + rectangle_chosen.y + 1;
             break;
         case DIR_LEFT:
-            tunnelers.x = rectangle_chosen.x;
-            tunnelers.y = rand() % (rectangle_chosen.h - 2) + rectangle_chosen.y + 1;
+            tunneler.x = rectangle_chosen.x;
+            tunneler.y = rand() % (rectangle_chosen.h - 2) + rectangle_chosen.y + 1;
             break;
         case DIR_DOWN:
-            tunnelers.x = rand() % (rectangle_chosen.w - 2) + rectangle_chosen.x + 1;
-            tunnelers.y = rectangle_chosen.y + rectangle_chosen.h - 1;
+            tunneler.x = rand() % (rectangle_chosen.w - 2) + rectangle_chosen.x + 1;
+            tunneler.y = rectangle_chosen.y + rectangle_chosen.h - 1;
             break;
         case DIR_UP:
-            tunnelers.x = rand() % (rectangle_chosen.w - 2) + rectangle_chosen.x + 1;
-            tunnelers.y = rectangle_chosen.y;
+            tunneler.x = rand() % (rectangle_chosen.w - 2) + rectangle_chosen.x + 1;
+            tunneler.y = rectangle_chosen.y;
             break;
         default:
             break;
@@ -151,14 +155,14 @@ Rectangle& LevelGeneration::pick_wall(Tunnelers &tunnelers)
 }
 
 
-int LevelGeneration::choose_feature(Tunnelers &tunnelers, Rectangle& ancient_rectangle)
+int LevelGeneration::choose_feature(Tunnelers &tunneler, Rectangle& ancient_rectangle)
 {
     bool is_room = ancient_rectangle.feature_type == ROOM;
     if (is_room) {
         return TUNNEL;
     } else {
         float possible = ((float)rand()/RAND_MAX);
-        if (possible < tunnelers.roomProba) {
+        if (possible < tunneler.roomProba) {
             return ROOM;
         }
         else {
@@ -168,17 +172,17 @@ int LevelGeneration::choose_feature(Tunnelers &tunnelers, Rectangle& ancient_rec
 }
 
 
-Rectangle* LevelGeneration::create_possible_feature(int type, Tunnelers &tunnelers)
+Rectangle* LevelGeneration::create_possible_feature(int type, Tunnelers &tunneler)
 {
     Rectangle* new_feature = new Rectangle;
     new_feature->feature_type = type;
     if (type == TUNNEL) {
-        if (tunnelers.direction % 2) {
-            new_feature->w = tunnelers.tunnelWidth;
+        if (tunneler.direction % 2) {
+            new_feature->w = tunneler.tunnelWidth;
             new_feature->h = rand() % (MAX_SIZE - MIN_SIZE_TUNNEL) + MIN_SIZE_TUNNEL;
         }
         else {
-            new_feature->h = tunnelers.tunnelWidth;
+            new_feature->h = tunneler.tunnelWidth;
             new_feature->w = rand() % (MAX_SIZE - MIN_SIZE_TUNNEL) + MIN_SIZE_TUNNEL;
         }
     }
@@ -186,22 +190,22 @@ Rectangle* LevelGeneration::create_possible_feature(int type, Tunnelers &tunnele
         new_feature->w = rand() % (MAX_SIZE - MIN_SIZE_ROOM) + MIN_SIZE_ROOM;
         new_feature->h = rand() % (MAX_SIZE - MIN_SIZE_ROOM) + MIN_SIZE_ROOM;
     }
-    switch (tunnelers.direction) {
+    switch (tunneler.direction) {
         case DIR_RIGHT:
-            new_feature->x = tunnelers.x;
-            new_feature->y = tunnelers.y - new_feature->h / 2;
+            new_feature->x = tunneler.x;
+            new_feature->y = tunneler.y - new_feature->h / 2;
             break;
         case DIR_DOWN:
-            new_feature->y = tunnelers.y;
-            new_feature->x = tunnelers.x - new_feature->w / 2;
+            new_feature->y = tunneler.y;
+            new_feature->x = tunneler.x - new_feature->w / 2;
             break;
         case DIR_LEFT:
-            new_feature->x = tunnelers.x - new_feature->w + 1 ;
-            new_feature->y = tunnelers.y - new_feature->h / 2;
+            new_feature->x = tunneler.x - new_feature->w + 1 ;
+            new_feature->y = tunneler.y - new_feature->h / 2;
             break;
         case DIR_UP:
-            new_feature->y = tunnelers.y - new_feature->h + 1;
-            new_feature->x = tunnelers.x - new_feature->w / 2;
+            new_feature->y = tunneler.y - new_feature->h + 1;
+            new_feature->x = tunneler.x - new_feature->w / 2;
             break;
         default:
             break;
@@ -237,19 +241,33 @@ void LevelGeneration::push_feature(Rectangle rectangle)
         }
         return;
     }*/
+    // Create WALLS
     for (int i = x; i < x+w; ++i) {
         mToGenerate[y][i] = WALL;
         mToGenerate[y+h-1][i] = WALL;
     }
+
+    for (int i = y; i < y+h; ++i) {
+        mToGenerate[i][x] = WALL;
+        mToGenerate[i][x+w-1] = WALL;
+    }
+    // CREATE LIGHT IN CORNER
     if (((float)rand() / RAND_MAX) < PROBA_LIGHT) {
         int x_light = corner_x[rand()%2];
         int y_light = corner_y[rand()%2];
         mToGenerate[y_light][x_light] = FLOOR_LIGHT;
     }
-    for (int i = y; i < y+h; ++i) {
-        mToGenerate[i][x] = WALL;
-        mToGenerate[i][x+w-1] = WALL;
+    // CREATE MONSTERS
+    int monsterNb = 0;
+    while (monsterNb < mMaxMonsters) {
+        if (((float)rand() / RAND_MAX) < mProbaMonster) {
+            int y_random = rand() % (y + h - 2 - (y + 1)) + y + 1;
+            int x_random = rand() % (x + w - 2 - (x + 1)) + x + 1;
+            mToGenerate[y_random][x_random] = MONSTER;
+        }
+        monsterNb++;
     }
+
     if (LOG_MAP) {
         write_log_map();
     }

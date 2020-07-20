@@ -25,6 +25,9 @@ public:
 
     Game();
 
+    /**
+     * @brief       Main game loop
+     */
     void run();
 
     void close();
