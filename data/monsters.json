@@ -1,10 +1,14 @@
 {
   "gobelin méchant" : {
-    "pv" : 10,
-    "mana" : 10
+    "stats" : {
+      "pv": 10,
+      "mana": 10
+    }
   },
   "Super méchant dragon" : {
-    "pv" : 20,
-    "mana" : 10
+    "stats" : {
+      "pv": 20,
+      "mana": 10
+    }
   }
 }

@@ -13,11 +13,16 @@ class MonsterParse
 private:
     json mMainJson;
     json mRandomMonster;
+    std::string mMonsterName;
 
 public:
     MonsterParse();
 
     void singleRandomMonster();
+
+    int getStat(std::string statname);
+
+    std::string getName();
 
 
 
