@@ -11,6 +11,7 @@ int main() {
     json j;
     std::ifstream ifs("data/monsters.json");
     ifs >> j;
+    std::cout << j.size();
     for (auto i = j.rbegin(); i != j.rend(); i++) {
         std::cout << i.key() << std::endl;
         for (auto monster = i->rbegin(); monster != i->rend(); monster++) {
