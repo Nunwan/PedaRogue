@@ -14,15 +14,22 @@ private:
     json mMainJson;
     json mRandomMonster;
     std::string mMonsterName;
+    std::string mMonsterGlyph;
+public:
+    std::string &getMMonsterGlyph();
+
+private:
+    std::unordered_map<std::string, int> mMonsterStat;
 
 public:
     MonsterParse();
 
     void singleRandomMonster();
 
-    int getStat(std::string statname);
+    const std::unordered_map<std::string, int> &getMMonsterStat() const;
 
     std::string getName();
+
 
 
 

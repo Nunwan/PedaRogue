@@ -48,7 +48,7 @@ void LightSystem::compute()
         if (!nottransparent_between(pointLine, lightPos.levelMap)) {
             auto level = mEngine->GetLevel(lightPos.levelMap);
             auto &lightStat = mEngine->GetComponent<Stats>(light);
-            ComputeFoV(lightPos.x, lightPos.y, lightStat.visibility, lightPos.levelMap);
+            ComputeFoV(lightPos.x, lightPos.y, lightStat.stats["visibility"], lightPos.levelMap);
         }
     };
 }

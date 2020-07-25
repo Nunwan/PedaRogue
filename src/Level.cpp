@@ -2,9 +2,11 @@
 // Created by nunwan on 16/06/2020.
 //
 
+#include <iostream>
 #include "Level.hpp"
 #include "Components.hpp"
 #include "Engine.hpp"
+#include "MonsterParse.hpp"
 #include "FOVTools.hpp"
 
 
@@ -53,7 +55,7 @@ Level::~Level()
 
 void Level::GenerateMap()
 {
-    auto levelGen = LevelGeneration(HEIGHT_MAP, WIDTH_MAP, mLevelnumber / 50, mLevelnumber / 50, 0);
+    auto levelGen = LevelGeneration(HEIGHT_MAP, WIDTH_MAP, 1, mLevelnumber / 50, 2);
     levelGen.run();
     if (mLevelnumber == 0) {
         levelGen.place_player(&beginMap);
@@ -153,7 +155,7 @@ void Level::ConfigFloorLight(Entity entity, int x, int y)
     Transform entityPos = {x, y, mLevelnumber};
     Render entityRender = {".", mEngine->getMWindow()->color_red, false};
     Stats statWall;
-    statWall.visibility = 5;
+    statWall.stats["visibility"] = 5;
     mEngine->AddComponent(entity, entityPos);
     mEngine->AddComponent(entity, entityRender);
     mEngine->AddComponent(entity, Light());
@@ -164,11 +166,22 @@ void Level::ConfigFloorLight(Entity entity, int x, int y)
 
 void Level::ConfigMonster(Entity entity, int x, int y)
 {
+    MonsterParse monsterParse;
+    monsterParse.singleRandomMonster();
     Transform entityPos = {x, y, mLevelnumber};
-    char* glyph;
+    auto glyph = monsterParse.getMMonsterGlyph();
+    char* glyphc = new char[glyph.size() + 1];
+    std::copy(glyph.begin(), glyph.end(), glyphc);
+    glyphc[glyph.size()] = '\0';
     int r, g, b;
-    Render entityRender = {glyph, color_from_argb(0xff, r, g, b), false};
+    Render entityRender = {glyphc, color_from_argb(0xff, r, g, b), false};
     Stats statMonster;
+    auto statToPush = monsterParse.getMMonsterStat();
+    for (std::pair<std::string, int> element : statToPush)
+    {
+        statMonster.stats[element.first] = element.second;
+        std::cout << element.first << " " << element.second << std::endl;
+    }
     RigidBody entityRigid = {false, false};
     mEngine->AddComponent(entity, entityPos);
     mEngine->AddComponent(entity, entityRender);

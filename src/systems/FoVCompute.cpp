@@ -24,7 +24,7 @@ void FoVCompute::compute()
         auto& playerPos = mEngine->GetComponent<Transform>(player);
         auto level = mEngine->GetLevel(playerPos.levelMap);
         auto& playerStat = mEngine->GetComponent<Stats>(player);
-        ComputeFoV(playerPos.x, playerPos.y, playerStat.visibility, playerPos.levelMap);
+        ComputeFoV(playerPos.x, playerPos.y, playerStat.stats["visibility"], playerPos.levelMap);
     }
 }
 

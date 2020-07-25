@@ -1,13 +1,15 @@
 {
   "gobelin méchant" : {
+    "glyph" : "g",
     "stats" : {
       "pv": 10,
       "mana": 10
     }
   },
   "Super méchant dragon" : {
+    "glyph" : "d",
     "stats" : {
-      "pv": 20,
+      "pv": 100,
       "mana": 10
     }
   }

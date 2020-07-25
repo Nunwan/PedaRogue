@@ -20,16 +20,17 @@ void MonsterParse::singleRandomMonster()
     int i = 0;
     while (iterate != mMainJson.end() && i != numero) {
         iterate++;
+        i++;
     }
     mRandomMonster = *iterate;
+    auto stat = iterate->find("stats");
+    mMonsterStat.clear();
+    for (auto statLoop = stat->begin(); statLoop != stat->end(); statLoop++) {
+        mMonsterStat.insert({statLoop.key(), statLoop.value()});
+    }
     mMonsterName = iterate.key();
-}
-
-
-int MonsterParse::getStat(std::string statname)
-{
-    auto stat = mRandomMonster.find("stats")->find(statname);
-    return stat.value();
+    auto glyph = iterate->find("glyph");
+    mMonsterGlyph = glyph.value();
 }
 
 
@@ -37,4 +38,17 @@ std::string MonsterParse::getName()
 {
     return mMonsterName;
 }
+
+
+const std::unordered_map<std::string, int> &MonsterParse::getMMonsterStat() const
+{
+    return mMonsterStat;
+}
+
+
+std::string &MonsterParse::getMMonsterGlyph()
+{
+    return mMonsterGlyph;
+}
+
 

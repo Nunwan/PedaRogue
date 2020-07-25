@@ -4,6 +4,7 @@
 
 #ifndef PEDAROGUE_COMPONENTS_HPP
 #define PEDAROGUE_COMPONENTS_HPP
+#include <unordered_map>
 #include "Window.hpp"
 
 /**
@@ -75,7 +76,14 @@ struct Moveable {
  *          visibility      Range of the vision circle of the entity
  */
 struct Stats {
-    int visibility;
+    std::unordered_map<std::string, int> stats;
+    Stats()
+    {
+        stats.insert({"visibility", 0});
+        stats.insert({"pv", 0});
+        stats.insert({"mana", 0});
+
+    }
 };
 
 /**
