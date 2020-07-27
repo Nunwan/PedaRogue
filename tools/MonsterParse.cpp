@@ -31,6 +31,13 @@ void MonsterParse::singleRandomMonster()
     mMonsterName = iterate.key();
     auto glyph = iterate->find("glyph");
     mMonsterGlyph = glyph.value();
+
+    auto r = iterate->find("r");
+    auto g = iterate->find("g");
+    auto b = iterate->find("b");
+    mMonsterColorR = r.value();
+    mMonsterColorG = g.value();
+    mMonsterColorB = b.value();
 }
 
 
@@ -49,6 +56,24 @@ const std::unordered_map<std::string, int> &MonsterParse::getMMonsterStat() cons
 std::string &MonsterParse::getMMonsterGlyph()
 {
     return mMonsterGlyph;
+}
+
+
+int MonsterParse::getMMonsterColorR() const
+{
+    return mMonsterColorR;
+}
+
+
+int MonsterParse::getMMonsterColorG() const
+{
+    return mMonsterColorG;
+}
+
+
+int MonsterParse::getMMonsterColorB() const
+{
+    return mMonsterColorB;
 }
 
 

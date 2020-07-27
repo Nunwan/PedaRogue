@@ -15,6 +15,14 @@ private:
     json mRandomMonster;
     std::string mMonsterName;
     std::string mMonsterGlyph;
+    int mMonsterColorR, mMonsterColorG, mMonsterColorB;
+public:
+    int getMMonsterColorR() const;
+
+    int getMMonsterColorG() const;
+
+    int getMMonsterColorB() const;
+
 public:
     std::string &getMMonsterGlyph();
 

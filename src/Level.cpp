@@ -173,7 +173,9 @@ void Level::ConfigMonster(Entity entity, int x, int y)
     char* glyphc = new char[glyph.size() + 1];
     std::copy(glyph.begin(), glyph.end(), glyphc);
     glyphc[glyph.size()] = '\0';
-    int r, g, b;
+    int r = monsterParse.getMMonsterColorR();
+    int g = monsterParse.getMMonsterColorG();
+    int b = monsterParse.getMMonsterColorB();
     Render entityRender = {glyphc, color_from_argb(0xff, r, g, b), false};
     Stats statMonster;
     auto statToPush = monsterParse.getMMonsterStat();
