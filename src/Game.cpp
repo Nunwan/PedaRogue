@@ -50,7 +50,7 @@ void Game::PlayerCreation()
 {
     Entity player = mEngine->CreateEntity();
     mEngine->AddComponent(player, mLevels[0]->getBeginMap());
-    Render renderPlayer = {"@", mEngine->getMWindow()->color_blue, true};
+    Render renderPlayer = {"@", mEngine->getMWindow()->color_yellow, true};
     mEngine->AddComponent(player, renderPlayer);
     mEngine->AddComponent(player, NotMap());
     Moveable playerMove = {DIR_LEFT};

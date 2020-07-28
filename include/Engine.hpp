@@ -15,19 +15,32 @@
 #include "systems/LightSystem.hpp"
 #include "Game.hpp"
 
+enum EventType {
+    CollisionEvent
+};
+
+struct Event {
+    EventType eventtype;
+    Entity entity1;
+    Entity entity2;
+};
+
 class Game;
 class Engine : public ECSManager
 {
-private:
-    // All the systems which need to be saved
-    std::shared_ptr<Window> mWindow;
+public:
     std::shared_ptr<RenderMapSystem> mRenderMapSystem;
     std::shared_ptr<RenderOthersSystem> mRenderOthersSystem;
     std::shared_ptr<InputHandler> mInputHandler;
     std::shared_ptr<FoVCompute> mFovComputeSystem;
     std::shared_ptr<LightSystem> mLightSystem;
+private:
+    // All the systems which need to be saved
+    std::shared_ptr<Window> mWindow;
     // Callback pointers of game which create the engine
     Game* mGame;
+
+    std::queue<Event> mEvents;
 
 
 public:
@@ -97,6 +110,16 @@ public:
      * @brief               return a shared_ptr to the collision system for the movement system
      */
     std::shared_ptr<CollisionSystem> mCollisionSystem;
+
+    Entity& getEntityat(int x, int y, int levelnumber);
+
+
+    // Events
+    void push_Event(Event event);
+
+    Event pop_event();
+
+    bool check_event();
 };
 
 

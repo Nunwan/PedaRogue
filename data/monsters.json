@@ -1,22 +1,18 @@
 {
-  "gobelin méchant" : {
-    "glyph" : "g",
-    "r" : 255,
-    "g" : 0,
-    "b" : 0,
-    "stats" : {
+  "gobelin méchant": {
+    "glyph": "g",
+    "color": [255, 0, 0],
+    "stats": {
       "pv": 10,
       "mana": 10
     }
   },
-  "Super méchant dragon" : {
-    "glyph" : "d",
-    "r" : 0,
-    "g" : 255,
-    "b" : 0,
-    "stats" : {
-      "pv": 100,
-      "mana": 10
+  "Super méchant dragon": {
+    "glyph": "d",
+    "color": [1, 255, 0],
+    "stats": {
+      "pv": 101,
+      "mana": 11
     }
   }
 }

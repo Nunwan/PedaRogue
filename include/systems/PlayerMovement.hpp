@@ -15,6 +15,7 @@ class PlayerMovement : public System
 {
 public:
     void update(CommandType commandType);
+    void go_back(Entity to_move);
 
 };
 

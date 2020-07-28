@@ -13,8 +13,6 @@
 
 class RenderSystem : public System
 {
-private:
-    static bool isInCamera(Transform tPlayer, Transform tEntity);
 public:
     void render();
 };

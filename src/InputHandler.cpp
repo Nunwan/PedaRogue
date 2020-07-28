@@ -6,7 +6,7 @@
 #include "Engine.hpp"
 
 
-int InputHandler::process_key(Event event)
+int InputHandler::process_key(EventWin event)
 {
     if (event.key == TK_ESCAPE) {
         return 1;
@@ -31,6 +31,12 @@ void InputHandler::Init()
     mBindings.insert({TK_DOWN, DownPlayer});
     mBindings.insert({TK_RIGHT, RightPlayer});
     mBindings.insert({TK_LEFT, LeftPlayer});
+}
+
+
+void InputHandler::go_back(Entity entity)
+{
+    mPlayerMovement->go_back(entity);
 }
 
 

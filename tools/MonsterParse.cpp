@@ -3,13 +3,19 @@
 //
 
 #include <fstream>
+#include <iostream>
 #include "include/MonsterParse.hpp"
 
 
 MonsterParse::MonsterParse()
 {
     std::ifstream ifjson("data/monsters.json");
-    ifjson >> mMainJson;
+    if (!ifjson)
+    {
+        std::cout << "cannot open monster json file \n It is possible that you're not in root project file" << std::endl;
+        return;
+    }
+    mMainJson = nlohmann::json::parse(ifjson);
 }
 
 
@@ -31,13 +37,10 @@ void MonsterParse::singleRandomMonster()
     mMonsterName = iterate.key();
     auto glyph = iterate->find("glyph");
     mMonsterGlyph = glyph.value();
-
-    auto r = iterate->find("r");
-    auto g = iterate->find("g");
-    auto b = iterate->find("b");
-    mMonsterColorR = r.value();
-    mMonsterColorG = g.value();
-    mMonsterColorB = b.value();
+    auto color = iterate->find("color");
+    mMonsterColorR = color.value()[0];
+    mMonsterColorG = color.value()[1];
+    mMonsterColorB = color.value()[2];
 }
 
 

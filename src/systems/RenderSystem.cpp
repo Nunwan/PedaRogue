@@ -10,6 +10,7 @@ void RenderSystem::render()
     auto& player = mEngine->GetPlayer();
     // We know player has a Transform component so it is not necessary to check
     auto& playerPos = mEngine->GetComponent<Transform>(player);
+    // Variables for the camera
     int quotient_divide_x = playerPos.x / (WIDTH_SCREEN/DIVIDE_SCREEN);
     int quotient_divide_y = playerPos.y / (HEIGHT_SCREEN/DIVIDE_SCREEN);
     bool to_move_x = quotient_divide_x >= OFFSET_SCREEN;
@@ -19,6 +20,7 @@ void RenderSystem::render()
         Transform entityPos = mEngine->GetComponent<Transform>(entity);
         int x_screen = entityPos.x;
         int y_screen = entityPos.y;
+        // camera moving
         if (to_move_x) {
             x_screen -= playerPos.x - (OFFSET_SCREEN*WIDTH_SCREEN / DIVIDE_SCREEN);
         }
@@ -31,10 +33,3 @@ void RenderSystem::render()
     }
 }
 
-
-bool RenderSystem::isInCamera(Transform tPlayer, Transform tEntity)
-{
-    bool in_y = tEntity.y >= tPlayer.y - HEIGHT_SCREEN/2 && tEntity.y <= tPlayer.y + HEIGHT_SCREEN/2;
-    bool in_x = tEntity.x >= tPlayer.x - WIDTH_SCREEN/2 && tEntity.x <= tPlayer.x + WIDTH_SCREEN/2;
-    return in_y && in_x;
-}

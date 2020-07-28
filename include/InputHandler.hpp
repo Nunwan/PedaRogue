@@ -21,7 +21,11 @@ public:
      * @param event     The event at stakes
      * @return          Return if the game has to quit
      */
-    int process_key(Event event);
+    int process_key(EventWin event);
+
+    void go_back(Entity entity);
+
+
 
 private:
     std::shared_ptr<PlayerMovement> mPlayerMovement;

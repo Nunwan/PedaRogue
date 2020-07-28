@@ -3,6 +3,7 @@
 //
 
 #include "Engine.hpp"
+#include "ProcessEvents.hpp"
 
 
 Engine::Engine(Game* game)
@@ -67,6 +68,7 @@ int Engine::update()
 {
     mWindow->nextEvent(0, true);
     int finish = mInputHandler->process_key(mWindow->event);
+    process_event(this);
     mFovComputeSystem->compute();
     mLightSystem->compute();
     return finish;
@@ -123,4 +125,30 @@ std::shared_ptr<Level> Engine::GetLevel(int levelnumber)
 Entity &Engine::GetPlayer()
 {
     return mGame->mPlayers[mGame->mPlayerLocalId];
+}
+
+
+void Engine::push_Event(Event event)
+{
+    mEvents.push(event);
+}
+
+
+Event Engine::pop_event()
+{
+    auto event = mEvents.front();
+    mEvents.pop();
+    return event;
+}
+
+
+Entity &Engine::getEntityat(int x, int y, int levelnumber)
+{
+    return mGame->getMLevels()[levelnumber]->getMMap()[y][x];
+}
+
+
+bool Engine::check_event()
+{
+    return mEvents.size() != 0;
 }

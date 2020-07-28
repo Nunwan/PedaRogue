@@ -9,6 +9,7 @@
 #include "MonsterParse.hpp"
 #include "FOVTools.hpp"
 
+#define MONSTERPROBA 0.1f
 
 const std::vector<Entity> &Level::getMObjects() const
 {
@@ -55,7 +56,7 @@ Level::~Level()
 
 void Level::GenerateMap()
 {
-    auto levelGen = LevelGeneration(HEIGHT_MAP, WIDTH_MAP, 1, mLevelnumber / 50, 2);
+    auto levelGen = LevelGeneration(HEIGHT_MAP, WIDTH_MAP, MONSTERPROBA, mLevelnumber / 50, 5);
     levelGen.run();
     if (mLevelnumber == 0) {
         levelGen.place_player(&beginMap);
@@ -167,12 +168,15 @@ void Level::ConfigFloorLight(Entity entity, int x, int y)
 void Level::ConfigMonster(Entity entity, int x, int y)
 {
     MonsterParse monsterParse;
+    // We roll a random Monster
     monsterParse.singleRandomMonster();
     Transform entityPos = {x, y, mLevelnumber};
+    // Get the glyph from json object
     auto glyph = monsterParse.getMMonsterGlyph();
     char* glyphc = new char[glyph.size() + 1];
     std::copy(glyph.begin(), glyph.end(), glyphc);
     glyphc[glyph.size()] = '\0';
+    // Get the color
     int r = monsterParse.getMMonsterColorR();
     int g = monsterParse.getMMonsterColorG();
     int b = monsterParse.getMMonsterColorB();
@@ -182,7 +186,6 @@ void Level::ConfigMonster(Entity entity, int x, int y)
     for (std::pair<std::string, int> element : statToPush)
     {
         statMonster.stats[element.first] = element.second;
-        std::cout << element.first << " " << element.second << std::endl;
     }
     RigidBody entityRigid = {false, false};
     mEngine->AddComponent(entity, entityPos);

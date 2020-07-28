@@ -15,30 +15,13 @@ void CollisionSystem::update()
             auto& entity2Pos = mEngine->GetComponent<Transform>(entity2);
             auto& entity2Rigid = mEngine->GetComponent<RigidBody>(entity2);
             if (entity != entity2 && entity2Pos == entityPos) {
-               if (mEngine->HasComponent<Moveable>(entity)) {
-                   auto& entityMove = mEngine->GetComponent<Moveable>(entity);
-                   if (entityMove.direction % 2) {
-                       int negative = entityMove.direction == 1?1:-1;
-                       entityPos.y -= negative;
-                   } else {
-                       int negative = entityMove.direction == 0?1:-1;
-                       entityPos.x -= negative;
-                   }
-               }
-                if (mEngine->HasComponent<Moveable>(entity2)) {
-                    auto& entity2Move = mEngine->GetComponent<Moveable>(entity2);
-                    if (entity2Move.direction % 2) {
-                        int negative = entity2Move.direction == 1?1:-1;
-                        entity2Pos.y -= negative;
-                    } else {
-                        int negative = entity2Move.direction == 0?1:-1;
-                        entity2Pos.x -= negative;
-                    }
+                if (!entityRigid.can_pass && !entity2Rigid.can_pass) {
+                    Event collision = {CollisionEvent, entity, entity2};
+                    mEngine->push_Event(collision);
                 }
             }
         }
     }
-
 }
 
 
@@ -46,13 +29,17 @@ bool CollisionSystem::check(Entity entity)
 {
     auto& entityPos = mEngine->GetComponent<Transform>(entity);
     auto& entityRigid = mEngine->GetComponent<RigidBody>(entity);
-    for (auto& other : mEntities) {
-        auto& otherPos = mEngine->GetComponent<Transform>(other);
-        auto& otherRigid = mEngine->GetComponent<RigidBody>(other);
-        if (other != entity && otherPos == entityPos && !otherRigid.can_pass) {
-            return true;
+    auto& other = mEngine->getEntityat(entityPos.x, entityPos.y, entityPos.levelMap);
+    if (mEngine->HasComponent<Transform>(other) && mEngine->HasComponent<RigidBody>(other)) {
+        auto &otherPos = mEngine->GetComponent<Transform>(other);
+        auto &otherRigid = mEngine->GetComponent<RigidBody>(other);
+        if (other != entity && otherPos == entityPos) {
+            if (!entityRigid.can_pass && !otherRigid.can_pass) {
+                Event collision = {CollisionEvent, entity, other};
+                mEngine->push_Event(collision);
+                return true;
+            }
         }
     }
     return false;
-
 }

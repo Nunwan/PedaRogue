@@ -27,7 +27,7 @@
 
 using std::vector;
 
-struct Event {
+struct EventWin{
     int key;
 };
 
@@ -36,7 +36,7 @@ class Window {
 private:
 
 public:
-        struct Event event;
+        struct EventWin event;
         Window();
         void nextEvent(int eventMask, bool wait);
 
