@@ -90,4 +90,10 @@ struct Stats {
  * @brief   Component which indicates that the entity is a lighting source.
  */
 struct Light {};
+
+struct Living {};
+
+struct AttackAttempt {
+    Entity &target;
+};
 #endif //PEDAROGUE_COMPONENTS_HPP

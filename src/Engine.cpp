@@ -3,7 +3,6 @@
 //
 
 #include "Engine.hpp"
-#include "ProcessEvents.hpp"
 
 
 Engine::Engine(Game* game)
@@ -35,8 +34,7 @@ void Engine::initSystems()
     UseComponent<LightSystem, Transform>();
     UseComponent<LightSystem, Light>();
     UseComponent<LightSystem, Stats>();
-
-
+    mAttackSystem = RegisterSystem<AttackSystem>(this);
     mInputHandler->Init();
 }
 

@@ -13,7 +13,9 @@
 #include "systems/CollisionSystem.hpp"
 #include "systems/FoVCompute.hpp"
 #include "systems/LightSystem.hpp"
+#include "systems/AttackSystem.hpp"
 #include "Game.hpp"
+#include "ProcessEvents.hpp"
 
 enum EventType {
     CollisionEvent
@@ -34,6 +36,7 @@ public:
     std::shared_ptr<InputHandler> mInputHandler;
     std::shared_ptr<FoVCompute> mFovComputeSystem;
     std::shared_ptr<LightSystem> mLightSystem;
+    std::shared_ptr<AttackSystem> mAttackSystem;
 private:
     // All the systems which need to be saved
     std::shared_ptr<Window> mWindow;

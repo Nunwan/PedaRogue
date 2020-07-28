@@ -8,4 +8,6 @@
 
 void process_event(Engine* engine);
 
+bool living_interaction(Engine* engine, Entity entity1, Entity entity2, Entity& player, Entity& other);
+
 #endif //PEDAROGUE_PROCESSEVENTS_HPP
