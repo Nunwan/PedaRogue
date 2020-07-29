@@ -87,7 +87,8 @@ void Level::CreateMap(LevelGeneration& levelGen)
                 ConfigFloorLight(mMap[i][j], j, i);
             }
             else if (type == MONSTER) {
-                ConfigMonster(mMap[i][j], j, i);
+                ConfigFloor(mMap[i][j], j, i);
+                ConfigMonster(j, i);
             }
             else if (type == 6) {
                 auto entity = mMap[i][j];
@@ -165,8 +166,9 @@ void Level::ConfigFloorLight(Entity entity, int x, int y)
 }
 
 
-void Level::ConfigMonster(Entity entity, int x, int y)
+void Level::ConfigMonster(int x, int y)
 {
+    auto entity = mEngine->CreateEntity();
     MonsterParse monsterParse;
     // We roll a random Monster
     monsterParse.singleRandomMonster();
@@ -192,6 +194,8 @@ void Level::ConfigMonster(Entity entity, int x, int y)
     mEngine->AddComponent(entity, entityRender);
     mEngine->AddComponent(entity, statMonster);
     mEngine->AddComponent(entity, entityRigid);
+    mEngine->AddComponent(entity, Living());
+    mMobs.push_back(entity);
 }
 
 

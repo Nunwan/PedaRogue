@@ -35,6 +35,7 @@ void Engine::initSystems()
     UseComponent<LightSystem, Light>();
     UseComponent<LightSystem, Stats>();
     mAttackSystem = RegisterSystem<AttackSystem>(this);
+    UseComponent<AttackSystem, AttackAttempt>();
     mInputHandler->Init();
 }
 
@@ -50,6 +51,8 @@ void Engine::initComponents()
     RegisterComponent<Moveable>();
     RegisterComponent<Stats>();
     RegisterComponent<Light>();
+    RegisterComponent<Living>();
+    RegisterComponent<AttackAttempt>();
 }
 
 
@@ -67,6 +70,7 @@ int Engine::update()
     mWindow->nextEvent(0, true);
     int finish = mInputHandler->process_key(mWindow->event);
     process_event(this);
+    mAttackSystem->update();
     mFovComputeSystem->compute();
     mLightSystem->compute();
     return finish;

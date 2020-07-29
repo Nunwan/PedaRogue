@@ -29,15 +29,16 @@ bool CollisionSystem::check(Entity entity)
 {
     auto& entityPos = mEngine->GetComponent<Transform>(entity);
     auto& entityRigid = mEngine->GetComponent<RigidBody>(entity);
-    auto& other = mEngine->getEntityat(entityPos.x, entityPos.y, entityPos.levelMap);
-    if (mEngine->HasComponent<Transform>(other) && mEngine->HasComponent<RigidBody>(other)) {
-        auto &otherPos = mEngine->GetComponent<Transform>(other);
-        auto &otherRigid = mEngine->GetComponent<RigidBody>(other);
-        if (other != entity && otherPos == entityPos) {
-            if (!entityRigid.can_pass && !otherRigid.can_pass) {
-                Event collision = {CollisionEvent, entity, other};
-                mEngine->push_Event(collision);
-                return true;
+    for (auto& other : mEntities) {
+        if (mEngine->HasComponent<Transform>(other) && mEngine->HasComponent<RigidBody>(other)) {
+            auto &otherPos = mEngine->GetComponent<Transform>(other);
+            auto &otherRigid = mEngine->GetComponent<RigidBody>(other);
+            if (other != entity && otherPos == entityPos) {
+                if (!entityRigid.can_pass && !otherRigid.can_pass) {
+                    Event collision = {CollisionEvent, entity, other};
+                    mEngine->push_Event(collision);
+                    return true;
+                }
             }
         }
     }

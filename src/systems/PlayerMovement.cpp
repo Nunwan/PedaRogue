@@ -29,8 +29,8 @@ void PlayerMovement::update(CommandType commandType)
             posEntity.x--;
             MoveEntity.direction = DIR_LEFT;
         }
-        if (mEngine->mCollisionSystem->check(entity)) {
-        }
+        mEngine->mCollisionSystem->check(entity);
+
         // std::cout << posEntity.x << posEntity.y << std::endl;
     }
 }

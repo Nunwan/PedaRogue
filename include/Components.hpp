@@ -6,6 +6,7 @@
 #define PEDAROGUE_COMPONENTS_HPP
 #include <unordered_map>
 #include "Window.hpp"
+#include "core/ECSTypes.hpp"
 
 /**
  * @brief  Render component for display on screen
@@ -94,6 +95,7 @@ struct Light {};
 struct Living {};
 
 struct AttackAttempt {
-    Entity &target;
+    Entity attacker;
+    Entity target;
 };
 #endif //PEDAROGUE_COMPONENTS_HPP

@@ -12,7 +12,7 @@
 class AttackSystem : public System
 {
 public:
-    void attack(Entity attacker, Entity defender);
+    void update();
 
 };
 

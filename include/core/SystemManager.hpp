@@ -5,6 +5,7 @@
 #ifndef PEDAROGUE_SYSTEMMANAGER_HPP
 #define PEDAROGUE_SYSTEMMANAGER_HPP
 
+#include <iostream>
 #include <unordered_map>
 #include <string>
 #include <memory>

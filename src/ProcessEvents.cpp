@@ -15,9 +15,9 @@ void process_event(Engine *engine)
                 engine->mInputHandler->go_back(event.entity2);
                 Entity player, other;
                 if (living_interaction(engine, event.entity1, event.entity2, player, other)) {
-                    AttackAttempt attack = {other};
-                    engine->AddComponent(player, attack);
-
+                    auto attackEntity = engine->CreateEntity();
+                    AttackAttempt attack = {player, other};
+                    engine->AddComponent(attackEntity, attack);
                 }
                 break;
             default:

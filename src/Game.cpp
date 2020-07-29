@@ -56,6 +56,7 @@ void Game::PlayerCreation()
     Moveable playerMove = {DIR_LEFT};
     mEngine->AddComponent(player, playerMove);
     mEngine->AddComponent(player, Playable());
+    mEngine->AddComponent(player, Living());
     RigidBody rigidPlayer = {false, false};
     mEngine->AddComponent(player, rigidPlayer);
     Stats statPlayer;
