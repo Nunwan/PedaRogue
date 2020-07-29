@@ -17,7 +17,8 @@ class FoVCompute : public System
 public:
     virtual void compute();
     void ComputeFoV(int x, int y, int range, int levelnumber);
-    int to_display(int x, int y, int levelnumber);
+    int to_display(Entity entity);
+    Entity monster_on_point(int x, int y, int levelnumber);
 
     void del_after_block(vector<Transform> &vector, int levelnumber);
 };

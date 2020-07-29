@@ -56,7 +56,11 @@ void FoVCompute::ComputeFoV(int x, int y, int range, int levelnumber)
         // print_vec(pointLine);
         del_after_block(pointLine, levelnumber);
         for (auto const& point : pointLine) {
-            to_display(point.x, point.y, levelnumber);
+            auto map = mEngine->GetLevel(levelnumber)->getMMap();
+            Entity entity = map[point.y][point.x];
+            to_display(entity);
+            auto mob = monster_on_point(point.x, point.y, levelnumber);
+            to_display(mob);
         }
     }
 #if DEBUG_MODE_FOV == 1
@@ -72,10 +76,8 @@ void FoVCompute::ComputeFoV(int x, int y, int range, int levelnumber)
 
 
 
-int FoVCompute::to_display(int x, int y, int levelnumber)
+int FoVCompute::to_display(Entity entity)
 {
-    auto map = mEngine->GetLevel(levelnumber)->getMMap();
-    Entity entity = map[y][x];
     if (mEngine->HasComponent<Render>(entity)) {
         auto &entityRender = mEngine->GetComponent<Render>(entity);
 #if DEBUG_MODE_FOV == 1
@@ -109,6 +111,22 @@ void FoVCompute::del_after_block(vector<Transform> &pointLine, int levelnumber)
     if (i < pointLine.size()) {
         pointLine.resize(i+1);
     }
+}
+
+
+Entity FoVCompute::monster_on_point(int x, int y, int levelnumber)
+{
+    auto level = mEngine->GetLevel(levelnumber);
+    auto mobs = level->getMMobs();
+    for (auto const& mob : mobs) {
+        if (mEngine->HasComponent<Transform>(mob)) {
+            auto& mobPos = mEngine->GetComponent<Transform>(mob);
+            if (mobPos.x == x && mobPos.y == y && levelnumber == mobPos.levelMap) {
+                return mob;
+            }
+        }
+    }
+
 }
 
 
