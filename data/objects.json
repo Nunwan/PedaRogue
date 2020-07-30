@@ -1,0 +1,17 @@
+{
+  "pièce": {
+    "glyph": "p",
+    "color": [255, 255, 0],
+    "stats": {
+      "pv": 10
+    }
+  },
+  "trucdefou": {
+    "glyph": "t",
+    "color": [255, 0, 255],
+    "stats": {
+      "pv": 101,
+      "mana": 11
+    }
+  }
+}

@@ -94,8 +94,11 @@ struct Light {};
 
 struct Living {};
 
+struct Object {};
+
 struct AttackAttempt {
     Entity attacker;
     Entity target;
 };
+
 #endif //PEDAROGUE_COMPONENTS_HPP

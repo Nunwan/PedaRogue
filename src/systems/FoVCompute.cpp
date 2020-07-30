@@ -61,6 +61,8 @@ void FoVCompute::ComputeFoV(int x, int y, int range, int levelnumber)
             to_display(entity);
             auto mob = monster_on_point(point.x, point.y, levelnumber);
             to_display(mob);
+            auto obj = object_on_point(point.x, point.y, levelnumber);
+            to_display(obj);
         }
     }
 #if DEBUG_MODE_FOV == 1
@@ -129,6 +131,21 @@ Entity FoVCompute::monster_on_point(int x, int y, int levelnumber)
 
 }
 
+
+Entity FoVCompute::object_on_point(int x, int y, int levelnumber)
+{
+    auto level = mEngine->GetLevel(levelnumber);
+    auto objects = level->getMObjects();
+    for (auto const& obj : objects) {
+        if (mEngine->HasComponent<Transform>(obj)) {
+            auto& objPos = mEngine->GetComponent<Transform>(obj);
+            if (objPos.x == x && objPos.y == y && levelnumber == objPos.levelMap) {
+                return obj;
+            }
+        }
+    }
+
+}
 
 bool inf_by(Transform t1, Transform t2, int x_or, int y_or)
 {

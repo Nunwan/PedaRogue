@@ -7,9 +7,13 @@
 #include "Components.hpp"
 #include "Engine.hpp"
 #include "MonsterParse.hpp"
+#include "ObjectParse.hpp"
 #include "FOVTools.hpp"
 
 #define MONSTERPROBA 0.1f
+#define OBJECTPROBA 0.5f
+
+
 
 const std::vector<Entity> &Level::getMObjects() const
 {
@@ -56,7 +60,7 @@ Level::~Level()
 
 void Level::GenerateMap()
 {
-    auto levelGen = LevelGeneration(HEIGHT_MAP, WIDTH_MAP, MONSTERPROBA, mLevelnumber / 50, 5);
+    auto levelGen = LevelGeneration(HEIGHT_MAP, WIDTH_MAP, MONSTERPROBA, OBJECTPROBA, 5, 5);
     levelGen.run();
     if (mLevelnumber == 0) {
         levelGen.place_player(&beginMap);
@@ -89,6 +93,10 @@ void Level::CreateMap(LevelGeneration& levelGen)
             else if (type == MONSTER) {
                 ConfigFloor(mMap[i][j], j, i);
                 ConfigMonster(j, i);
+            }
+            else if (type == OBJECT) {
+                ConfigFloor(mMap[i][j], j, i);
+                ConfigObject(j, i);
             }
             else if (type == 6) {
                 auto entity = mMap[i][j];
@@ -196,6 +204,38 @@ void Level::ConfigMonster(int x, int y)
     mEngine->AddComponent(entity, entityRigid);
     mEngine->AddComponent(entity, Living());
     mMobs.push_back(entity);
+}
+
+
+void Level::ConfigObject(int x, int y)
+{
+    auto entity = mEngine->CreateEntity();
+    ObjectParse objectParse;
+    // We roll a random Object
+    objectParse.singleRandomObject();
+    Transform entityPos = {x, y, mLevelnumber};
+    // Get the glyph from json object
+    auto glyph = objectParse.getMObjectGlyph();
+    char* glyphc = new char[glyph.size() + 1];
+    std::copy(glyph.begin(), glyph.end(), glyphc);
+    glyphc[glyph.size()] = '\0';
+    // Get the color
+    int r = objectParse.getMObjectColorR();
+    int g = objectParse.getMObjectColorG();
+    int b = objectParse.getMObjectColorB();
+    Render entityRender = {glyphc, color_from_argb(0xff, r, g, b), false};
+    Stats statObject;
+    auto statToPush = objectParse.getMObjectStat();
+    for (std::pair<std::string, int> element : statToPush)
+    {
+        statObject.stats[element.first] = element.second;
+    }
+    RigidBody entityRigid = {false, false};
+    mEngine->AddComponent(entity, entityPos);
+    mEngine->AddComponent(entity, entityRender);
+    mEngine->AddComponent(entity, statObject);
+    mEngine->AddComponent(entity, entityRigid);
+    mObjects.push_back(entity);
 }
 
 

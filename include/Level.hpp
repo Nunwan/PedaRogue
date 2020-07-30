@@ -57,6 +57,7 @@ private:
     void ConfigWallTunnel(Entity entity, int x, int y);
     void ConfigDoor(Entity entity, int x, int y);
     void ConfigMonster(int x, int y);
+    void ConfigObject(int x, int y);
 };
 
 

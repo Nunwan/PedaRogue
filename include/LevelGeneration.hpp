@@ -35,6 +35,7 @@
 #define DOOR 3
 #define FLOOR_LIGHT 5
 #define MONSTER 7
+#define OBJECT 8
 
 #define LOG_MAP 0
 
@@ -78,6 +79,7 @@ private:
     float mProbaMonster;
     float mProbaObjects;
     int mMaxMonsters;
+    int mMaxObjects;
 
 
     /**
@@ -104,7 +106,7 @@ public:
     int **getMToGenerate() const;
 
     LevelGeneration(int height_map, int width_map, float probaMonster, float probaObject,
-                    int maxMonster);
+                    int maxMonster, int maxObject);
 
     virtual ~LevelGeneration();
 
@@ -152,6 +154,7 @@ public:
 
     // Log functions
     void write_log_map();
+
 };
 
 

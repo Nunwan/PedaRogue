@@ -19,6 +19,7 @@ public:
     void ComputeFoV(int x, int y, int range, int levelnumber);
     int to_display(Entity entity);
     Entity monster_on_point(int x, int y, int levelnumber);
+    Entity object_on_point(int x, int y, int levelnumber);
 
     void del_after_block(vector<Transform> &vector, int levelnumber);
 };

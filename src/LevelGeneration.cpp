@@ -11,7 +11,7 @@
 #define max(a,b) a>=b?a:b
 
 LevelGeneration::LevelGeneration(int height_map, int width_map, float probaMonster, float probaObject,
-                                 int maxMonster)
+                                 int maxMonster, int maxObject)
 {
     mProbaDoor = PROBA_DOOR;
     // Create the first tunnelers
@@ -38,6 +38,7 @@ LevelGeneration::LevelGeneration(int height_map, int width_map, float probaMonst
     mProbaMonster = probaMonster;
     mProbaObjects = probaObject;
     mMaxMonsters = maxMonster;
+    mMaxObjects = maxObject;
 }
 
 LevelGeneration::~LevelGeneration()
@@ -266,6 +267,19 @@ void LevelGeneration::push_feature(Rectangle rectangle)
             mToGenerate[y_random][x_random] = MONSTER;
         }
         monsterNb++;
+    }
+    // CREATE Objects
+    int objectsNb = 0;
+    while (objectsNb < mMaxObjects) {
+        if (((float)rand() / RAND_MAX) < mProbaObjects) {
+            int y_random = rand() % (y + h - 2 - (y + 1)) + y + 1;
+            int x_random = rand() % (x + w - 2 - (x + 1)) + x + 1;
+            if (mToGenerate[y_random][x_random] != FLOOR) {
+                continue;
+            }
+            mToGenerate[y_random][x_random] = OBJECT;
+        }
+        objectsNb++;
     }
 
     if (LOG_MAP) {
