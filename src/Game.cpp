@@ -59,6 +59,7 @@ void Game::PlayerCreation()
     mEngine->AddComponent(player, Living());
     RigidBody rigidPlayer = {false, false};
     mEngine->AddComponent(player, rigidPlayer);
+    mEngine->AddComponent(player, Container());
     Stats statPlayer;
     statPlayer.stats["visibility"] = 5;
     mEngine->AddComponent(player, statPlayer);

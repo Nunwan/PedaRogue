@@ -14,6 +14,10 @@ private:
     json mMainJson;
     json mRandomObject;
     std::string mObjectName;
+public:
+    const std::string &getMObjectName() const;
+
+private:
     std::string mObjectGlyph;
     int mObjectColorR, mObjectColorG, mObjectColorB;
 public:

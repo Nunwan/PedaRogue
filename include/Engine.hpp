@@ -14,6 +14,7 @@
 #include "systems/FoVCompute.hpp"
 #include "systems/LightSystem.hpp"
 #include "systems/AttackSystem.hpp"
+#include "systems/PickSystem.hpp"
 #include "Game.hpp"
 #include "ProcessEvents.hpp"
 
@@ -37,6 +38,7 @@ public:
     std::shared_ptr<FoVCompute> mFovComputeSystem;
     std::shared_ptr<LightSystem> mLightSystem;
     std::shared_ptr<AttackSystem> mAttackSystem;
+    std::shared_ptr<PickSystem> mPickSystem;
 private:
     // All the systems which need to be saved
     std::shared_ptr<Window> mWindow;

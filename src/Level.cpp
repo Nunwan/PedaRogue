@@ -231,10 +231,14 @@ void Level::ConfigObject(int x, int y)
         statObject.stats[element.first] = element.second;
     }
     RigidBody entityRigid = {false, false};
+    std::string name = objectParse.getMObjectName();
+    Namable entityName = {name};
     mEngine->AddComponent(entity, entityPos);
     mEngine->AddComponent(entity, entityRender);
     mEngine->AddComponent(entity, statObject);
     mEngine->AddComponent(entity, entityRigid);
+    mEngine->AddComponent(entity, entityName);
+    mEngine->AddComponent(entity, Object());
     mObjects.push_back(entity);
 }
 

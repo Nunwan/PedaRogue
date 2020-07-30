@@ -80,3 +80,9 @@ int ObjectParse::getMObjectColorB() const
 }
 
 
+const std::string &ObjectParse::getMObjectName() const
+{
+    return mObjectName;
+}
+
+

@@ -101,4 +101,17 @@ struct AttackAttempt {
     Entity target;
 };
 
+struct PickAttempt {
+    Entity player;
+    Entity object;
+};
+
+struct Container {
+    std::unordered_map<std::string, std::vector<Entity>> contains;
+};
+
+struct Namable {
+    std::string name;
+};
+
 #endif //PEDAROGUE_COMPONENTS_HPP

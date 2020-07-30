@@ -19,6 +19,11 @@ void process_event(Engine *engine)
                     AttackAttempt attack = {player, other};
                     engine->AddComponent(attackEntity, attack);
                 }
+                else if (object_interaction(engine, event.entity1, event.entity2, player, other)) {
+                    auto pickEntity = engine->CreateEntity();
+                    PickAttempt pick = {player, other};
+                    engine->AddComponent(pickEntity, pick);
+                }
                 break;
             default:
                 break;
@@ -39,5 +44,20 @@ bool living_interaction(Engine* engine, Entity entity1, Entity entity2, Entity &
        other = entity1;
        return true;
    }
+    return false;
+}
+
+bool object_interaction(Engine* engine, Entity entity1, Entity entity2, Entity &player, Entity &other)
+{
+    if (engine->HasComponent<Playable>(entity1) && engine->HasComponent<Object>(entity2)) {
+        player = entity1;
+        other = entity2;
+        return true;
+    }
+    if (engine->HasComponent<Playable>(entity2) && engine->HasComponent<Object>(entity1)) {
+        player = entity2;
+        other = entity1;
+        return true;
+    }
     return false;
 }
