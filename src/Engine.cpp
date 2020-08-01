@@ -162,3 +162,9 @@ bool Engine::check_event()
 {
     return mEvents.size() != 0;
 }
+
+
+void Engine::create_level()
+{
+    mGame->create_level();
+}

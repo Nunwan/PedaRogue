@@ -29,6 +29,12 @@ void PlayerMovement::update(CommandType commandType)
             posEntity.x--;
             MoveEntity.direction = DIR_LEFT;
         }
+        else if (commandType == NextLevelPlayer) {
+            Event uplvl;
+            uplvl.eventtype = NextLevelEvent;
+            uplvl.entity1 = entity;
+            mEngine->push_Event(uplvl);
+        }
         mEngine->mCollisionSystem->check(entity);
 
         // std::cout << posEntity.x << posEntity.y << std::endl;

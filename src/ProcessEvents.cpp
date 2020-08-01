@@ -25,8 +25,15 @@ void process_event(Engine *engine)
                     engine->AddComponent(pickEntity, pick);
                 }
                 break;
-            default:
-                break;
+            /*case NextLevelEvent:
+                auto& playerPos = engine->GetComponent<Transform>(event.entity1);
+                engine->level_disable(engine->GetLevel(playerPos.levelMap));
+                playerPos.levelMap++;
+                engine->create_level();
+                auto& newPos = engine->GetLevel(playerPos.levelMap)->getBeginMap();
+                playerPos.x = newPos.x;
+                playerPos.y = newPos.y;
+                break;*/
         }
     }
 }

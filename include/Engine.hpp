@@ -19,7 +19,8 @@
 #include "ProcessEvents.hpp"
 
 enum EventType {
-    CollisionEvent
+    CollisionEvent,
+    NextLevelEvent
 };
 
 struct Event {
@@ -98,6 +99,8 @@ public:
      * @return              shared_ptr to the level
      */
     std::shared_ptr<Level> GetLevel(int levelnumber);
+
+    void create_level();
 
     /**
      * @return              Window class of the game

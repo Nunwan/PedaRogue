@@ -21,6 +21,7 @@ MonsterParse::MonsterParse()
 
 void MonsterParse::singleRandomMonster()
 {
+    // find a random monster
     int numero = rand() % mMainJson.size();
     auto iterate = mMainJson.begin();
     int i = 0;
@@ -29,18 +30,28 @@ void MonsterParse::singleRandomMonster()
         i++;
     }
     mRandomMonster = *iterate;
+    // Parse stat
     auto stat = iterate->find("stats");
     mMonsterStat.clear();
     for (auto statLoop = stat->begin(); statLoop != stat->end(); statLoop++) {
         mMonsterStat.insert({statLoop.key(), statLoop.value()});
     }
+    // Parse monster name
     mMonsterName = iterate.key();
+    // Parse Glyph
     auto glyph = iterate->find("glyph");
     mMonsterGlyph = glyph.value();
+    // Parse each colors
     auto color = iterate->find("color");
     mMonsterColorR = color.value()[0];
     mMonsterColorG = color.value()[1];
     mMonsterColorB = color.value()[2];
+    // Parse min & max level
+    auto lvl = iterate->find("spawn");
+    auto lvlmin = lvl->find("lvlmin").value();
+    auto lvlmax = lvl->find("lvlmax").value();
+    mMinLvl = lvlmin;
+    mMaxLvl = lvlmax;
 }
 
 
@@ -77,6 +88,18 @@ int MonsterParse::getMMonsterColorG() const
 int MonsterParse::getMMonsterColorB() const
 {
     return mMonsterColorB;
+}
+
+
+int MonsterParse::getMMinLvl() const
+{
+    return mMinLvl;
+}
+
+
+int MonsterParse::getMMaxLvl() const
+{
+    return mMaxLvl;
 }
 
 

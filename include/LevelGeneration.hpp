@@ -150,7 +150,7 @@ public:
      * @brief               Place a player in the map, randomly
      * @param pTransform    The transform of the player
      */
-    void place_player(Transform *pTransform);
+    void place_player(Transform *pTransform, int lvlnumber);
 
     // Log functions
     void write_log_map();

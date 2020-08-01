@@ -17,6 +17,7 @@ private:
 public:
     int mPlayerLocalId;
     const vector<std::shared_ptr<Level>> &getMLevels() const;
+    void create_level();
     std::unique_ptr<Engine> mEngine;
     std::vector<Entity> mPlayers;
 

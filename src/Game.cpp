@@ -66,3 +66,12 @@ void Game::PlayerCreation()
     mPlayerLocalId = mPlayers.size();
     mPlayers.push_back(player);
 }
+
+
+void Game::create_level()
+{
+    auto nblvl = mLevels.size();
+    mLevels.push_back(std::make_shared<Level>(nblvl, mEngine.get()));
+    mLevels[nblvl]->GenerateMap();
+    mEngine->level_enable(mLevels[nblvl]);
+}

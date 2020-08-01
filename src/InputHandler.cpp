@@ -31,6 +31,7 @@ void InputHandler::Init()
     mBindings.insert({TK_DOWN, DownPlayer});
     mBindings.insert({TK_RIGHT, RightPlayer});
     mBindings.insert({TK_LEFT, LeftPlayer});
+    mBindings.insert({TK_F, NextLevelPlayer});
 }
 
 

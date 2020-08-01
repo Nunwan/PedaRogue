@@ -16,6 +16,13 @@ private:
     std::string mMonsterName;
     std::string mMonsterGlyph;
     int mMonsterColorR, mMonsterColorG, mMonsterColorB;
+    std::unordered_map<std::string, int> mMonsterStat;
+    int mMinLvl, mMaxLvl;
+public:
+    int getMMinLvl() const;
+
+    int getMMaxLvl() const;
+
 public:
     int getMMonsterColorR() const;
 
@@ -23,13 +30,8 @@ public:
 
     int getMMonsterColorB() const;
 
-public:
     std::string &getMMonsterGlyph();
 
-private:
-    std::unordered_map<std::string, int> mMonsterStat;
-
-public:
     MonsterParse();
 
     void singleRandomMonster();
@@ -37,9 +39,6 @@ public:
     const std::unordered_map<std::string, int> &getMMonsterStat() const;
 
     std::string getName();
-
-
-
 
 };
 

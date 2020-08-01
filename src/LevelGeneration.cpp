@@ -306,7 +306,7 @@ void LevelGeneration::write_log_map()
 }
 
 
-void LevelGeneration::place_player(Transform *pTransform)
+void LevelGeneration::place_player(Transform *pTransform, int lvlnumber)
 {
     int room_id = 0;
     while (mRectangles[room_id].feature_type != ROOM) {
@@ -315,5 +315,5 @@ void LevelGeneration::place_player(Transform *pTransform)
     auto room = mRectangles[room_id];
     pTransform->x = rand() % (room.w - 2) + room.x + 1;
     pTransform->y = rand() % (room.h - 2) + room.y + 1;
-    pTransform->levelMap = 0;
+    pTransform->levelMap = lvlnumber;
 }

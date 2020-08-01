@@ -2,6 +2,7 @@
   "gobelin méchant": {
     "glyph": "g",
     "color": [255, 0, 0],
+    "spawn" : {"lvlmin" :  0, "lvlmax" :  10},
     "stats": {
       "pv": 10,
       "mana": 10
@@ -10,6 +11,7 @@
   "Super méchant dragon": {
     "glyph": "d",
     "color": [1, 255, 0],
+    "spawn" : {"lvlmin" :  10, "lvlmax" :  20},
     "stats": {
       "pv": 101,
       "mana": 11
