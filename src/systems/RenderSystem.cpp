@@ -27,9 +27,13 @@ void RenderSystem::render()
         if (to_move_y) {
             y_screen -= playerPos.y - (OFFSET_SCREEN*HEIGHT_SCREEN / DIVIDE_SCREEN);
         }
+#if DEBUG_MAP == 0
         if (entityRender.to_display) {
+#endif
             mEngine->getMWindow()->print(x_screen, y_screen, entityRender.glyph, entityRender.color);
+#if DEBUG_MAP == 0
         }
+#endif
     }
 }
 

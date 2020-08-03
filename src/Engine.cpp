@@ -60,6 +60,7 @@ void Engine::initComponents()
     RegisterComponent<PickAttempt>();
     RegisterComponent<Container>();
     RegisterComponent<Namable>();
+    RegisterComponent<Stairway>();
 }
 
 
@@ -154,7 +155,7 @@ Event Engine::pop_event()
 
 Entity &Engine::getEntityat(int x, int y, int levelnumber)
 {
-    return mGame->getMLevels()[levelnumber]->getMMap()[y][x];
+    return GetLevel(levelnumber)->getMMap()[y][x];
 }
 
 
@@ -167,4 +168,5 @@ bool Engine::check_event()
 void Engine::create_level()
 {
     mGame->create_level();
+    mNbLvl++;
 }

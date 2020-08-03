@@ -8,6 +8,8 @@
 #include "Window.hpp"
 #include "core/ECSTypes.hpp"
 
+#define UP 0
+#define DOWN 1
 /**
  * @brief  Render component for display on screen
  *
@@ -95,6 +97,11 @@ struct Light {};
 struct Living {};
 
 struct Object {};
+
+// Direction : UP = 0 Down = 1
+struct Stairway {
+    int direction;
+};
 
 struct AttackAttempt {
     Entity attacker;

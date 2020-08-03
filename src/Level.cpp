@@ -96,6 +96,12 @@ void Level::CreateMap(LevelGeneration& levelGen)
                 ConfigFloor(mMap[i][j], j, i);
                 ConfigObject(j, i);
             }
+            else if (type == STAIRWAY_DOWN) {
+                ConfigStairwayDown(mMap[i][j], j, i);
+            }
+            else if (type == STAIRWAY_UP) {
+                ConfigStairwayUp(mMap[i][j], j, i);
+            }
             else if (type == 6) {
                 auto entity = mMap[i][j];
                 Transform entityPos = {j, i, mLevelnumber};
@@ -243,6 +249,42 @@ void Level::ConfigObject(int x, int y)
     mEngine->AddComponent(entity, entityName);
     mEngine->AddComponent(entity, Object());
     mObjects.push_back(entity);
+}
+
+
+void Level::ConfigStairwayDown(Entity entity, int x, int y)
+{
+    Transform entityPos = {x, y, mLevelnumber};
+    Render entityRender = {"<", mEngine->getMWindow()->color_white, false};
+    mEngine->AddComponent(entity, entityPos);
+    mEngine->AddComponent(entity, entityRender);
+    Stairway stairway = {1};
+    mEngine->AddComponent(entity, stairway);
+    mStairwayDown = entity;
+}
+
+
+void Level::ConfigStairwayUp(Entity entity, int x, int y)
+{
+    Transform entityPos = {x, y, mLevelnumber};
+    Render entityRender = {">", mEngine->getMWindow()->color_white, false};
+    mEngine->AddComponent(entity, entityPos);
+    mEngine->AddComponent(entity, entityRender);
+    Stairway stairway = {0};
+    mEngine->AddComponent(entity, stairway);
+    mStairwayUp = entity;
+}
+
+
+Entity Level::getMStairwayDown() const
+{
+    return mStairwayDown;
+}
+
+
+Entity Level::getMStairwayUp() const
+{
+    return mStairwayUp;
 }
 
 

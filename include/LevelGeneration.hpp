@@ -22,6 +22,7 @@
 
 #define ROOM 0
 #define TUNNEL 1
+#define ROOM_STAIRWAY 2
 
 #define DIR_UP 3
 #define DIR_LEFT 2
@@ -36,6 +37,8 @@
 #define FLOOR_LIGHT 5
 #define MONSTER 7
 #define OBJECT 8
+#define STAIRWAY_DOWN 9
+#define STAIRWAY_UP 10
 
 #define LOG_MAP 0
 
@@ -151,6 +154,8 @@ public:
      * @param pTransform    The transform of the player
      */
     void place_player(Transform *pTransform, int lvlnumber);
+
+    void place_stairway();
 
     // Log functions
     void write_log_map();

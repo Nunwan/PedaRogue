@@ -20,7 +20,8 @@
 
 enum EventType {
     CollisionEvent,
-    NextLevelEvent
+    NextLevelEvent,
+    PreviousLevelEvent
 };
 
 struct Event {
@@ -40,6 +41,8 @@ public:
     std::shared_ptr<LightSystem> mLightSystem;
     std::shared_ptr<AttackSystem> mAttackSystem;
     std::shared_ptr<PickSystem> mPickSystem;
+
+    int mNbLvl = 1;
 private:
     // All the systems which need to be saved
     std::shared_ptr<Window> mWindow;

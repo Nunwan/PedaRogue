@@ -86,6 +86,7 @@ void LevelGeneration::run()
         first_room = &room;
     }
     push_feature(**first_room);
+    delete room;
     int tried = 0;
     while (tried < 1000 && numberRooms < MAX_ROOMS) {
         for (auto& tunneler : mTunnelers) {
@@ -109,6 +110,7 @@ void LevelGeneration::run()
             delete new_feature;
         }
     }
+    place_stairway();
 
 }
 
@@ -309,11 +311,33 @@ void LevelGeneration::write_log_map()
 void LevelGeneration::place_player(Transform *pTransform, int lvlnumber)
 {
     int room_id = 0;
-    while (mRectangles[room_id].feature_type != ROOM) {
+    while (mRectangles[room_id].feature_type != ROOM && mRectangles[room_id].feature_type != ROOM_STAIRWAY) {
         room_id++;
     }
     auto room = mRectangles[room_id];
-    pTransform->x = rand() % (room.w - 2) + room.x + 1;
-    pTransform->y = rand() % (room.h - 2) + room.y + 1;
+    int x_random = rand() % (room.w - 2) + room.x + 1;
+    int y_random = rand() % (room.h - 2) + room.y + 1;
+    pTransform->x = x_random;
+    pTransform->y = y_random;
     pTransform->levelMap = lvlnumber;
+    if (lvlnumber != 0) {
+        mToGenerate[y_random][x_random] = STAIRWAY_DOWN;
+    }
+}
+
+
+void LevelGeneration::place_stairway()
+{
+    int random_room;
+    int max_try = 100;
+    int i = 0;
+    do {
+        i++;
+        random_room = rand() % (mRectangles.size() - 1);
+    } while (i < 100 && mRectangles[random_room].feature_type != ROOM);
+    auto room = mRectangles[random_room];
+    room.feature_type = ROOM_STAIRWAY;
+    int x_random = rand() % (room.w - 2) + room.x + 1;
+    int y_random = rand() % (room.h - 2) + room.y + 1;
+    mToGenerate[y_random][x_random] = STAIRWAY_UP;
 }

@@ -44,6 +44,15 @@ private:
     std::vector<Entity> mMobs;
     Transform beginMap;
 
+    Entity mStairwayUp, mStairwayDown;
+public:
+    Entity getMStairwayUp() const;
+
+public:
+    Entity getMStairwayDown() const;
+
+private:
+
     /**
      * @brief               Take a generation of a level and create the adequate entity
      * @param levelGen      The level generation object which contains map data
@@ -56,6 +65,8 @@ private:
     void ConfigFloorLight(Entity entity, int x, int y);
     void ConfigWallTunnel(Entity entity, int x, int y);
     void ConfigDoor(Entity entity, int x, int y);
+    void ConfigStairwayDown(Entity entity, int x, int y);
+    void ConfigStairwayUp(Entity entity, int x, int y);
     void ConfigMonster(int x, int y);
     void ConfigObject(int x, int y);
 };

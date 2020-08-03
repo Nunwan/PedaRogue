@@ -35,6 +35,12 @@ void PlayerMovement::update(CommandType commandType)
             uplvl.entity1 = entity;
             mEngine->push_Event(uplvl);
         }
+        else if (commandType == PreviousLevelPlayer) {
+            Event downlvl;
+            downlvl.eventtype = PreviousLevelEvent;
+            downlvl.entity1 = entity;
+            mEngine->push_Event(downlvl);
+        }
         mEngine->mCollisionSystem->check(entity);
 
         // std::cout << posEntity.x << posEntity.y << std::endl;

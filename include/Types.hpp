@@ -10,7 +10,8 @@ enum CommandType {
     DownPlayer,
     RightPlayer,
     LeftPlayer,
-    NextLevelPlayer
+    NextLevelPlayer,
+    PreviousLevelPlayer
 };
 
 
