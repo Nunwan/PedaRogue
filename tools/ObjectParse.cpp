@@ -41,6 +41,12 @@ void ObjectParse::singleRandomObject()
     mObjectColorR = color.value()[0];
     mObjectColorG = color.value()[1];
     mObjectColorB = color.value()[2];
+    // Parse min & max level
+    auto lvl = iterate->find("spawn");
+    auto lvlmin = lvl->find("lvlmin").value();
+    auto lvlmax = lvl->find("lvlmax").value();
+    mMinLvl = lvlmin;
+    mMaxLvl = lvlmax;
 }
 
 
@@ -83,6 +89,18 @@ int ObjectParse::getMObjectColorB() const
 const std::string &ObjectParse::getMObjectName() const
 {
     return mObjectName;
+}
+
+
+int ObjectParse::getMMinLvl() const
+{
+    return mMinLvl;
+}
+
+
+int ObjectParse::getMMaxLvl() const
+{
+    return mMaxLvl;
 }
 
 

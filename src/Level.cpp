@@ -11,7 +11,7 @@
 #include "FOVTools.hpp"
 
 #define MONSTERPROBA 0.1f
-#define OBJECTPROBA 0.5f
+#define OBJECTPROBA 0.1f
 
 
 
@@ -218,37 +218,40 @@ void Level::ConfigMonster(int x, int y)
 
 void Level::ConfigObject(int x, int y)
 {
-    auto entity = mEngine->CreateEntity();
     ObjectParse objectParse;
     // We roll a random Object
     objectParse.singleRandomObject();
-    Transform entityPos = {x, y, mLevelnumber};
-    // Get the glyph from json object
-    auto glyph = objectParse.getMObjectGlyph();
-    char* glyphc = new char[glyph.size() + 1];
-    std::copy(glyph.begin(), glyph.end(), glyphc);
-    glyphc[glyph.size()] = '\0';
-    // Get the color
-    int r = objectParse.getMObjectColorR();
-    int g = objectParse.getMObjectColorG();
-    int b = objectParse.getMObjectColorB();
-    Render entityRender = {glyphc, color_from_argb(0xff, r, g, b), false};
-    Stats statObject;
-    auto statToPush = objectParse.getMObjectStat();
-    for (std::pair<std::string, int> element : statToPush)
-    {
-        statObject.stats[element.first] = element.second;
+    auto minlvl = objectParse.getMMinLvl();
+    auto maxlvl = objectParse.getMMaxLvl();
+    if (minlvl <= mLevelnumber && mLevelnumber <= maxlvl) {
+        auto entity = mEngine->CreateEntity();
+        Transform entityPos = {x, y, mLevelnumber};
+        // Get the glyph from json object
+        auto glyph = objectParse.getMObjectGlyph();
+        char *glyphc = new char[glyph.size() + 1];
+        std::copy(glyph.begin(), glyph.end(), glyphc);
+        glyphc[glyph.size()] = '\0';
+        // Get the color
+        int r = objectParse.getMObjectColorR();
+        int g = objectParse.getMObjectColorG();
+        int b = objectParse.getMObjectColorB();
+        Render entityRender = {glyphc, color_from_argb(0xff, r, g, b), false};
+        Stats statObject;
+        auto statToPush = objectParse.getMObjectStat();
+        for (std::pair<std::string, int> element : statToPush) {
+            statObject.stats[element.first] = element.second;
+        }
+        RigidBody entityRigid = {false, false};
+        std::string name = objectParse.getMObjectName();
+        Namable entityName = {name};
+        mEngine->AddComponent(entity, entityPos);
+        mEngine->AddComponent(entity, entityRender);
+        mEngine->AddComponent(entity, statObject);
+        mEngine->AddComponent(entity, entityRigid);
+        mEngine->AddComponent(entity, entityName);
+        mEngine->AddComponent(entity, Object());
+        mObjects.push_back(entity);
     }
-    RigidBody entityRigid = {false, false};
-    std::string name = objectParse.getMObjectName();
-    Namable entityName = {name};
-    mEngine->AddComponent(entity, entityPos);
-    mEngine->AddComponent(entity, entityRender);
-    mEngine->AddComponent(entity, statObject);
-    mEngine->AddComponent(entity, entityRigid);
-    mEngine->AddComponent(entity, entityName);
-    mEngine->AddComponent(entity, Object());
-    mObjects.push_back(entity);
 }
 
 

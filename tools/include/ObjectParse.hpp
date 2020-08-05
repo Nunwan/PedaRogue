@@ -14,26 +14,25 @@ private:
     json mMainJson;
     json mRandomObject;
     std::string mObjectName;
-public:
-    const std::string &getMObjectName() const;
-
-private:
     std::string mObjectGlyph;
     int mObjectColorR, mObjectColorG, mObjectColorB;
+    std::unordered_map<std::string, int> mObjectStat;
+    int mMinLvl, mMaxLvl;
 public:
+    int getMMinLvl() const;
+
+    int getMMaxLvl() const;
+
+public:
+    const std::string &getMObjectName() const;
     int getMObjectColorR() const;
 
     int getMObjectColorG() const;
 
     int getMObjectColorB() const;
 
-public:
     std::string &getMObjectGlyph();
 
-private:
-    std::unordered_map<std::string, int> mObjectStat;
-
-public:
     ObjectParse();
 
     void singleRandomObject();
@@ -41,6 +40,7 @@ public:
     const std::unordered_map<std::string, int> &getMObjectStat() const;
 
     std::string getName();
+
 };
 
 

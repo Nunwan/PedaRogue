@@ -23,7 +23,6 @@ public:
 
     int getMMaxLvl() const;
 
-public:
     int getMMonsterColorR() const;
 
     int getMMonsterColorG() const;
