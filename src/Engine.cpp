@@ -114,14 +114,20 @@ void Engine::level_disable(std::shared_ptr<Level> level)
     Entity** map = level->getMMap();
     for (int i = 0; i < HEIGHT_MAP; ++i) {
         for (int j = 0; j < WIDTH_MAP; ++j) {
-            DelComponent<Map>(map[i][j]);
+            if (HasComponent<Map>(map[i][j])) {
+                DelComponent<Map>(map[i][j]);
+            }
         }
     }
     for (auto const& entity : level->getMObjects()) {
-        DelComponent<NotMap>(entity);
+        if (HasComponent<NotMap>(entity)) {
+            DelComponent<NotMap>(entity);
+        }
     }
     for (auto const& entity : level->getMMobs()) {
-        DelComponent<NotMap>(entity);
+        if (HasComponent<NotMap>(entity)) {
+            DelComponent<NotMap>(entity);
+        }
     }
 
 }

@@ -199,19 +199,19 @@ Rectangle* LevelGeneration::create_possible_feature(int type, Tunnelers &tunnele
     switch (tunneler.direction) {
         case DIR_RIGHT:
             new_feature->x = tunneler.x;
-            new_feature->y = tunneler.y - new_feature->h / 2;
+            new_feature->y = max(0, tunneler.y - new_feature->h / 2);
             break;
         case DIR_DOWN:
             new_feature->y = tunneler.y;
-            new_feature->x = tunneler.x - new_feature->w / 2;
+            new_feature->x = max(0, tunneler.x - new_feature->w / 2);
             break;
         case DIR_LEFT:
-            new_feature->x = tunneler.x - new_feature->w + 1 ;
-            new_feature->y = tunneler.y - new_feature->h / 2;
+            new_feature->x = max(0, tunneler.x - new_feature->w + 1);
+            new_feature->y = max(0, tunneler.y - new_feature->h / 2);
             break;
         case DIR_UP:
-            new_feature->y = tunneler.y - new_feature->h + 1;
-            new_feature->x = tunneler.x - new_feature->w / 2;
+            new_feature->y = max(0, tunneler.y - new_feature->h + 1);
+            new_feature->x = max(0, tunneler.x - new_feature->w / 2);
             break;
         default:
             break;
