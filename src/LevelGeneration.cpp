@@ -178,20 +178,23 @@ int LevelGeneration::choose_feature(Tunnelers &tunneler, Rectangle& ancient_rect
 Rectangle* LevelGeneration::create_possible_feature(int type, Tunnelers &tunneler)
 {
     Rectangle* new_feature = new Rectangle;
+    std::default_random_engine generator;
+    std::uniform_int_distribution<int> random_tunnel(MIN_SIZE_TUNNEL, MAX_SIZE);
+    std::uniform_int_distribution<int> random_room(MIN_SIZE_ROOM, MAX_SIZE);
     new_feature->feature_type = type;
     if (type == TUNNEL) {
         if (tunneler.direction % 2) {
             new_feature->w = tunneler.tunnelWidth;
-            new_feature->h = rand() % (MAX_SIZE - MIN_SIZE_TUNNEL) + MIN_SIZE_TUNNEL;
+            new_feature->h = random_tunnel(generator);
         }
         else {
             new_feature->h = tunneler.tunnelWidth;
-            new_feature->w = rand() % (MAX_SIZE - MIN_SIZE_TUNNEL) + MIN_SIZE_TUNNEL;
+            new_feature->w = random_tunnel(generator);
         }
     }
     else {
-        new_feature->w = rand() % (MAX_SIZE - MIN_SIZE_ROOM) + MIN_SIZE_ROOM;
-        new_feature->h = rand() % (MAX_SIZE - MIN_SIZE_ROOM) + MIN_SIZE_ROOM;
+        new_feature->w = random_room(generator);
+        new_feature->h = random_room(generator);
     }
     switch (tunneler.direction) {
         case DIR_RIGHT:
