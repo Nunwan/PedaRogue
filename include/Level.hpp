@@ -25,9 +25,14 @@ public:
 
     Entity **getMMap() const;
 
-    virtual ~Level();
+    Entity getMStairwayUp() const;
 
+    Entity getMStairwayDown() const;
+
+
+    // Constructors & Getters
     Level(int levelnumber, Engine* engine);
+    virtual ~Level();
 
     /**
      * @brief       generate the map with a random generation which will create a new map
@@ -35,23 +40,15 @@ public:
     void GenerateMap();
 
 
-
 private:
     Engine* mEngine;
     int mLevelnumber;
     Entity** mMap;
+    int** mToGenerate;
     std::vector<Entity> mObjects;
     std::vector<Entity> mMobs;
     Transform beginMap;
-
     Entity mStairwayUp, mStairwayDown;
-public:
-    Entity getMStairwayUp() const;
-
-public:
-    Entity getMStairwayDown() const;
-
-private:
 
     /**
      * @brief               Take a generation of a level and create the adequate entity

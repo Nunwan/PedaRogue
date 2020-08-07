@@ -50,5 +50,5 @@ void LightSystem::compute()
             auto &lightStat = mEngine->GetComponent<Stats>(light);
             ComputeFoV(lightPos.x, lightPos.y, lightStat.stats["visibility"], lightPos.levelMap);
         }
-    };
+    }
 }

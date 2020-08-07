@@ -11,7 +11,7 @@
 #define DIVIDE_SCREEN 4
 #define OFFSET_SCREEN 3
 
-#define DEBUG_MAP 1
+#define DEBUG_MAP 0
 
 class RenderSystem : public System
 {

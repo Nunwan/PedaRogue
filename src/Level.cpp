@@ -63,6 +63,7 @@ void Level::GenerateMap()
     auto levelGen = LevelGeneration(HEIGHT_MAP, WIDTH_MAP, MONSTERPROBA, OBJECTPROBA, 5, 5);
     levelGen.run();
     levelGen.place_player(&beginMap, mLevelnumber);
+    mToGenerate = levelGen.getMToGenerate();
     CreateMap(levelGen);
 }
 
@@ -161,6 +162,17 @@ void Level::ConfigDoor(Entity entity, int x, int y)
 const Transform &Level::getBeginMap() const
 {
     return beginMap;
+}
+
+Entity Level::getMStairwayDown() const
+{
+    return mStairwayDown;
+}
+
+
+Entity Level::getMStairwayUp() const
+{
+    return mStairwayUp;
 }
 
 
@@ -279,15 +291,5 @@ void Level::ConfigStairwayUp(Entity entity, int x, int y)
 }
 
 
-Entity Level::getMStairwayDown() const
-{
-    return mStairwayDown;
-}
-
-
-Entity Level::getMStairwayUp() const
-{
-    return mStairwayUp;
-}
 
 
