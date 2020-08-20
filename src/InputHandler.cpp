@@ -36,7 +36,7 @@ void InputHandler::Init()
 }
 
 
-void InputHandler::go_back(Entity entity)
+void InputHandler::Igo_back(Entity entity)
 {
     mPlayerMovement->go_back(entity);
 }

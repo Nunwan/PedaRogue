@@ -11,8 +11,8 @@ void process_event(Engine *engine)
         auto event = engine->pop_event();
         switch (event.eventtype) {
             case CollisionEvent: {
-                engine->mInputHandler->go_back(event.entity1);
-                engine->mInputHandler->go_back(event.entity2);
+                engine->mInputHandler->Igo_back(event.entity1);
+                engine->mInputHandler->Igo_back(event.entity2);
                 Entity player, other;
                 if (living_interaction(engine, event.entity1, event.entity2, player, other)) {
                     auto attackEntity = engine->CreateEntity();

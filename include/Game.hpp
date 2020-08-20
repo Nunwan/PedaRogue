@@ -15,23 +15,39 @@ private:
     std::vector<std::shared_ptr<Level>> mLevels;
 
 public:
+    Game();
+
     int mPlayerLocalId;
-    const vector<std::shared_ptr<Level>> &getMLevels() const;
-    void create_level();
     std::unique_ptr<Engine> mEngine;
     std::vector<Entity> mPlayers;
 
+    /**
+     * @brief   Initialize the engine core and the first level : call PlayerCreation at the end
+     */
     void Init();
-    void PlayerCreation();
 
-    Game();
+    /**
+     * @brief   Create a level and save it in mLevels
+     */
+    void create_level();
+
+    /**
+     * @brief   Create the player of this client with all the components needed
+     */
+    void PlayerCreation();
 
     /**
      * @brief       Main game loop
      */
     void run();
 
+    /**
+     * @brief       The closing function of the game : last function to be called
+     */
     void close();
+
+    // Getters
+    const vector<std::shared_ptr<Level>> &getMLevels() const;
 };
 
 

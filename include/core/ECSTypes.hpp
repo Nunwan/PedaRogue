@@ -17,7 +17,13 @@ using ComponentType = uint8_t;
 // Limit bitset length to 256 bc ComponentType is on 8 bits
 using Signature = std::bitset<256>;
 
+// Forward declaration of engine for the system class
 class Engine;
+/**
+ * @brief       Main class for a system : save a callback to the engine and all the entities that can be related
+ *              to the system
+ *
+ */
 class System
 {
 public:

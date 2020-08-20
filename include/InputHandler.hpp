@@ -23,7 +23,12 @@ public:
      */
     int process_key(EventWin event);
 
-    void go_back(Entity entity);
+    /**
+     * @brief           Interface between InputHandler and PlayerMovement : enable
+     * @param entity
+     */
+     // TODO Change this utilization
+    void Igo_back(Entity entity);
 
 
 

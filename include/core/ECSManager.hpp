@@ -82,6 +82,12 @@ public:
     }
 
     template<typename T>
+    /**
+     * @brief           Return if the entity has a component of type T
+     * @tparam T        Type of the component to verify
+     * @param entity    Entity to verify
+     * @return          A booleen which indicates if the component exists for this entity
+     */
     bool HasComponent(Entity entity)
     {
         auto entitySignature = mEntityManager->getSignature(entity);
@@ -121,6 +127,11 @@ public:
 
 
     template<typename Tsys, typename Tcomp>
+    /**
+     * @brief           Enable the user to indicate which Components are needed by a system
+     * @tparam Tsys     The type of the System
+     * @tparam Tcomp    The type of the components needed
+     */
     void UseComponent()
     {
         Signature sysSignature = mSystemManager->GetSignature<Tsys>();

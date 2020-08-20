@@ -61,6 +61,7 @@ void Engine::initComponents()
     RegisterComponent<Container>();
     RegisterComponent<Namable>();
     RegisterComponent<Stairway>();
+    RegisterComponent<BackAttempt>();
 }
 
 

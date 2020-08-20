@@ -113,6 +113,10 @@ struct PickAttempt {
     Entity object;
 };
 
+struct BackAttempt {
+    Entity to_move;
+};
+
 struct Container {
     std::unordered_map<std::string, std::vector<Entity>> contains;
 };
