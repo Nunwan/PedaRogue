@@ -35,7 +35,7 @@ bool LightSystem::nottransparent_between(vector<Transform> &pointLine, int level
     }
     return false;
 }
-void LightSystem::compute()
+void LightSystem::update()
 {
     auto& player = mEngine->GetPlayer();
     auto& playerPos = mEngine->GetComponent<Transform>(player);

@@ -12,7 +12,7 @@
 class CollisionSystem : public System
 {
 public:
-    void update();
+    // void update() override;
     bool check(Entity entity);
 
 };

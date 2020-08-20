@@ -5,6 +5,7 @@
 #ifndef PEDAROGUE_ENGINE_HPP
 #define PEDAROGUE_ENGINE_HPP
 #include <memory>
+#include <map>
 #include "core/ECSManager.hpp"
 #include "Components.hpp"
 #include "systems/RenderSystem.hpp"
@@ -34,14 +35,9 @@ class Game;
 class Engine : public ECSManager
 {
 public:
-    std::shared_ptr<RenderMapSystem> mRenderMapSystem;
-    std::shared_ptr<RenderOthersSystem> mRenderOthersSystem;
+    std::map<std::string, std::shared_ptr<System>> mUpdateSystems;
+    std::map<std::string, std::shared_ptr<System>> mRenderSystems;
     std::shared_ptr<InputHandler> mInputHandler;
-    std::shared_ptr<FoVCompute> mFovComputeSystem;
-    std::shared_ptr<LightSystem> mLightSystem;
-    std::shared_ptr<AttackSystem> mAttackSystem;
-    std::shared_ptr<PickSystem> mPickSystem;
-
     int mNbLvl = 1;
 private:
     // All the systems which need to be saved
@@ -120,7 +116,7 @@ public:
     /**
      * @brief               return a shared_ptr to the collision system for the movement system
      */
-    std::shared_ptr<CollisionSystem> mCollisionSystem;
+    std::shared_ptr<CollisionSystem> getCollisionSystem();
 
     Entity& getEntityat(int x, int y, int levelnumber);
 

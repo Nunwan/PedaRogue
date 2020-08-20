@@ -14,29 +14,29 @@ Engine::Engine(Game* game)
 
 void Engine::initSystems()
 {
-    mRenderMapSystem = RegisterSystem<RenderMapSystem>(this);
+    mRenderSystems.insert({typeid(RenderMapSystem).name(), RegisterSystem<RenderMapSystem>(this)});
     UseComponent<RenderMapSystem, Map>();
     UseComponent<RenderMapSystem, Transform>();
     UseComponent<RenderMapSystem, Render>();
-    mRenderOthersSystem = RegisterSystem<RenderOthersSystem>(this);
+    mRenderSystems.insert({typeid(RenderOthersSystem).name(), RegisterSystem<RenderOthersSystem>(this)});
     UseComponent<RenderOthersSystem, Transform>();
     UseComponent<RenderOthersSystem, Render>();
     UseComponent<RenderOthersSystem, NotMap>();
     mInputHandler = RegisterSystem<InputHandler>(this);
-    mCollisionSystem = RegisterSystem<CollisionSystem>(this);
+    mUpdateSystems.insert({typeid(CollisionSystem).name(), RegisterSystem<CollisionSystem>(this)});
     UseComponent<CollisionSystem, Transform>();
     UseComponent<CollisionSystem, RigidBody>();
-    mFovComputeSystem = RegisterSystem<FoVCompute>(this);
+    mUpdateSystems.insert({typeid(FoVCompute).name(), RegisterSystem<FoVCompute>(this)});
     UseComponent<FoVCompute, Transform>();
     UseComponent<FoVCompute, Playable>();
     UseComponent<FoVCompute, Stats>();
-    mLightSystem = RegisterSystem<LightSystem>(this);
+    mUpdateSystems.insert({typeid(LightSystem).name(), RegisterSystem<LightSystem>(this)});
     UseComponent<LightSystem, Transform>();
     UseComponent<LightSystem, Light>();
     UseComponent<LightSystem, Stats>();
-    mAttackSystem = RegisterSystem<AttackSystem>(this);
+    mUpdateSystems.insert({typeid(AttackSystem).name(), RegisterSystem<AttackSystem>(this)});
     UseComponent<AttackSystem, AttackAttempt>();
-    mPickSystem = RegisterSystem<PickSystem>(this);
+    mUpdateSystems.insert({typeid(PickSystem).name(), RegisterSystem<PickSystem>(this)});
     UseComponent<PickSystem, PickAttempt>();
     mInputHandler->Init();
 
@@ -68,8 +68,9 @@ void Engine::initComponents()
 void Engine::render()
 {
     mWindow->clear();
-    mRenderMapSystem->render();
-    mRenderOthersSystem->render();
+    for (const auto& system : mRenderSystems) {
+        system.second->render();
+    }
     mWindow->refresh();
 }
 
@@ -79,10 +80,9 @@ int Engine::update()
     mWindow->nextEvent(0, true);
     int finish = mInputHandler->process_key(mWindow->event);
     process_event(this);
-    mAttackSystem->update();
-    mPickSystem->update();
-    mFovComputeSystem->compute();
-    mLightSystem->compute();
+    for (const auto& system : mUpdateSystems) {
+        system.second->update();
+    }
     return finish;
 }
 
@@ -176,4 +176,10 @@ void Engine::create_level()
 {
     mGame->create_level();
     mNbLvl++;
+}
+
+
+std::shared_ptr<CollisionSystem> Engine::getCollisionSystem()
+{
+    return std::static_pointer_cast<CollisionSystem>(mUpdateSystems[typeid(CollisionSystem).name()]);
 }

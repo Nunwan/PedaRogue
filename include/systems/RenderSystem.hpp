@@ -16,7 +16,7 @@
 class RenderSystem : public System
 {
 public:
-    void render();
+    void render() override;
 };
 
 class RenderMapSystem : public RenderSystem

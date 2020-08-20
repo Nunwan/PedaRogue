@@ -12,7 +12,7 @@
 class PickSystem : public System
 {
 public:
-    void update();
+    void update() override;
 
 };
 

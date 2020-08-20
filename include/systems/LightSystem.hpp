@@ -10,7 +10,7 @@
 class LightSystem : public FoVCompute
 {
 public:
-    void compute() override;
+    void update() override;
 private:
     bool nottransparent_between(vector<Transform> &pointLine, int levelnumber);
 };

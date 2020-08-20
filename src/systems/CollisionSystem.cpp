@@ -6,7 +6,8 @@
 #include "Engine.hpp"
 
 
-void CollisionSystem::update()
+/* void CollisionSystem::update()
+
 {
     for (auto& entity : mEntities) {
         auto& entityPos = mEngine->GetComponent<Transform>(entity);
@@ -22,7 +23,7 @@ void CollisionSystem::update()
             }
         }
     }
-}
+}*/
 
 
 bool CollisionSystem::check(Entity entity)

@@ -27,6 +27,8 @@ class Engine;
 class System
 {
 public:
+
+
     Engine* mEngine;
     std::set<Entity> mEntities;
     std::set<Entity> &getEntities()
@@ -37,6 +39,9 @@ public:
     {
         mEngine = engine;
     }
+
+    virtual void update() {};
+    virtual void render() {};
 
 };
 

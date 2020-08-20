@@ -18,7 +18,7 @@ public:
     }
 };
 
-void FoVCompute::compute()
+void FoVCompute::update()
 {
     for (auto const& player : mEntities) {
         auto& playerPos = mEngine->GetComponent<Transform>(player);

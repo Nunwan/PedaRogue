@@ -41,7 +41,7 @@ void PlayerMovement::update(CommandType commandType)
             downlvl.entity1 = entity;
             mEngine->push_Event(downlvl);
         }
-        mEngine->mCollisionSystem->check(entity);
+        mEngine->getCollisionSystem()->check(entity);
 
         // std::cout << posEntity.x << posEntity.y << std::endl;
     }
