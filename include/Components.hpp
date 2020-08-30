@@ -94,33 +94,58 @@ struct Stats {
  */
 struct Light {};
 
+/**
+ * @brief   Component indicating if an entity is a living thing : monster for example
+ */
 struct Living {};
 
+/**
+ * @brief   Component indicating that something is an object
+ */
 struct Object {};
 
-// Direction : UP = 0 Down = 1
+/**
+ * @brief   Component for a stairway with the direction 0 for UP and 1 for down
+ */
 struct Stairway {
     int direction;
 };
 
+// Attempts
+
+/**
+ * @brief   Component for not-rendered entity which describes the attempt of an attack between attacker and target
+ */
 struct AttackAttempt {
     Entity attacker;
     Entity target;
 };
 
+/**
+ * @brief   Component for not-rendered entity which describes the attempt of picking the object by the player
+ */
 struct PickAttempt {
     Entity player;
     Entity object;
 };
 
+/**
+ * @brief   Component for not-rendered entity which describes the attempt of moving back an entity
+ */
 struct BackAttempt {
     Entity to_move;
 };
 
+/**
+ * @brief   Component describing the possibility of being a containers of entity : inventory for exemple
+ */
 struct Container {
     std::unordered_map<std::string, std::vector<Entity>> contains;
 };
 
+/**
+ * @brief   Component for giving a name to an entity
+ */
 struct Namable {
     std::string name;
 };
