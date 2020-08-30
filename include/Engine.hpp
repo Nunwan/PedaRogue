@@ -15,6 +15,7 @@
 #include "systems/FoVCompute.hpp"
 #include "systems/LightSystem.hpp"
 #include "systems/AttackSystem.hpp"
+#include "systems/BackSystem.hpp"
 #include "systems/PickSystem.hpp"
 #include "Game.hpp"
 #include "ProcessEvents.hpp"

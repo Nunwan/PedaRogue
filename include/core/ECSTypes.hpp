@@ -28,7 +28,6 @@ class System
 {
 public:
 
-
     Engine* mEngine;
     std::set<Entity> mEntities;
     std::set<Entity> &getEntities()

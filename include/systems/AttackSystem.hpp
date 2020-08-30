@@ -13,8 +13,6 @@ class AttackSystem : public System
 {
 public:
     void update() override;
-
-
 };
 
 

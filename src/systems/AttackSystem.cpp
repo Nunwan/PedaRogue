@@ -10,6 +10,7 @@
 void AttackSystem::update()
 {
     bool b = false;
+    // TODO Change this barbaric version
     for (auto it = mEntities.begin(); it != mEntities.end(); ++it) {
         auto entity = *it;
         auto& attack = mEngine->GetComponent<AttackAttempt>(entity);

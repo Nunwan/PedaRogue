@@ -26,6 +26,8 @@ void Engine::initSystems()
     mUpdateSystems.insert({typeid(CollisionSystem).name(), RegisterSystem<CollisionSystem>(this)});
     UseComponent<CollisionSystem, Transform>();
     UseComponent<CollisionSystem, RigidBody>();
+    mUpdateSystems.insert({typeid(BackSystem).name(), RegisterSystem<BackSystem>(this)});
+    UseComponent<BackSystem, BackAttempt>();
     mUpdateSystems.insert({typeid(FoVCompute).name(), RegisterSystem<FoVCompute>(this)});
     UseComponent<FoVCompute, Transform>();
     UseComponent<FoVCompute, Playable>();
