@@ -93,6 +93,7 @@ void ComponentPool<T>::link(Entity entity, T component)
     sparse.insert({entity, packed.size()});
     reverseSparse.insert({packed.size(), entity});
     packed.push_back(component);
+    assert(entity == reverseSparse[sparse[entity]]);
 }
 
 
@@ -106,7 +107,8 @@ void ComponentPool<T>::unlink(Entity entity)
     to_unlink = packed[sparse[entity]];
     sparse[entity_back] = sparse[entity];
     packed[sparse[entity]] = packed.back();
-    packed.back() = to_unlink;
+    reverseSparse[sparse[entity_back]] = entity_back;
+    reverseSparse.erase(packed.size() - 1);
     packed.pop_back();
     sparse.erase(entity);
 }
@@ -116,6 +118,7 @@ template<typename T>
 T& ComponentPool<T>::Get(Entity entity)
 {
     assert(sparse.count(entity));
+    assert(packed.size() > sparse[entity]);
     return packed[sparse[entity]];
 }
 
