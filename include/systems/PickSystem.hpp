@@ -12,6 +12,9 @@
 class PickSystem : public System
 {
 public:
+    /**
+     * @brief       Update the game with all the action of picking an object
+     */
     void update() override;
 
 };

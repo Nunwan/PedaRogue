@@ -12,6 +12,9 @@
 class BackSystem : public System
 {
 public:
+    /**
+     * @brief           Treat all the back attempt in the game which enable the collision system to restablish reality
+     */
     void update() override;
 };
 

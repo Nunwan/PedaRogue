@@ -36,8 +36,19 @@ class Game;
 class Engine : public ECSManager
 {
 public:
+    /**
+     * @brief   Systems which have to be updated in update routine
+     */
     std::map<std::string, std::shared_ptr<System>> mUpdateSystems;
+
+    /**
+     * @brief   Systems which enable the rendering part of the game
+     */
     std::map<std::string, std::shared_ptr<System>> mRenderSystems;
+
+    /**
+     * @brief   Input handler system which is particular and so does not belong to update or render
+     */
     std::shared_ptr<InputHandler> mInputHandler;
     int mNbLvl = 1;
 private:
@@ -46,6 +57,9 @@ private:
     // Callback pointers of game which create the engine
     Game* mGame;
 
+    /**
+     * Queue of event cleared and treated each turn in the game loop
+     */
     std::queue<Event> mEvents;
 
 
@@ -92,6 +106,11 @@ public:
     void level_disable(std::shared_ptr<Level> level);
 
 
+    /**
+     * @brief           Create a new level randomly
+     */
+    void create_level();
+
     // Getters
     /**
      * @brief               Return pointer to the selected level
@@ -100,7 +119,6 @@ public:
      */
     std::shared_ptr<Level> GetLevel(int levelnumber);
 
-    void create_level();
 
     /**
      * @return              Window class of the game
@@ -119,14 +137,33 @@ public:
      */
     std::shared_ptr<CollisionSystem> getCollisionSystem();
 
+    /**
+     * @brief                   Return a reference for the entity at the given coordinates
+     * @param x                 x coordinate
+     * @param y                 y coordinate
+     * @param levelnumber       the level where the entity is
+     * @return                  The entity at those coordinates
+     */
     Entity& getEntityat(int x, int y, int levelnumber);
 
 
     // Events
+    /**
+     * @brief           Push the event in the mEvents queue
+     * @param event     Event to be pushed
+     */
     void push_Event(Event event);
 
+    /**
+     * @brief           Return and delete the next event to be processed in the queue
+     * @return          The event to be processed
+     */
     Event pop_event();
 
+    /**
+     * @brief           Check if there are events to be processed
+     * @return          The boolean 1 if there is an event to be processed 0 if not
+     */
     bool check_event();
 };
 

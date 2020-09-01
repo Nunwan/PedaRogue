@@ -155,6 +155,9 @@ public:
      */
     void place_player(Transform *pTransform, int lvlnumber);
 
+    /**
+     * @brief               Place randomly a stairway in the map in order to go in the next lvl
+     */
     void place_stairway();
 
     // Log functions

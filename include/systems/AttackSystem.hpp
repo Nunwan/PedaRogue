@@ -12,6 +12,9 @@
 class AttackSystem : public System
 {
 public:
+    /**
+     * @brief           Treat all the attacks in the game at each turn
+     */
     void update() override;
 };
 

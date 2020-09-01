@@ -23,14 +23,6 @@ public:
      */
     int process_key(EventWin event);
 
-    /**
-     * @brief           Interface between InputHandler and PlayerMovement : enable
-     * @param entity
-     */
-     // TODO Change this utilization
-    void Igo_back(Entity entity);
-
-
 
 private:
     std::shared_ptr<PlayerMovement> mPlayerMovement;

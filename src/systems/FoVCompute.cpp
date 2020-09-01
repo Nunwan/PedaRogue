@@ -95,11 +95,11 @@ int FoVCompute::to_display(Entity entity)
 }
 
 
-void FoVCompute::del_after_block(vector<Transform> &pointLine, int levelnumber)
+void FoVCompute::del_after_block(vector<Transform> &line, int levelnumber)
 {
     int i = 0;
-    while (i < pointLine.size()) {
-        auto point = pointLine[i];
+    while (i < line.size()) {
+        auto point = line[i];
         auto map = mEngine->GetLevel(levelnumber)->getMMap();
         Entity entity = map[point.y][point.x];
         if (mEngine->HasComponent<RigidBody>(entity)) {
@@ -110,8 +110,8 @@ void FoVCompute::del_after_block(vector<Transform> &pointLine, int levelnumber)
         }
         i++;
     }
-    if (i < pointLine.size()) {
-        pointLine.resize(i+1);
+    if (i < line.size()) {
+        line.resize(i + 1);
     }
 }
 

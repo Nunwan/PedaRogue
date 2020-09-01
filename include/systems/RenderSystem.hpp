@@ -16,6 +16,9 @@
 class RenderSystem : public System
 {
 public:
+    /**
+     * Loop through all the render entity and display them if it has to be
+     */
     void render() override;
 };
 

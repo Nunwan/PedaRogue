@@ -34,11 +34,3 @@ void InputHandler::Init()
     mBindings.insert({TK_F, NextLevelPlayer});
     mBindings.insert({TK_G, PreviousLevelPlayer});
 }
-
-
-void InputHandler::Igo_back(Entity entity)
-{
-    mPlayerMovement->go_back(entity);
-}
-
-

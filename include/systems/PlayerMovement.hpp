@@ -19,13 +19,6 @@ public:
      * @param commandType       indication of the command given by inputhandler
      */
     void update(CommandType commandType);
-
-    /**
-     * @brief                   Do the opposing movement of the previous one in case of collision
-     * @param to_move           The entity which has to be moved back
-     */
-    void go_back(Entity to_move);
-
 };
 
 

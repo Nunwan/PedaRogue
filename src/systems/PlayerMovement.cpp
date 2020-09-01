@@ -46,29 +46,3 @@ void PlayerMovement::update(CommandType commandType)
         // std::cout << posEntity.x << posEntity.y << std::endl;
     }
 }
-
-
-void PlayerMovement::go_back(Entity to_move)
-{
-    if (mEngine->HasComponent<Moveable>(to_move)) {
-        auto& MoveEntity = mEngine->GetComponent<Moveable>(to_move);
-        auto& posEntity = mEngine->GetComponent<Transform>(to_move);
-        switch (MoveEntity.direction) {
-            case DIR_UP:
-                posEntity.y++;
-                break;
-            case DIR_DOWN:
-                posEntity.y--;
-                break;
-            case DIR_LEFT:
-                posEntity.x++;
-                break;
-            case DIR_RIGHT:
-                posEntity.x--;
-                break;
-            default:
-                break;
-        }
-    }
-
-}

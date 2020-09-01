@@ -15,9 +15,4 @@ enum CommandType {
 };
 
 
-
-
-
-
-
 #endif //PEDAROGUE_TYPES_HPP
