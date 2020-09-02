@@ -4,6 +4,7 @@
 
 #ifndef PEDAROGUE_TYPES_HPP
 #define PEDAROGUE_TYPES_HPP
+#include <string>
 
 enum CommandType {
     UpPlayer,
@@ -12,6 +13,12 @@ enum CommandType {
     LeftPlayer,
     NextLevelPlayer,
     PreviousLevelPlayer
+};
+
+
+struct Message {
+    std::string text;
+    int r, g, b;
 };
 
 

@@ -7,12 +7,15 @@
 
 void RenderSystem::render()
 {
+    mEngine->getMWindow()->select_win(WIN_JEU);
     auto& player = mEngine->GetPlayer();
     // We know player has a Transform component so it is not necessary to check
     auto& playerPos = mEngine->GetComponent<Transform>(player);
     // Variables for the camera
-    int quotient_divide_x = playerPos.x / (WIDTH_SCREEN/DIVIDE_SCREEN);
-    int quotient_divide_y = playerPos.y / (HEIGHT_SCREEN/DIVIDE_SCREEN);
+    int width_screen_game = 2 * WIDTH_SCREEN / 3;
+    int height_screen_game = 4 * HEIGHT_SCREEN/5;
+    int quotient_divide_x = playerPos.x / (width_screen_game/DIVIDE_SCREEN);
+    int quotient_divide_y = playerPos.y / (height_screen_game/DIVIDE_SCREEN);
     bool to_move_x = quotient_divide_x >= OFFSET_SCREEN;
     bool to_move_y = quotient_divide_y >= OFFSET_SCREEN;
     for (auto const &entity : mEntities) {
@@ -22,13 +25,13 @@ void RenderSystem::render()
         int y_screen = entityPos.y;
         // camera moving
         if (to_move_x) {
-            x_screen -= playerPos.x - (OFFSET_SCREEN*WIDTH_SCREEN / DIVIDE_SCREEN);
+            x_screen -= playerPos.x - (OFFSET_SCREEN*width_screen_game / DIVIDE_SCREEN);
         }
         if (to_move_y) {
-            y_screen -= playerPos.y - (OFFSET_SCREEN*HEIGHT_SCREEN / DIVIDE_SCREEN);
+            y_screen -= playerPos.y - (OFFSET_SCREEN*height_screen_game / DIVIDE_SCREEN);
         }
 #if DEBUG_MAP == 0
-        if (entityRender.to_display) {
+        if (entityRender.to_display && x_screen < width_screen_game && y_screen < height_screen_game && x_screen >= 0 && y_screen >= 0) {
 #endif
             mEngine->getMWindow()->print(x_screen, y_screen, entityRender.glyph, entityRender.color);
 #if DEBUG_MAP == 0

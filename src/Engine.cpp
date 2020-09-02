@@ -8,6 +8,7 @@
 Engine::Engine(Game* game)
 {
     mWindow = std::make_shared<Window>();
+    mUI = UI(mWindow);
     mGame = game;
 }
 
@@ -69,6 +70,7 @@ void Engine::initComponents()
 
 void Engine::render()
 {
+    mWindow->select_win(WIN_JEU);
     mWindow->clear();
     for (const auto& system : mRenderSystems) {
         system.second->render();
@@ -79,6 +81,8 @@ void Engine::render()
 
 int Engine::update()
 {
+    mWindow->select_win(WIN_MSG);
+    mWindow->clear();
     mWindow->nextEvent(0, true);
     int finish = mInputHandler->process_key(mWindow->event);
     process_event(this);

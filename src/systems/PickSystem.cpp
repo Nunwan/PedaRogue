@@ -25,6 +25,8 @@ void PickSystem::update()
             objvector.push_back(object);
             containerPlayer.contains.insert({nameObject.name, objvector});
         }
+        Message pickMessage = {"You picked a " + nameObject.name, 0xff, 0xff, 0xff};
+        mEngine->mUI.push_message(pickMessage);
         mEngine->DelComponent<PickAttempt>(entity);
         b = true;
         break;

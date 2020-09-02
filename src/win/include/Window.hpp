@@ -10,9 +10,9 @@
 /* Macro to manipulate principals win. */
 
 #define WIN_JEU 0
-#define WIN_INFO 1
-#define WIN_MSG 2
-#define WIN_STATUS 3
+#define WIN_INFO 3
+#define WIN_MSG 1
+#define WIN_STATUS 2
 
 #define HEIGHT_SCREEN 40
 #define WIDTH_SCREEN 120
@@ -31,10 +31,12 @@ struct EventWin{
     int key;
 };
 
+struct Position {
+    int x;
+    int y;
+};
 
 class Window {
-private:
-
 public:
         struct EventWin event;
         Window();
@@ -44,11 +46,16 @@ public:
         void print(int x, int y, char* glyph, color_t color);
         void refresh();
 
+        void select_win(int win);
 
         color_t color_blue =  color_from_argb(0xff, 0, 0, 0xff);
         color_t color_white = color_from_name("white");
         color_t color_red = color_from_argb(0xff,  0xff, 0, 0);
         color_t color_yellow = color_from_argb(0xff,  0xff, 0xff, 0);
+
+private:
+        std::vector<Position> mOffset;
+        int mSelectedWin;
 
 };
 

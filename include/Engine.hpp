@@ -19,6 +19,7 @@
 #include "systems/PickSystem.hpp"
 #include "Game.hpp"
 #include "ProcessEvents.hpp"
+#include "UI.hpp"
 
 enum EventType {
     CollisionEvent,
@@ -50,6 +51,8 @@ public:
      * @brief   Input handler system which is particular and so does not belong to update or render
      */
     std::shared_ptr<InputHandler> mInputHandler;
+
+    UI mUI;
     int mNbLvl = 1;
 private:
     // All the systems which need to be saved
