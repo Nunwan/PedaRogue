@@ -16,6 +16,10 @@ void AttackSystem::update()
         auto& attack = mEngine->GetComponent<AttackAttempt>(entity);
         auto& attacker = attack.attacker;
         auto& target = attack.target;
+        if (mEngine->HasComponent<Stats>(attacker)) {
+            auto& attackerStat = mEngine->GetComponent<Stats>(attacker);
+            attackerStat.stats["pv"] -= 1;
+        }
         mEngine->DelComponent<AttackAttempt>(entity);
         if (mEngine->HasComponent<Living>(target)) {
             mEngine->DestroyEntity(target);

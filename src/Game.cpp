@@ -62,6 +62,7 @@ void Game::PlayerCreation()
     mEngine->AddComponent(player, Container());
     Stats statPlayer;
     statPlayer.stats["visibility"] = 5;
+    statPlayer.stats["pv"] = 11;
     mEngine->AddComponent(player, statPlayer);
     mPlayerLocalId = mPlayers.size();
     mPlayers.push_back(player);

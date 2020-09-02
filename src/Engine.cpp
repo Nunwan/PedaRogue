@@ -76,6 +76,9 @@ void Engine::render()
         system.second->render();
     }
     mWindow->refresh();
+    // Render status bar
+    auto& playerStat = GetComponent<Stats>(GetPlayer());
+    mUI.render_status_bar(playerStat);
 }
 
 
