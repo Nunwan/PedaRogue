@@ -14,6 +14,8 @@ class UI
 {
 private:
     std::shared_ptr<Window> mWindow;
+    std::string currentMessage;
+    bool to_clear;
 public:
     UI() = default;
     UI(std::shared_ptr<Window> win);
@@ -25,6 +27,8 @@ public:
     void push_message(Message message);
 
     void render_status_bar(Stats playerStat);
+
+    void newTurn();
 
 
 };

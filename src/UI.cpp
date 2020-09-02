@@ -16,8 +16,13 @@ void UI::push_message(Message message)
 {
     mWindow->select_win(WIN_MSG);
     auto color_message = color_from_argb(0xff, message.r, message.g, message.b);
-    mWindow->clear();
-    char* cstr = &message.text[0];
+    if (to_clear || currentMessage.length() > 2 * WIDTH_SCREEN / 3) {
+        mWindow->clear();
+        currentMessage.clear();
+        to_clear = false;
+    }
+    currentMessage = currentMessage + " " + message.text;
+    char* cstr = &currentMessage[0];
     mWindow->print(0, 0, cstr, color_message);
     mWindow->refresh();
 }
@@ -46,6 +51,12 @@ void UI::render_status_bar(Stats playerStat)
     mWindow->print(11, 0, "Mana : ", mWindow->color_white);
     mWindow->print(18, 0, mana_c, color_from_argb(0xff, r_mana, g_mana, b_mana));
     mWindow->refresh();
+}
+
+
+void UI::newTurn()
+{
+    to_clear = true;
 }
 
 

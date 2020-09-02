@@ -218,11 +218,13 @@ void Level::ConfigMonster(int x, int y)
         }
         // Components adding
         RigidBody entityRigid = {false, false};
+        Namable monsterName = {monsterParse.getName()};
         mEngine->AddComponent(entity, entityPos);
         mEngine->AddComponent(entity, entityRender);
         mEngine->AddComponent(entity, statMonster);
         mEngine->AddComponent(entity, entityRigid);
         mEngine->AddComponent(entity, Living());
+        mEngine->AddComponent(entity, monsterName);
         mMobs.push_back(entity);
     }
 }
