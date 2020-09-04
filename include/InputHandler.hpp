@@ -10,6 +10,9 @@
 #include <Window.hpp>
 #include "systems/PlayerMovement.hpp"
 
+#define DEFAULT_STATE 0
+#define UI_STATE 1
+
 
 class InputHandler : public System
 {
@@ -29,6 +32,9 @@ private:
 
     // Command
     std::unordered_map<int, CommandType> mBindings;
+
+
+    int mCurrentState;
 
 
 };

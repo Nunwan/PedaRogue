@@ -7,9 +7,11 @@
 #include <Window.hpp>
 #include "UI.hpp"
 
-UI::UI(std::shared_ptr<Window> win)
+UI::UI(std::shared_ptr<Window> win) : UI()
 {
     mWindow = win;
+    mInventory = UI_List();
+    mToRenderBox.clear();
 }
 
 void UI::push_message(Message message)
@@ -57,6 +59,53 @@ void UI::render_status_bar(Stats playerStat)
 void UI::newTurn()
 {
     to_clear = true;
+}
+
+
+bool UI::process_key(EventWin event)
+{
+    if (event.key == TK_ESCAPE) {
+        clear();
+        mToRenderBox.clear();
+        return true;
+    }
+    auto command = mUIBindings[event.key];
+    switch (command) {
+        case OpenInventory: {
+            mToRenderBox.push_back(&mInventory);
+        }
+    }
+    return false;
+
+
+
+}
+
+
+UI::UI()
+{
+    mUIBindings.insert({TK_I, OpenInventory});
+    mUIBindings.insert({TK_UP, UpMenu});
+    mUIBindings.insert({TK_DOWN, DownMenu});
+
+}
+
+
+void UI::render()
+{
+    if (mToRenderBox.size()) {
+        for (auto box : mToRenderBox) {
+            box->render(mWindow);
+        }
+
+    }
+}
+
+
+void UI::clear()
+{
+    mWindow->select_win(WIN_INFO);
+    mWindow->clear();
 }
 
 

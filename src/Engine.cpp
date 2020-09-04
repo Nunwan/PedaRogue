@@ -79,6 +79,7 @@ void Engine::render()
     // Render status bar
     auto& playerStat = GetComponent<Stats>(GetPlayer());
     mUI.render_status_bar(playerStat);
+    mUI.render();
     mUI.newTurn();
 }
 

@@ -8,10 +8,19 @@
 
 int InputHandler::process_key(EventWin event)
 {
-    if (event.key == TK_ESCAPE) {
+    if (mCurrentState == DEFAULT_STATE &&  event.key == TK_ESCAPE) {
         return 1;
     }
-    mPlayerMovement->update(mBindings[event.key]);
+    if (mBindings[event.key] == UICommand) {
+        mCurrentState = UI_STATE;
+    }
+    if (mCurrentState == UI_STATE) {
+        if (mEngine->mUI.process_key(event)) {
+            mCurrentState = DEFAULT_STATE;
+        }
+    } else {
+        mPlayerMovement->update(mBindings[event.key]);
+    }
     return 0;
 
 }
@@ -33,4 +42,6 @@ void InputHandler::Init()
     mBindings.insert({TK_LEFT, LeftPlayer});
     mBindings.insert({TK_F, NextLevelPlayer});
     mBindings.insert({TK_G, PreviousLevelPlayer});
+    mBindings.insert({TK_I, UICommand});
+
 }

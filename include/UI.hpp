@@ -8,6 +8,7 @@
 
 #include "Types.hpp"
 #include "Components.hpp"
+#include "UI_List.hpp"
 
 
 class UI
@@ -16,8 +17,13 @@ private:
     std::shared_ptr<Window> mWindow;
     std::string currentMessage;
     bool to_clear;
+
+    UI_List mInventory;
+    std::vector<Box*> mToRenderBox;
+
+    std::unordered_map<int, CommandType> mUIBindings;
 public:
-    UI() = default;
+    UI();
     UI(std::shared_ptr<Window> win);
 
     /**
@@ -28,7 +34,12 @@ public:
 
     void render_status_bar(Stats playerStat);
 
+    bool process_key(EventWin event);
+
     void newTurn();
+
+    void render();
+    void clear();
 
 
 };

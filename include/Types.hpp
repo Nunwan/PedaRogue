@@ -12,7 +12,12 @@ enum CommandType {
     RightPlayer,
     LeftPlayer,
     NextLevelPlayer,
-    PreviousLevelPlayer
+    PreviousLevelPlayer,
+    UICommand,
+    OpenInventory,
+    UpMenu,
+    DownMenu
+
 };
 
 
