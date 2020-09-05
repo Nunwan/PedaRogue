@@ -33,7 +33,8 @@ void RenderSystem::render()
 #if DEBUG_MAP == 0
         if (entityRender.to_display && x_screen < width_screen_game && y_screen < height_screen_game && x_screen >= 0 && y_screen >= 0) {
 #endif
-            mEngine->getMWindow()->print(x_screen, y_screen, entityRender.glyph, entityRender.color);
+            char* glyphc = &entityRender.glyph[0];
+            mEngine->getMWindow()->print(x_screen, y_screen, glyphc, entityRender.color);
 #if DEBUG_MAP == 0
         }
 #endif

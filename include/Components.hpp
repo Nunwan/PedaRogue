@@ -18,7 +18,7 @@
  *          to_display  boolean to know if the entity has to be displayed
  */
 struct Render {
-    char *glyph;
+    std::string glyph;
     color_t color;
     bool to_display;
 };

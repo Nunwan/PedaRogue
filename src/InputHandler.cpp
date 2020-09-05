@@ -64,7 +64,4 @@ bool InputHandler::process_key_ui(EventWin event)
             break;
     }
     return false;
-
-
-
 }

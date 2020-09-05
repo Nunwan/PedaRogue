@@ -202,14 +202,11 @@ void Level::ConfigMonster(int x, int y)
         Transform entityPos = {x, y, mLevelnumber};
         // Get the glyph from json object
         auto glyph = monsterParse.getMMonsterGlyph();
-        char *glyphc = new char[glyph.size() + 1];
-        std::copy(glyph.begin(), glyph.end(), glyphc);
-        glyphc[glyph.size()] = '\0';
         // Get the color
         int r = monsterParse.getMMonsterColorR();
         int g = monsterParse.getMMonsterColorG();
         int b = monsterParse.getMMonsterColorB();
-        Render entityRender = {glyphc, color_from_argb(0xff, r, g, b), false};
+        Render entityRender = {glyph, color_from_argb(0xff, r, g, b), false};
         // Get the stats and give them to the monster
         Stats statMonster;
         auto statToPush = monsterParse.getMMonsterStat();
@@ -242,14 +239,12 @@ void Level::ConfigObject(int x, int y)
         Transform entityPos = {x, y, mLevelnumber};
         // Get the glyph from json object
         auto glyph = objectParse.getMObjectGlyph();
-        char *glyphc = new char[glyph.size() + 1];
-        std::copy(glyph.begin(), glyph.end(), glyphc);
-        glyphc[glyph.size()] = '\0';
+        char* glyphc = &glyph[0];
         // Get the color
         int r = objectParse.getMObjectColorR();
         int g = objectParse.getMObjectColorG();
         int b = objectParse.getMObjectColorB();
-        Render entityRender = {glyphc, color_from_argb(0xff, r, g, b), false};
+        Render entityRender = {glyph, color_from_argb(0xff, r, g, b), false};
         Stats statObject;
         auto statToPush = objectParse.getMObjectStat();
         for (std::pair<std::string, int> element : statToPush) {

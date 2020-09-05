@@ -8,8 +8,9 @@
 
 void PickSystem::update()
 {
-    bool b = false;
-    for (auto const& entity : mEntities) {
+    auto it = mEntities.begin();
+    while (it != mEntities.end()) {
+        auto entity = *it;
         auto& pickattempt = mEngine->GetComponent<PickAttempt>(entity);
         auto& player = pickattempt.player;
         auto& object = pickattempt.object;
@@ -27,12 +28,8 @@ void PickSystem::update()
         }
         Message pickMessage = {"You picked a " + nameObject.name + ".", 0xff, 0xff, 0xff};
         mEngine->mUI.push_message(pickMessage);
+        it++;
         mEngine->DelComponent<PickAttempt>(entity);
-        b = true;
-        break;
+        mEngine->DestroyEntity(entity);
     }
-    if (b) {
-        update();
-    }
-
 }
