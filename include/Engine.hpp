@@ -20,6 +20,7 @@
 #include "Game.hpp"
 #include "ProcessEvents.hpp"
 #include "UI.hpp"
+#include "Inventory.hpp"
 
 enum EventType {
     CollisionEvent,
@@ -60,6 +61,9 @@ private:
     // Callback pointers of game which create the engine
     Game* mGame;
 
+    std::shared_ptr<Inventory> mInventoryPlayerSystem;
+
+
     /**
      * Queue of event cleared and treated each turn in the game loop
      */
@@ -83,6 +87,8 @@ public:
      * @brief       Initialize all the system and indicate the components needed for them.
      */
     void initSystems();
+
+    void initInventory();
 
     // Main loop subfunction
     /**
@@ -132,6 +138,8 @@ public:
      * @return              Return the current player
      */
     Entity& GetPlayer();
+
+    std::shared_ptr<Inventory> getMInventoryPlayerSystem();
 
 
     // Systems

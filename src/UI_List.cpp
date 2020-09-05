@@ -28,7 +28,6 @@ Box::Box(int width, int height, int x_begin, int y_begin)
 void Box::render(std::shared_ptr<Window> window)
 {
     window->select_win(WIN_INFO);
-    window->clear();
     for (int x_it = x; x_it < x + w - 1; ++x_it) {
         window->print(x_it, y, "-", window->color_white);
         window->print(x_it, y + h - 1, "-", window->color_white);
@@ -37,7 +36,6 @@ void Box::render(std::shared_ptr<Window> window)
         window->print(x, y_it, "|", window->color_white);
         window->print(x + w - 1, y_it, "|", window->color_white);
     }
-    window->refresh();
 }
 
 

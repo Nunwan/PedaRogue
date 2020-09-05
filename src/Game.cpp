@@ -66,6 +66,7 @@ void Game::PlayerCreation()
     mEngine->AddComponent(player, statPlayer);
     mPlayerLocalId = mPlayers.size();
     mPlayers.push_back(player);
+    mEngine->initInventory();
 }
 
 

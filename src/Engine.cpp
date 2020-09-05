@@ -42,7 +42,6 @@ void Engine::initSystems()
     mUpdateSystems.insert({typeid(PickSystem).name(), RegisterSystem<PickSystem>(this)});
     UseComponent<PickSystem, PickAttempt>();
     mInputHandler->Init();
-
 }
 
 
@@ -193,4 +192,16 @@ void Engine::create_level()
 std::shared_ptr<CollisionSystem> Engine::getCollisionSystem()
 {
     return std::static_pointer_cast<CollisionSystem>(mUpdateSystems[typeid(CollisionSystem).name()]);
+}
+
+
+std::shared_ptr<Inventory> Engine::getMInventoryPlayerSystem()
+{
+    return mInventoryPlayerSystem;
+}
+
+
+void Engine::initInventory()
+{
+    mInventoryPlayerSystem = std::make_shared<Inventory>(GetPlayer(), this);
 }

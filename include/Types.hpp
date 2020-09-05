@@ -14,7 +14,7 @@ enum CommandType {
     NextLevelPlayer,
     PreviousLevelPlayer,
     UICommand,
-    OpenInventory,
+    OpenInventoryPlayer,
     UpMenu,
     DownMenu
 

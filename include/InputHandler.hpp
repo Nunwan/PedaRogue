@@ -26,12 +26,15 @@ public:
      */
     int process_key(EventWin event);
 
+    bool process_key_ui(EventWin event);
+
 
 private:
     std::shared_ptr<PlayerMovement> mPlayerMovement;
 
     // Command
     std::unordered_map<int, CommandType> mBindings;
+    std::unordered_map<int, CommandType> mUIBindings;
 
 
     int mCurrentState;

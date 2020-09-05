@@ -15,7 +15,7 @@ int InputHandler::process_key(EventWin event)
         mCurrentState = UI_STATE;
     }
     if (mCurrentState == UI_STATE) {
-        if (mEngine->mUI.process_key(event)) {
+        if (process_key_ui(event)) {
             mCurrentState = DEFAULT_STATE;
         }
     } else {
@@ -43,5 +43,28 @@ void InputHandler::Init()
     mBindings.insert({TK_F, NextLevelPlayer});
     mBindings.insert({TK_G, PreviousLevelPlayer});
     mBindings.insert({TK_I, UICommand});
+
+    mUIBindings.insert({TK_I, OpenInventoryPlayer});
+
+}
+
+bool InputHandler::process_key_ui(EventWin event)
+{
+    if (event.key == TK_ESCAPE) {
+        mEngine->mUI.clear_last();
+        return true;
+    }
+    auto command = mUIBindings[event.key];
+    switch (command) {
+        case OpenInventoryPlayer: {
+            mEngine->getMInventoryPlayerSystem()->display();
+            break;
+        }
+        default:
+            break;
+    }
+    return false;
+
+
 
 }

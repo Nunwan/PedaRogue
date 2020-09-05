@@ -10,7 +10,6 @@
 UI::UI(std::shared_ptr<Window> win) : UI()
 {
     mWindow = win;
-    mInventory = UI_List();
     mToRenderBox.clear();
 }
 
@@ -62,29 +61,10 @@ void UI::newTurn()
 }
 
 
-bool UI::process_key(EventWin event)
-{
-    if (event.key == TK_ESCAPE) {
-        clear();
-        mToRenderBox.clear();
-        return true;
-    }
-    auto command = mUIBindings[event.key];
-    switch (command) {
-        case OpenInventory: {
-            mToRenderBox.push_back(&mInventory);
-        }
-    }
-    return false;
-
-
-
-}
-
 
 UI::UI()
 {
-    mUIBindings.insert({TK_I, OpenInventory});
+    mUIBindings.insert({TK_I, OpenInventoryPlayer});
     mUIBindings.insert({TK_UP, UpMenu});
     mUIBindings.insert({TK_DOWN, DownMenu});
 
@@ -93,19 +73,54 @@ UI::UI()
 
 void UI::render()
 {
+    mWindow->select_win(WIN_INFO);
+    mWindow->clear();
     if (mToRenderBox.size()) {
         for (auto box : mToRenderBox) {
             box->render(mWindow);
         }
-
     }
+    mWindow->refresh();
 }
 
 
-void UI::clear()
+void UI::clear_last()
 {
-    mWindow->select_win(WIN_INFO);
-    mWindow->clear();
+    mToRenderBox.pop_back();
+    render();
+}
+
+
+void UI::clear_all()
+{
+    mToRenderBox.clear();
+    render();
+}
+
+
+UI_List * UI::create_list()
+{
+    auto new_list = new UI_List();
+    return new_list;
+}
+
+
+void UI::destroy_list(UI_List * ui_list)
+{
+    for (int i = 0; i < mToRenderBox.size(); ++i) {
+        if (mToRenderBox[i] == ui_list) {
+            mToRenderBox.erase(mToRenderBox.begin() + i);
+            break;
+        }
+    }
+    render();
+    delete ui_list;
+}
+
+
+void UI::push_list(UI_List *ui_list)
+{
+    mToRenderBox.push_back(ui_list);
 }
 
 
