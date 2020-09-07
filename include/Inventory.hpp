@@ -7,6 +7,7 @@
 
 
 #include <core/ECSTypes.hpp>
+#include <unordered_map>
 #include "UI_List.hpp"
 
 
@@ -21,11 +22,15 @@ public:
 
     void display();
 
+    void refresh_list();
+
 
 private:
     Entity mEntity;
     UI_List* mInventory_UI;
     Engine* mEngine;
+
+    std::unordered_map<std::string, int> mItems;
 
 };
 

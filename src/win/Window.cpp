@@ -53,3 +53,11 @@ void Window::select_win(int win)
 }
 
 
+void Window::clear_line(int y, int x_min, int x_max)
+{
+    int y_offset = mOffset[mSelectedWin].y;
+    terminal_clear_area(x_min, y + y_offset, x_max - x_min, 1);
+
+}
+
+

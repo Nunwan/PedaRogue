@@ -26,5 +26,8 @@ struct Message {
     int r, g, b;
 };
 
+struct Color {
+    int r, g, b;
+};
 
 #endif //PEDAROGUE_TYPES_HPP

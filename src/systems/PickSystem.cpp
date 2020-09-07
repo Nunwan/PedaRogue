@@ -18,7 +18,7 @@ void PickSystem::update()
         mEngine->DelComponent<Render>(object);
         auto& containerPlayer = mEngine->GetComponent<Container>(player);
         auto& nameObject = mEngine->GetComponent<Namable>(object);
-        if (!containerPlayer.contains.count(nameObject.name)) {
+        if (containerPlayer.contains.count(nameObject.name)) {
             containerPlayer.contains[nameObject.name].push_back(object);
         }
         else {

@@ -43,6 +43,7 @@ public:
         void nextEvent(int eventMask, bool wait);
 
         void clear();
+        void clear_line(int y, int x_min, int x_max);
         void print(int x, int y, char* glyph, color_t color);
         void refresh();
 

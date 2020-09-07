@@ -57,6 +57,7 @@ bool InputHandler::process_key_ui(EventWin event)
     auto command = mUIBindings[event.key];
     switch (command) {
         case OpenInventoryPlayer: {
+            mEngine->getMInventoryPlayerSystem()->refresh_list();
             mEngine->getMInventoryPlayerSystem()->display();
             break;
         }
