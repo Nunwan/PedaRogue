@@ -33,7 +33,11 @@ void Inventory::refresh_list()
     if (mEngine->HasComponent<Container>(mEntity)) {
         auto& list_items = mEngine->GetComponent<Container>(mEntity);
         for (auto const& pair : list_items.contains) {
-            mItems.insert({pair.first, pair.second.size()});
+            if (mItems.count(pair.first)) {
+                mItems[pair.first] = pair.second.size();
+            } else {
+                mItems.insert({pair.first, pair.second.size()});
+            }
         }
     }
 }
