@@ -18,12 +18,15 @@ public:
 
     virtual ~Inventory();
 
-    Inventory(Entity& entity, Engine* engine);
+    Inventory(Entity &entity, Engine *engine, std::string &title);
 
     void display();
 
     void refresh_list();
 
+    void select_next();
+
+    void select_previous();
 
 private:
     Entity mEntity;

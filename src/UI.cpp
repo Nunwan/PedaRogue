@@ -7,10 +7,11 @@
 #include <Window.hpp>
 #include "UI.hpp"
 
-UI::UI(std::shared_ptr<Window> win) : UI()
+UI::UI(std::shared_ptr<Window> win)
 {
     mWindow = win;
     mToRenderBox.clear();
+    to_clear = false;
 }
 
 void UI::push_message(Message message)
@@ -62,13 +63,6 @@ void UI::newTurn()
 
 
 
-UI::UI()
-{
-    mUIBindings.insert({TK_I, OpenInventoryPlayer});
-    mUIBindings.insert({TK_UP, UpMenu});
-    mUIBindings.insert({TK_DOWN, DownMenu});
-
-}
 
 
 void UI::render()
@@ -98,9 +92,9 @@ void UI::clear_all()
 }
 
 
-UI_List * UI::create_list()
+UI_List * UI::create_list(std::string &title)
 {
-    auto new_list = new UI_List();
+    auto new_list = new UI_List(title);
     return new_list;
 }
 
@@ -121,6 +115,12 @@ void UI::destroy_list(UI_List * ui_list)
 void UI::push_list(UI_List *ui_list)
 {
     mToRenderBox.push_back(ui_list);
+}
+
+
+Box *UI::getLastBox()
+{
+    return mToRenderBox.back();
 }
 
 

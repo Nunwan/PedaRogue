@@ -7,6 +7,14 @@
       "pv": 10
     }
   },
+  "flèche": {
+    "glyph": "f",
+    "color": [255, 255, 255],
+    "spawn" : {"lvlmin" :  0, "lvlmax" :  10},
+    "stats": {
+      "pv": 10
+    }
+  },
   "trucdefou": {
     "glyph": "t",
     "color": [255, 0, 255],

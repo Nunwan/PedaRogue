@@ -16,14 +16,13 @@ class UI
 private:
     std::shared_ptr<Window> mWindow;
     std::string currentMessage;
-    bool to_clear;
+    bool to_clear{};
 
-    UI_List mInventory;
     std::vector<Box*> mToRenderBox;
 
     std::unordered_map<int, CommandType> mUIBindings;
 public:
-    UI();
+    UI() = default;
     UI(std::shared_ptr<Window> win);
 
     // WIN_MSG
@@ -44,9 +43,11 @@ public:
     void clear_last();
     void clear_all();
 
-    UI_List * create_list();
+    UI_List *create_list(std::string &title);
     void destroy_list(UI_List* ui_list);
     void push_list(UI_List* ui_list);
+
+    Box* getLastBox();
 
 
 };

@@ -203,5 +203,6 @@ std::shared_ptr<Inventory> Engine::getMInventoryPlayerSystem()
 
 void Engine::initInventory()
 {
-    mInventoryPlayerSystem = std::make_shared<Inventory>(GetPlayer(), this);
+    std::string title = "Your Inventory";
+    mInventoryPlayerSystem = std::make_shared<Inventory>(GetPlayer(), this, title);
 }

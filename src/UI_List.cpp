@@ -43,6 +43,9 @@ void Box::render(std::shared_ptr<Window> window)
 void UI_List::render(std::shared_ptr<Window> window)
 {
     Box::render(window);
+    int x_middle = (1 * WIDTH_SCREEN/ 3 - 2 )/ 2 - (mTitle.length() / 2);
+    char* titlec = &mTitle[0];
+    window->print(x_middle, y + 1, titlec, window->color_white);
     int y_it = y + 2;
     for (auto& item : mItems) {
         item.render(window, 1, y_it, 1 * WIDTH_SCREEN / 3 - 5);
@@ -60,6 +63,8 @@ void UI_List::createList(std::unordered_map<std::string, int> list)
     for (auto const& pair : list) {
         mItems.emplace_back(pair.first, pair.second);
     }
+    mCurrentSelected = 0;
+    mItems[mCurrentSelected].selected();
 }
 
 
@@ -67,6 +72,32 @@ void UI_List::clear_item(std::shared_ptr<Window> window, int y)
 {
     window->clear_line(y, 1, 1 * WIDTH_SCREEN / 3 - 1);
 }
+
+
+void UI_List::select_item(int offset)
+{
+    if (mCurrentSelected + offset >= 0 && mCurrentSelected + offset < mItems.size()) {
+        mItems[mCurrentSelected].unselected();
+        mCurrentSelected += offset;
+        mItems[mCurrentSelected].selected();
+    }
+}
+
+
+void UI_List::select_next()
+{
+    select_item(1);
+}
+
+
+void UI_List::select_previous()
+{
+    select_item(-1);
+}
+
+
+UI_List::UI_List(const std::string &mTitle) : mTitle(mTitle)
+{}
 
 
 Item::Item(Color default_color, Color selected_color)

@@ -45,6 +45,8 @@ void InputHandler::Init()
     mBindings.insert({TK_I, UICommand});
 
     mUIBindings.insert({TK_I, OpenInventoryPlayer});
+    mUIBindings.insert({TK_DOWN, DownMenu});
+    mUIBindings.insert({TK_UP, UpMenu});
 
 }
 
@@ -59,6 +61,14 @@ bool InputHandler::process_key_ui(EventWin event)
         case OpenInventoryPlayer: {
             mEngine->getMInventoryPlayerSystem()->refresh_list();
             mEngine->getMInventoryPlayerSystem()->display();
+            break;
+        }
+        case UpMenu: {
+            mEngine->mUI.getLastBox()->select_previous();
+            break;
+        }
+        case DownMenu: {
+            mEngine->mUI.getLastBox()->select_next();
             break;
         }
         default:

@@ -6,11 +6,11 @@
 #include "Engine.hpp"
 
 
-Inventory::Inventory(Entity &entity, Engine* engine)
+Inventory::Inventory(Entity &entity, Engine *engine, std::string &title)
 {
     mEngine = engine;
     mEntity = entity;
-    mInventory_UI = mEngine->mUI.create_list();
+    mInventory_UI = mEngine->mUI.create_list(title);
 }
 
 
@@ -41,3 +41,6 @@ void Inventory::refresh_list()
         }
     }
 }
+
+
+

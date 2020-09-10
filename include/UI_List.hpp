@@ -40,21 +40,33 @@ public:
     Box(int width, int height, int x_begin, int y_begin);
 
     virtual void render(std::shared_ptr<Window> window);
+
+    virtual void select_next() {};
+    virtual void select_previous() {};
 };
 
 class UI_List : public Box
 {
 public:
+    UI_List(const std::string &mTitle);
+
     void render(std::shared_ptr<Window> window) override;
     void createList(std::unordered_map<std::string, int> list);
 
     void clear_item(std::shared_ptr<Window> window, int y);
 
 
+    void select_next() override;
+
+    void select_previous() override;
+
+
 private:
     std::vector<Item> mItems;
+    std::string mTitle;
     int mCurrentSelected;
 
+    void select_item(int offset);
 };
 
 
