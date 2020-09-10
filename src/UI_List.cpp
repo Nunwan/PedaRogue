@@ -58,7 +58,7 @@ void UI_List::createList(std::unordered_map<std::string, int> list)
         mItems.clear();
     }
     for (auto const& pair : list) {
-        mItems.push_back(Item(pair.first, pair.second));
+        mItems.emplace_back(pair.first, pair.second);
     }
 }
 
@@ -66,8 +66,6 @@ void UI_List::createList(std::unordered_map<std::string, int> list)
 void UI_List::clear_item(std::shared_ptr<Window> window, int y)
 {
     window->clear_line(y, 1, 1 * WIDTH_SCREEN / 3 - 1);
-
-
 }
 
 
@@ -81,6 +79,7 @@ Item::Item(Color default_color, Color selected_color)
 
 void Item::render(std::shared_ptr<Window> window, int x, int y, int x_max)
 {
+    // mColor = &mDefaultColor;
     window->select_win(WIN_INFO);
     std::string label_truncate = mLabel.substr(0, min(x_max, mLabel.length()));
     char* labelc = &label_truncate[0];
@@ -108,7 +107,9 @@ void Item::unselected()
 
 Item::Item(std::string label, int number, Color default_color, Color selected_color)
 {
-    Item(default_color, selected_color);
+    mDefaultColor = default_color;
+    mSelectedColor = selected_color;
+    mColor = &mDefaultColor;
     mLabel = label;
     mNumber = number;
 }
