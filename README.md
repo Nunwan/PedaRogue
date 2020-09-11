@@ -1,6 +1,6 @@
 # PedaRogue
 
-## What this project ? 
+## What is this project ? 
 This project is a learning project of making a 2D roguelike game from scratch. It allows me to learn C++, design, tests & good behavior.
 A more detailed README will come and a CREDITS. 
 All the project until first release is in *next* branch.
