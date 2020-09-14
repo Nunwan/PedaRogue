@@ -48,7 +48,7 @@ void UI_List::render(std::shared_ptr<Window> window)
     window->print(x_middle, y + 1, titlec, window->color_white);
     int y_it = y + 2;
     for (auto& item : mItems) {
-        item.render(window, 1, y_it, 1 * WIDTH_SCREEN / 3 - 5);
+        item.render(window, x + 1, y_it, x + w - 2);
         y_it++;
     }
 
@@ -64,7 +64,9 @@ void UI_List::createList(std::unordered_map<std::string, int> list)
         mItems.emplace_back(pair.first, pair.second);
     }
     mCurrentSelected = 0;
-    mItems[mCurrentSelected].selected();
+    if (mItems.size()) {
+        mItems[mCurrentSelected].selected();
+    }
 }
 
 
