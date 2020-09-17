@@ -11,18 +11,40 @@
 #include "UI_List.hpp"
 
 
+/**
+ * @brief   Class managing all UI related mechanics
+ */
 class UI
 {
 private:
+    /**
+     * Callback pointer to window management
+     */
     std::shared_ptr<Window> mWindow;
-    std::string currentMessage;
-    bool to_clear{};
 
+    /*
+     * Message currently at screen on WIN_MSG
+     */
+    std::string currentMessage;
+
+
+    /**
+     *  If true, message has to be cleaned
+     */
+    bool to_clear;
+
+    /**
+     *  Vector of Box pointers which has to be rendered at screen
+     */
     std::vector<Box*> mToRenderBox;
 
-    std::unordered_map<int, CommandType> mUIBindings;
 public:
     UI() = default;
+
+    /**
+     * @brief           Constructor with window manager given
+     * @param win       Window manager
+     */
     UI(std::shared_ptr<Window> win);
 
     // WIN_MSG
@@ -33,23 +55,58 @@ public:
     void push_message(Message message);
 
     // WIN_STATUS
+    /**
+     * @brief                   Render the status bar of the player
+     * @param playerStat        Stats of the player to be rendered
+     */
     void render_status_bar(Stats playerStat);
 
+    /**
+     * @brief       Indicating that it is a new turn and do actions of end turn
+     */
     void newTurn();
 
     // WIN_INFO
     // Rendering
+    /**
+     * @brief   WIN_INFO rendering function
+     */
     void render();
+
+    /**
+     * @brief Clear the last box at screen
+     */
     void clear_last();
+
+    /**
+     * @brief clear all the WIN_INFO screen
+     */
     void clear_all();
 
+    /**
+     * @brief           Return a new allcoated UI_List with given title
+     * @param title     The title of the List
+     * @return          Pointer to this new list
+     */
     UI_List *create_list(std::string &title);
+
+    /**
+     * @brief               Free and destroy the list
+     * @param ui_list       the list to destroy
+     */
     void destroy_list(UI_List* ui_list);
+
+    /**
+     * @brief               Push a list to the vector of rendering
+     * @param ui_list       The list to render
+     */
     void push_list(UI_List* ui_list);
 
+    /**
+     * @brief       Give the last Box which is rendered at screen
+     * @return      A pointer to the last box rendered at screen
+     */
     Box* getLastBox();
-
-
 };
 
 
