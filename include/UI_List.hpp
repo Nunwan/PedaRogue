@@ -72,6 +72,9 @@ public:
      * Treat the item to be considered as unselected
      */
     void unselected();
+
+
+    std::string choosen();
 };
 
 /**
@@ -114,7 +117,10 @@ public:
      * Interface of item selection for ListUIV
      */
     virtual void select_previous() {};
+
+    virtual std::string choose() {};
 };
+
 
 /**
  * @brief   Class which describe a List to display at screen
@@ -137,7 +143,7 @@ public:
      * @brief           create the list with the item described in list
      * @param list      list of items (key:value) which will become the list
      */
-    void createList(std::unordered_map<std::string, int> list);
+    virtual void createList(const std::unordered_map<std::string, int>& list);
 
     void clear_item(std::shared_ptr<Window> window, int y);
 
@@ -152,12 +158,10 @@ public:
      */
     void select_previous() override;
 
+    std::string choose() override;
+
 
 private:
-    /**
-     * Vector of each line of the list, each item
-     */
-    std::vector<Item> mItems;
 
     /**
      * Title of the list
@@ -165,15 +169,20 @@ private:
     std::string mTitle;
 
     /**
-     * The id of the item which is selected
-     */
-    int mCurrentSelected;
-
-    /**
      * @brief           Select the item at id : currentId + offset
      * @param offset    Deplacement of the item to select
      */
     void select_item(int offset);
+
+protected:
+/**
+ * Vector of each line of the list, each item
+ */
+std::vector<Item> mItems;
+/**
+ * The id of the item which is selected
+ */
+int mCurrentSelected;
 };
 
 

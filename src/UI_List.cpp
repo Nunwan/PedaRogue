@@ -47,15 +47,23 @@ void UI_List::render(std::shared_ptr<Window> window)
     char* titlec = &mTitle[0];
     window->print(x_middle, y + 1, titlec, window->color_white);
     int y_it = y + 2;
+    int i = 0;
     for (auto& item : mItems) {
-        item.render(window, x + 1, y_it, x + w - 2);
+        if (i == mCurrentSelected) {
+            window->print(x + 1, y_it, "> ", window->color_blue);
+            item.render(window, x + 3, y_it, x + w - 4);
+
+        } else {
+            item.render(window, x + 1, y_it, x + w - 2);
+        }
         y_it++;
+        i++;
     }
 
 }
 
 
-void UI_List::createList(std::unordered_map<std::string, int> list)
+void UI_List::createList(const std::unordered_map<std::string, int>& list)
 {
     if (mItems.size()) {
         mItems.clear();
@@ -102,6 +110,12 @@ UI_List::UI_List(const std::string &mTitle) : mTitle(mTitle)
 {}
 
 
+std::string UI_List::choose()
+{
+    return mItems[mCurrentSelected].choosen();
+}
+
+
 Item::Item(Color default_color, Color selected_color)
 {
     mDefaultColor = default_color;
@@ -145,4 +159,10 @@ Item::Item(std::string label, int number, Color default_color, Color selected_co
     mColor = &mDefaultColor;
     mLabel = label;
     mNumber = number;
+}
+
+
+std::string Item::choosen()
+{
+    return mLabel;
 }
