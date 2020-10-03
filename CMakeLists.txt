@@ -13,21 +13,17 @@ include_directories(include)
 include_directories(src/win/include)
 include_directories(tools/include)
 
+set(SOURCES_FILES   src/CommandProcessor.cpp src/Engine.cpp src/FOVTools.cpp src/Game.cpp src/InputHandler.cpp src/Inventory.cpp
+                    src/Level.cpp src/LevelGeneration.cpp src/main.cpp src/ProcessEvents.cpp src/UI.cpp src/UI_List.cpp
+                    src/win/Window.cpp src/systems/AttackSystem.cpp src/systems/BackSystem.cpp src/systems/CollisionSystem.cpp
+                    src/systems/FoVCompute.cpp src/systems/LightSystem.cpp src/systems/PickSystem.cpp src/systems/PlayerMovement.cpp
+                    src/systems/RenderSystem.cpp tools/MonsterParse.cpp tools/ObjectParse.cpp)
 
-file(
-        GLOB_RECURSE
 
-        source_files
-
-        src/*
-        src/win/*
-        src/systems/*
-        tools/*
-)
 add_definitions(-Wl,-rpath -Wl,lib/BearLib/Linux64)
-add_executable(PedaRogue ${source_files})
+add_executable(PedaRogue ${SOURCES_FILES} )
 add_executable(Json tests/json_test.cpp)
-add_library(PedaRogueLib ${source_files})
+add_library(PedaRogueLib ${SOURCES_FILES})
 find_library(BEARLIB NAMES libBearLibTerminal.so  PATHS lib/BearLib/Linux64)
 target_link_libraries(PedaRogue ${BEARLIB})
 target_link_libraries(PedaRogue gtest_main)

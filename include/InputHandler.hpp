@@ -17,7 +17,7 @@
 class InputHandler : public System
 {
 public:
-    void Init();
+    InputHandler();
 
     /**
      * @brief           Take an event and create command needed
@@ -28,13 +28,19 @@ public:
 
     bool process_key_ui(EventWin event);
 
+    void Init();
+
+    virtual ~InputHandler();
+
 
 private:
     std::shared_ptr<PlayerMovement> mPlayerMovement;
 
     // Command
-    std::unordered_map<int, CommandType> mBindings;
-    std::unordered_map<int, CommandType> mUIBindings;
+    std::unordered_map<int, Command*> mBindings;
+    std::unordered_map<int, Command*> mUIBindings;
+
+    std::set<int> mUIKeys;
 
 
     int mCurrentState;

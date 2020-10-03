@@ -5,7 +5,7 @@
 #ifndef PEDAROGUE_ENGINE_HPP
 #define PEDAROGUE_ENGINE_HPP
 #include <memory>
-#include <map>
+#include <vector>
 #include "core/ECSManager.hpp"
 #include "Components.hpp"
 #include "systems/RenderSystem.hpp"
@@ -21,6 +21,7 @@
 #include "ProcessEvents.hpp"
 #include "UI.hpp"
 #include "Inventory.hpp"
+#include "CommandProcessor.hpp"
 
 enum EventType {
     CollisionEvent,
@@ -41,17 +42,21 @@ public:
     /**
      * @brief   Systems which have to be updated in update routine
      */
-    std::map<std::string, std::shared_ptr<System>> mUpdateSystems;
+    std::vector<std::shared_ptr<System>> mUpdateSystems;
 
     /**
      * @brief   Systems which enable the rendering part of the game
      */
-    std::map<std::string, std::shared_ptr<System>> mRenderSystems;
+    std::vector<std::shared_ptr<System>> mRenderSystems;
+
+    std::unordered_map<std::string, int> mUpdateSystemPlacement;
 
     /**
      * @brief   Input handler system which is particular and so does not belong to update or render
      */
     std::shared_ptr<InputHandler> mInputHandler;
+
+    std::shared_ptr<CommandProcessor> mCommandProcessor;
 
     UI mUI;
     int mNbLvl = 1;
@@ -89,6 +94,8 @@ public:
     void initSystems();
 
     void initInventory();
+
+    void initAfterPersoCreation();
 
     // Main loop subfunction
     /**
@@ -176,6 +183,9 @@ public:
      * @return          The boolean 1 if there is an event to be processed 0 if not
      */
     bool check_event();
+
+    void pushCommand(Command* command);
+
 };
 
 

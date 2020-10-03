@@ -11,7 +11,7 @@ int InputHandler::process_key(EventWin event)
     if (mCurrentState == DEFAULT_STATE &&  event.key == TK_ESCAPE) {
         return 1;
     }
-    if (mBindings[event.key] == UICommand) {
+    if (mUIKeys.count(event.key)) {
         mCurrentState = UI_STATE;
     }
     if (mCurrentState == UI_STATE) {
@@ -19,36 +19,12 @@ int InputHandler::process_key(EventWin event)
             mCurrentState = DEFAULT_STATE;
         }
     } else {
-        mPlayerMovement->update(mBindings[event.key]);
+        mEngine->pushCommand(mBindings[event.key]);
     }
     return 0;
 
 }
 
-
-void InputHandler::Init()
-{
-    mPlayerMovement = mEngine->RegisterSystem<PlayerMovement>(mEngine);
-    mEngine->UseComponent<PlayerMovement, Playable>();
-    mEngine->UseComponent<PlayerMovement, Transform>();
-    mEngine->UseComponent<PlayerMovement, NotMap>();
-    mEngine->UseComponent<PlayerMovement, Render>();
-    mEngine->UseComponent<PlayerMovement, Moveable>();
-
-    // Bind Default key
-    mBindings.insert({TK_UP, UpPlayer});
-    mBindings.insert({TK_DOWN, DownPlayer});
-    mBindings.insert({TK_RIGHT, RightPlayer});
-    mBindings.insert({TK_LEFT, LeftPlayer});
-    mBindings.insert({TK_F, NextLevelPlayer});
-    mBindings.insert({TK_G, PreviousLevelPlayer});
-    mBindings.insert({TK_I, UICommand});
-
-    mUIBindings.insert({TK_I, OpenInventoryPlayer});
-    mUIBindings.insert({TK_DOWN, DownMenu});
-    mUIBindings.insert({TK_UP, UpMenu});
-
-}
 
 bool InputHandler::process_key_ui(EventWin event)
 {
@@ -57,7 +33,7 @@ bool InputHandler::process_key_ui(EventWin event)
         return true;
     }
     auto command = mUIBindings[event.key];
-    switch (command) {
+   /* switch (command) {
         case OpenInventoryPlayer: {
             mEngine->getMInventoryPlayerSystem()->refresh_list();
             mEngine->getMInventoryPlayerSystem()->display();
@@ -73,6 +49,41 @@ bool InputHandler::process_key_ui(EventWin event)
         }
         default:
             break;
-    }
+    }*/
     return false;
 }
+
+
+InputHandler::InputHandler()
+{
+    // Bind Default key
+    mCurrentState = DEFAULT_STATE;
+
+    mUIKeys.insert(TK_I);
+
+    /*mUIBindings.insert({TK_I, OpenInventoryPlayer});
+    mUIBindings.insert({TK_DOWN, DownMenu});
+    mUIBindings.insert({TK_UP, UpMenu});*/
+
+}
+
+
+void InputHandler::Init()
+{
+    mBindings.insert({TK_UP, new MovePlayer(mEngine->GetPlayer(), UpPlayer)});
+    mBindings.insert({TK_DOWN, new MovePlayer(mEngine->GetPlayer(), DownPlayer)});
+    mBindings.insert({TK_RIGHT, new MovePlayer(mEngine->GetPlayer(), RightPlayer)});
+    mBindings.insert({TK_LEFT, new MovePlayer(mEngine->GetPlayer(), LeftPlayer)});
+    mBindings.insert({TK_F, new MovePlayer(mEngine->GetPlayer(), NextLevelPlayer)});
+    mBindings.insert({TK_G, new MovePlayer(mEngine->GetPlayer(), PreviousLevelPlayer)});
+
+}
+
+
+InputHandler::~InputHandler()
+{
+    for (auto pair : mBindings) {
+        delete pair.second;
+    }
+}
+

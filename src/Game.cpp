@@ -20,6 +20,7 @@ void Game::Init()
     mLevels[0]->GenerateMap();
     mEngine->level_enable(mLevels[0]);
     PlayerCreation();
+    mEngine->initAfterPersoCreation();
 }
 
 

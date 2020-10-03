@@ -150,4 +150,8 @@ struct Namable {
     std::string name;
 };
 
+struct to_Move {
+    int direction;
+};
+
 #endif //PEDAROGUE_COMPONENTS_HPP

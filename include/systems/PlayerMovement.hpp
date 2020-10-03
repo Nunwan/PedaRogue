@@ -9,6 +9,7 @@
 #include <Window.hpp>
 #include "core/ECSTypes.hpp"
 #include "Types.hpp"
+#include "CommandProcessor.hpp"
 
 
 class PlayerMovement : public System
@@ -18,7 +19,19 @@ public:
      * @brief                   move player according to commandType
      * @param commandType       indication of the command given by inputhandler
      */
-    void update(CommandType commandType);
+    void update();
+};
+
+class MovePlayer : public Command
+{
+private:
+    Entity player;
+    int direction;
+public:
+    MovePlayer(Entity player, int direction);
+
+    void execute(Engine* engine) override;
+
 };
 
 

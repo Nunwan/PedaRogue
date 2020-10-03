@@ -10,38 +10,48 @@ Engine::Engine(Game* game)
     mWindow = std::make_shared<Window>();
     mUI = UI(mWindow);
     mGame = game;
+    mCommandProcessor = RegisterSystem<CommandProcessor>(this);
 }
 
 
 void Engine::initSystems()
 {
-    mRenderSystems.insert({typeid(RenderMapSystem).name(), RegisterSystem<RenderMapSystem>(this)});
+    mUpdateSystemPlacement.insert({typeid(CollisionSystem).name(), 1});
+
+    mRenderSystems.push_back(RegisterSystem<RenderMapSystem>(this));
     UseComponent<RenderMapSystem, Map>();
     UseComponent<RenderMapSystem, Transform>();
     UseComponent<RenderMapSystem, Render>();
-    mRenderSystems.insert({typeid(RenderOthersSystem).name(), RegisterSystem<RenderOthersSystem>(this)});
+    mRenderSystems.push_back(RegisterSystem<RenderOthersSystem>(this));
     UseComponent<RenderOthersSystem, Transform>();
     UseComponent<RenderOthersSystem, Render>();
     UseComponent<RenderOthersSystem, NotMap>();
     mInputHandler = RegisterSystem<InputHandler>(this);
-    mUpdateSystems.insert({typeid(CollisionSystem).name(), RegisterSystem<CollisionSystem>(this)});
+    mUpdateSystems.push_back(RegisterSystem<PlayerMovement>(this));
+    UseComponent<PlayerMovement, Playable>();
+    UseComponent<PlayerMovement, Transform>();
+    UseComponent<PlayerMovement, NotMap>();
+    UseComponent<PlayerMovement, Render>();
+    UseComponent<PlayerMovement, Moveable>();
+    UseComponent<PlayerMovement, to_Move>();
+    mUpdateSystems.push_back(RegisterSystem<CollisionSystem>(this));
     UseComponent<CollisionSystem, Transform>();
     UseComponent<CollisionSystem, RigidBody>();
-    mUpdateSystems.insert({typeid(BackSystem).name(), RegisterSystem<BackSystem>(this)});
+    mUpdateSystems.push_back(RegisterSystem<BackSystem>(this));
     UseComponent<BackSystem, BackAttempt>();
-    mUpdateSystems.insert({typeid(FoVCompute).name(), RegisterSystem<FoVCompute>(this)});
+    mUpdateSystems.push_back(RegisterSystem<FoVCompute>(this));
     UseComponent<FoVCompute, Transform>();
     UseComponent<FoVCompute, Playable>();
     UseComponent<FoVCompute, Stats>();
-    mUpdateSystems.insert({typeid(LightSystem).name(), RegisterSystem<LightSystem>(this)});
+    mUpdateSystems.push_back(RegisterSystem<LightSystem>(this));
     UseComponent<LightSystem, Transform>();
     UseComponent<LightSystem, Light>();
     UseComponent<LightSystem, Stats>();
-    mUpdateSystems.insert({typeid(AttackSystem).name(), RegisterSystem<AttackSystem>(this)});
+    mUpdateSystems.push_back(RegisterSystem<AttackSystem>(this));
     UseComponent<AttackSystem, AttackAttempt>();
-    mUpdateSystems.insert({typeid(PickSystem).name(), RegisterSystem<PickSystem>(this)});
+    mUpdateSystems.push_back(RegisterSystem<PickSystem>(this));
     UseComponent<PickSystem, PickAttempt>();
-    mInputHandler->Init();
+
 }
 
 
@@ -64,6 +74,7 @@ void Engine::initComponents()
     RegisterComponent<Namable>();
     RegisterComponent<Stairway>();
     RegisterComponent<BackAttempt>();
+    RegisterComponent<to_Move>();
 }
 
 
@@ -72,7 +83,7 @@ void Engine::render()
     mWindow->select_win(WIN_JEU);
     mWindow->clear();
     for (const auto& system : mRenderSystems) {
-        system.second->render();
+        system->render();
     }
     mWindow->refresh();
     // Render status bar
@@ -89,9 +100,10 @@ int Engine::update()
     mWindow->clear();
     mWindow->nextEvent(0, true);
     int finish = mInputHandler->process_key(mWindow->event);
-    process_event(this);
+    mCommandProcessor->process();
     for (const auto& system : mUpdateSystems) {
-        system.second->update();
+        system->update();
+        process_event(this);
     }
     return finish;
 }
@@ -191,7 +203,7 @@ void Engine::create_level()
 
 std::shared_ptr<CollisionSystem> Engine::getCollisionSystem()
 {
-    return std::static_pointer_cast<CollisionSystem>(mUpdateSystems[typeid(CollisionSystem).name()]);
+    return std::static_pointer_cast<CollisionSystem>(mUpdateSystems[mUpdateSystemPlacement[typeid(CollisionSystem).name()]]);
 }
 
 
@@ -205,4 +217,18 @@ void Engine::initInventory()
 {
     std::string title = "Your Inventory";
     mInventoryPlayerSystem = std::make_shared<Inventory>(GetPlayer(), this, title);
+}
+
+
+void Engine::pushCommand(Command *command)
+{
+    mCommandProcessor->pushCommand(command);
+
+}
+
+
+void Engine::initAfterPersoCreation()
+{
+    mInputHandler->Init();
+
 }

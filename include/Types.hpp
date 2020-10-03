@@ -6,19 +6,15 @@
 #define PEDAROGUE_TYPES_HPP
 #include <string>
 
-enum CommandType {
+enum DirectionMove {
     UpPlayer,
     DownPlayer,
     RightPlayer,
     LeftPlayer,
     NextLevelPlayer,
     PreviousLevelPlayer,
-    UICommand,
-    OpenInventoryPlayer,
-    UpMenu,
-    DownMenu
-
 };
+
 
 
 struct Message {

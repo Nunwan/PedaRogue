@@ -8,9 +8,12 @@
 #include "Engine.hpp"
 
 
-void PlayerMovement::update(CommandType commandType)
+void PlayerMovement::update()
 {
-    for (auto const& entity : mEntities) {
+    auto it = mEntities.begin();
+    while (it != mEntities.end()) {
+        auto entity = *it;
+        auto commandType = mEngine->GetComponent<to_Move>(entity).direction;
         Transform& posEntity = mEngine->GetComponent<Transform>(entity);
         auto& MoveEntity = mEngine->GetComponent<Moveable>(entity);
         if (commandType == UpPlayer) {
@@ -41,8 +44,22 @@ void PlayerMovement::update(CommandType commandType)
             downlvl.entity1 = entity;
             mEngine->push_Event(downlvl);
         }
+        it++;
+        mEngine->DelComponent<to_Move>(entity);
         mEngine->getCollisionSystem()->check(entity);
 
         // std::cout << posEntity.x << posEntity.y << std::endl;
     }
+}
+
+
+MovePlayer::MovePlayer(Entity player, int direction) : player(player), direction(direction)
+{
+}
+
+
+void MovePlayer::execute(Engine* engine)
+{
+    to_Move playerMove = {direction};
+    engine->AddComponent(player, playerMove);
 }
