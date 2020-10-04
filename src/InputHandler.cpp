@@ -19,7 +19,9 @@ int InputHandler::process_key(EventWin event)
             mCurrentState = DEFAULT_STATE;
         }
     } else {
-        mEngine->pushCommand(mBindings[event.key]);
+        if (mBindings.count(event.key)) {
+            mEngine->pushCommand(mBindings[event.key]);
+        }
     }
     return 0;
 
@@ -32,24 +34,11 @@ bool InputHandler::process_key_ui(EventWin event)
         mEngine->mUI.clear_last();
         return true;
     }
-    auto command = mUIBindings[event.key];
-   /* switch (command) {
-        case OpenInventoryPlayer: {
-            mEngine->getMInventoryPlayerSystem()->refresh_list();
-            mEngine->getMInventoryPlayerSystem()->display();
-            break;
-        }
-        case UpMenu: {
-            mEngine->mUI.getLastBox()->select_previous();
-            break;
-        }
-        case DownMenu: {
-            mEngine->mUI.getLastBox()->select_next();
-            break;
-        }
-        default:
-            break;
-    }*/
+    if (mUIBindings.count(event.key)) {
+        mEngine->pushCommand(mUIBindings[event.key]);
+    }
+
+
     return false;
 }
 
@@ -61,9 +50,10 @@ InputHandler::InputHandler()
 
     mUIKeys.insert(TK_I);
 
-    /*mUIBindings.insert({TK_I, OpenInventoryPlayer});
-    mUIBindings.insert({TK_DOWN, DownMenu});
-    mUIBindings.insert({TK_UP, UpMenu});*/
+    mUIBindings.insert({TK_I, new OpenInventoryCommand()});
+    mUIBindings.insert({TK_DOWN, new UISelectUpCommand});
+    mUIBindings.insert({TK_UP, new UISelectDownCommand});
+
 
 }
 

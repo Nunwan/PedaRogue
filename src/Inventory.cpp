@@ -43,4 +43,8 @@ void Inventory::refresh_list()
 }
 
 
-
+void OpenInventoryCommand::execute(Engine *engine)
+{
+    engine->getMInventoryPlayerSystem()->refresh_list();
+    engine->getMInventoryPlayerSystem()->display();
+}

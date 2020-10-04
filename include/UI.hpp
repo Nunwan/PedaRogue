@@ -9,6 +9,7 @@
 #include "Types.hpp"
 #include "Components.hpp"
 #include "UI_List.hpp"
+#include "CommandProcessor.hpp"
 
 
 /**
@@ -107,6 +108,17 @@ public:
      * @return      A pointer to the last box rendered at screen
      */
     Box* getLastBox();
+};
+
+
+class UISelectUpCommand : public Command
+{
+    void execute(Engine *engine) override;
+};
+
+class UISelectDownCommand : public Command
+{
+    void execute(Engine *engine) override;
 };
 
 

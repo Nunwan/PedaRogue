@@ -9,6 +9,7 @@
 #include <core/ECSTypes.hpp>
 #include <unordered_map>
 #include "UI_List.hpp"
+#include "CommandProcessor.hpp"
 
 
 /**
@@ -60,6 +61,13 @@ private:
      * Items composing the inventory
      */
     std::unordered_map<std::string, int> mItems;
+};
+
+class OpenInventoryCommand : public Command
+{
+public:
+    void execute(Engine *engine) override;
+
 };
 
 

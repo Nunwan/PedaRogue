@@ -6,6 +6,7 @@
 #include <memory>
 #include <Window.hpp>
 #include "UI.hpp"
+#include "Engine.hpp"
 
 UI::UI(std::shared_ptr<Window> win)
 {
@@ -124,4 +125,13 @@ Box *UI::getLastBox()
 }
 
 
+void UISelectUpCommand::execute(Engine *engine)
+{
+    engine->mUI.getLastBox()->select_next();
+}
 
+
+void UISelectDownCommand::execute(Engine *engine)
+{
+    engine->mUI.getLastBox()->select_previous();
+}
