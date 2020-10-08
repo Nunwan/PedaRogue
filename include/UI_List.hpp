@@ -9,6 +9,7 @@
 #include <Window.hpp>
 #include <unordered_map>
 #include "Types.hpp"
+#include "CommandProcessor.hpp"
 
 
 /**
@@ -36,8 +37,12 @@ private:
      */
     Color* mColor;
 
+    Command* mCommand;
+
 
 public:
+    virtual ~Item();
+
     /**
      * @brief                   Constructor of Item without label and number given
      * @param default_color     Color of unselected item
@@ -52,7 +57,8 @@ public:
      * @param default_color     Color of unselected item
      * @param selected_color    Color of selected item
      */
-    Item(std::string label, int number, Color default_color = {0xff, 0xff, 0xff}, Color selected_color = {0, 0, 0xff});
+    Item(std::string label, int number, Command* command = nullptr, Color default_color = {0xff, 0xff, 0xff},
+         Color selected_color = {0, 0, 0xff});
 
     /**
      * @brief                   Display the item at screen
@@ -74,7 +80,7 @@ public:
     void unselected();
 
 
-    std::string choosen();
+    Command * choosen();
 };
 
 /**
@@ -118,7 +124,8 @@ public:
      */
     virtual void select_previous() {};
 
-    virtual std::string choose() {};
+    virtual Command * choose() {};
+    virtual bool isMPermanent() const = 0;
 };
 
 
@@ -131,7 +138,7 @@ public:
     /**
      * @brief   Construct a List for UI with the Title
      */
-    UI_List(const std::string &mTitle);
+    UI_List(const std::string &mTitle, bool permanent);
 
     /**
      * @brief           Display the list at screen
@@ -147,6 +154,8 @@ public:
 
     void clear_item(std::shared_ptr<Window> window, int y);
 
+    void push_item(std::string label, int number, Command* command);
+
 
     /**
      * @brief   Select the next item on the list
@@ -158,8 +167,11 @@ public:
      */
     void select_previous() override;
 
-    std::string choose() override;
+    Command * choose() override;
 
+    void clear_items();
+
+    bool isMPermanent() const override;
 
 private:
 
@@ -173,6 +185,8 @@ private:
      * @param offset    Deplacement of the item to select
      */
     void select_item(int offset);
+
+    bool mPermanent;
 
 protected:
 /**

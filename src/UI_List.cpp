@@ -29,6 +29,7 @@ Box::Box(int width, int height, int x_begin, int y_begin)
 void Box::render(std::shared_ptr<Window> window)
 {
     window->select_win(WIN_INFO);
+    window->clear_area(x, y, w, h);
     for (int x_it = x; x_it < x + w - 1; ++x_it) {
         window->print(x_it, y, "-", window->color_white);
         window->print(x_it, y + h - 1, "-", window->color_white);
@@ -106,13 +107,36 @@ void UI_List::select_previous()
 }
 
 
-UI_List::UI_List(const std::string &mTitle) : mTitle(mTitle)
+UI_List::UI_List(const std::string &mTitle, bool permanent) : mTitle(mTitle), mPermanent(permanent)
 {}
 
 
-std::string UI_List::choose()
+Command * UI_List::choose()
 {
     return mItems[mCurrentSelected].choosen();
+}
+
+
+void UI_List::push_item(std::string label, int number, Command* command)
+{
+    mItems.emplace_back(label, number, command);
+    if (mItems.size() == 1) {
+        mCurrentSelected = 0;
+        mItems.back().selected();
+    }
+
+}
+
+
+void UI_List::clear_items()
+{
+    mItems.clear();
+}
+
+
+bool UI_List::isMPermanent() const
+{
+    return mPermanent;
 }
 
 
@@ -132,10 +156,11 @@ void Item::render(std::shared_ptr<Window> window, int x, int y, int x_max)
     char* labelc = &label_truncate[0];
     window->clear_line(y, 1, 1 * WIDTH_SCREEN / 3 - 1);
     window->print(x, y, labelc, color_from_argb(0xff, mColor->r, mColor->g, mColor->b));
-    auto number_string = std::to_string(mNumber);
-    char* number_char = &number_string[0];
-    window->print(1 * WIDTH_SCREEN / 3 - 4, y, number_char, color_from_argb(0xff, mColor->r, mColor->g, mColor->b));
-    window->refresh();
+    if (mNumber>=0) {
+        auto number_string = std::to_string(mNumber);
+        char *number_char = &number_string[0];
+        window->print(1 * WIDTH_SCREEN / 3 - 4, y, number_char, color_from_argb(0xff, mColor->r, mColor->g, mColor->b));
+    }
 }
 
 
@@ -152,17 +177,25 @@ void Item::unselected()
 }
 
 
-Item::Item(std::string label, int number, Color default_color, Color selected_color)
+Item::Item(std::string label, int number, Command* command, Color default_color, Color selected_color)
 {
     mDefaultColor = default_color;
     mSelectedColor = selected_color;
     mColor = &mDefaultColor;
     mLabel = label;
     mNumber = number;
+    mCommand = command;
 }
 
 
-std::string Item::choosen()
+Command * Item::choosen()
 {
-    return mLabel;
+    return mCommand;
+}
+
+
+Item::~Item()
+{
+    delete mCommand;
+
 }

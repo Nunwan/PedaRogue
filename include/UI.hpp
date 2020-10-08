@@ -89,7 +89,7 @@ public:
      * @param title     The title of the List
      * @return          Pointer to this new list
      */
-    UI_List *create_list(std::string &title);
+    static UI_List *create_list(std::string &title, bool permanent = true);
 
     /**
      * @brief               Free and destroy the list
@@ -108,6 +108,8 @@ public:
      * @return      A pointer to the last box rendered at screen
      */
     Box* getLastBox();
+
+    bool isEmpty();
 };
 
 
@@ -120,6 +122,12 @@ class UISelectDownCommand : public Command
 {
     void execute(Engine *engine) override;
 };
+
+class UISelectedCommand : public Command
+{
+    void execute(Engine *engine) override;
+};
+
 
 
 #endif //PEDAROGUE_UI_HPP

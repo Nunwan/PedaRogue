@@ -44,6 +44,7 @@ public:
 
         void clear();
         void clear_line(int y, int x_min, int x_max);
+        void clear_area(int x, int y, int w, int h);
         void print(int x, int y, char* glyph, color_t color);
         void refresh();
 

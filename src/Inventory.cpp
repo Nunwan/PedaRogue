@@ -22,7 +22,6 @@ Inventory::~Inventory()
 
 void Inventory::display()
 {
-    mInventory_UI->createList(mItems);
     mEngine->mUI.push_list(mInventory_UI);
 }
 
@@ -30,14 +29,13 @@ void Inventory::display()
 void Inventory::refresh_list()
 {
     // Surety Check but usually not necessary if correctly use
+    mInventory_UI->clear_items();
     if (mEngine->HasComponent<Container>(mEntity)) {
         auto& list_items = mEngine->GetComponent<Container>(mEntity);
-        for (auto const& pair : list_items.contains) {
-            if (mItems.count(pair.first)) {
-                mItems[pair.first] = pair.second.size();
-            } else {
-                mItems.insert({pair.first, pair.second.size()});
-            }
+        for (auto& pair : list_items.contains) {
+            mInventory_UI->push_item(pair.first, pair.second.size(), new CreateItemMenu(&(pair.second), pair.first, 0, 0));
+
+
         }
     }
 }
@@ -47,4 +45,28 @@ void OpenInventoryCommand::execute(Engine *engine)
 {
     engine->getMInventoryPlayerSystem()->refresh_list();
     engine->getMInventoryPlayerSystem()->display();
+}
+
+
+
+CreateItemMenu::CreateItemMenu(vector<Entity> *itemEntities,  std::string itemName, int x_parent, int y_parent) : itemEntities(itemEntities),
+                                                                                            itemName(itemName),
+                                                                                            x(x_parent +  5),
+                                                                                            y(y_parent - 1 )
+{
+    itemMenu = UI::create_list(itemName, false);
+    itemMenu->push_item("Drop", -1, new EssaiPourri());
+}
+
+
+void CreateItemMenu::execute(Engine *engine)
+{
+    engine->mUI.push_list(itemMenu);
+}
+
+
+void EssaiPourri::execute(Engine *engine)
+{
+    std::cout<< "essai" << std::endl;
+
 }

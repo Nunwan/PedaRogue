@@ -32,7 +32,8 @@ bool InputHandler::process_key_ui(EventWin event)
 {
     if (event.key == TK_ESCAPE) {
         mEngine->mUI.clear_last();
-        return true;
+        if (mEngine->mUI.isEmpty())
+            return true;
     }
     if (mUIBindings.count(event.key)) {
         mEngine->pushCommand(mUIBindings[event.key]);
@@ -51,8 +52,9 @@ InputHandler::InputHandler()
     mUIKeys.insert(TK_I);
 
     mUIBindings.insert({TK_I, new OpenInventoryCommand()});
-    mUIBindings.insert({TK_DOWN, new UISelectUpCommand});
-    mUIBindings.insert({TK_UP, new UISelectDownCommand});
+    mUIBindings.insert({TK_DOWN, new UISelectUpCommand()});
+    mUIBindings.insert({TK_UP, new UISelectDownCommand()});
+    mUIBindings.insert({TK_ENTER, new UISelectedCommand()});
 
 
 }
@@ -73,6 +75,9 @@ void InputHandler::Init()
 InputHandler::~InputHandler()
 {
     for (auto pair : mBindings) {
+        delete pair.second;
+    }
+    for (auto pair : mUIBindings) {
         delete pair.second;
     }
 }

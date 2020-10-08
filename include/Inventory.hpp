@@ -70,5 +70,22 @@ public:
 
 };
 
+class CreateItemMenu : public Command
+{
+private:
+    std::vector<Entity> *itemEntities;
+    std::string itemName;
+    UI_List* itemMenu;
+    int x, y;
+public:
+    CreateItemMenu(vector<Entity> *itemEntities,  std::string itemName, int x_parent, int y_parent);
+    void execute(Engine *engine) override;
+};
+
+class EssaiPourri : public Command
+{
+public:
+    void execute(Engine *engine) override;
+};
 
 #endif //PEDAROGUE_INVENTORY_HPP

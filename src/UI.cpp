@@ -81,8 +81,15 @@ void UI::render()
 
 void UI::clear_last()
 {
-    mToRenderBox.pop_back();
-    render();
+    if (!isEmpty()) {
+        auto back = mToRenderBox.back();
+        mToRenderBox.pop_back();
+        if (!back->isMPermanent())
+        {
+            destroy_list(dynamic_cast<UI_List *>(back));
+        }
+        render();
+    }
 }
 
 
@@ -93,9 +100,9 @@ void UI::clear_all()
 }
 
 
-UI_List * UI::create_list(std::string &title)
+UI_List * UI::create_list(std::string &title, bool permanent)
 {
-    auto new_list = new UI_List(title);
+    auto new_list = new UI_List(title, permanent);
     return new_list;
 }
 
@@ -121,7 +128,18 @@ void UI::push_list(UI_List *ui_list)
 
 Box *UI::getLastBox()
 {
-    return mToRenderBox.back();
+    if (!isEmpty()) {
+        return mToRenderBox.back();
+    }
+    else {
+        return nullptr;
+    }
+}
+
+
+bool UI::isEmpty()
+{
+    return mToRenderBox.empty();
 }
 
 
@@ -134,4 +152,14 @@ void UISelectUpCommand::execute(Engine *engine)
 void UISelectDownCommand::execute(Engine *engine)
 {
     engine->mUI.getLastBox()->select_previous();
+}
+
+
+void UISelectedCommand::execute(Engine *engine)
+{
+    auto command = engine->mUI.getLastBox()->choose();
+    if (command != nullptr) {
+        engine->pushCommand(command);
+    }
+
 }
