@@ -33,9 +33,7 @@ void Inventory::refresh_list()
     if (mEngine->HasComponent<Container>(mEntity)) {
         auto& list_items = mEngine->GetComponent<Container>(mEntity);
         for (auto& pair : list_items.contains) {
-            mInventory_UI->push_item(pair.first, pair.second.size(), new CreateItemMenu(&(pair.second), pair.first, 0, 0));
-
-
+            mInventory_UI->push_item(pair.first, pair.second.size(), new CreateItemMenu(mEntity, pair.first, 0, 0));
         }
     }
 }
@@ -49,13 +47,13 @@ void OpenInventoryCommand::execute(Engine *engine)
 
 
 
-CreateItemMenu::CreateItemMenu(vector<Entity> *itemEntities,  std::string itemName, int x_parent, int y_parent) : itemEntities(itemEntities),
+CreateItemMenu::CreateItemMenu(Entity player,  std::string itemName, int x_parent, int y_parent) : player(player),
                                                                                             itemName(itemName),
                                                                                             x(x_parent +  5),
                                                                                             y(y_parent - 1 )
 {
     itemMenu = UI::create_list(itemName, false);
-    itemMenu->push_item("Drop", -1, new EssaiPourri());
+    itemMenu->push_item("Drop", -1, new DropItemCommand(itemName, 1, player));
 }
 
 

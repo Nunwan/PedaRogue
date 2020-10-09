@@ -10,6 +10,7 @@
 #include <unordered_map>
 #include "UI_List.hpp"
 #include "CommandProcessor.hpp"
+#include "ItemCommands.hpp"
 
 
 /**
@@ -73,12 +74,12 @@ public:
 class CreateItemMenu : public Command
 {
 private:
-    std::vector<Entity> *itemEntities;
+    Entity player;
     std::string itemName;
     UI_List* itemMenu;
     int x, y;
 public:
-    CreateItemMenu(vector<Entity> *itemEntities,  std::string itemName, int x_parent, int y_parent);
+    CreateItemMenu(Entity player,  std::string itemName, int x_parent, int y_parent);
     void execute(Engine *engine) override;
 };
 

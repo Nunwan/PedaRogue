@@ -51,6 +51,9 @@ void Engine::initSystems()
     UseComponent<AttackSystem, AttackAttempt>();
     mUpdateSystems.push_back(RegisterSystem<PickSystem>(this));
     UseComponent<PickSystem, PickAttempt>();
+    mUpdateSystems.push_back(RegisterSystem<DropSystem>(this));
+    UseComponent<DropSystem, DropItem>();
+    UseComponent<DropSystem, Container>();
 
 }
 
@@ -75,6 +78,7 @@ void Engine::initComponents()
     RegisterComponent<Stairway>();
     RegisterComponent<BackAttempt>();
     RegisterComponent<to_Move>();
+    RegisterComponent<DropItem>();
 }
 
 

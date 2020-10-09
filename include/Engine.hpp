@@ -22,11 +22,13 @@
 #include "UI.hpp"
 #include "Inventory.hpp"
 #include "CommandProcessor.hpp"
+#include "systems/DropSystem.hpp"
 
 enum EventType {
     CollisionEvent,
     NextLevelEvent,
-    PreviousLevelEvent
+    PreviousLevelEvent,
+    InventoryChanged
 };
 
 struct Event {

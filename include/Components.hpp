@@ -154,4 +154,9 @@ struct to_Move {
     int direction;
 };
 
+struct DropItem {
+    std::string objectToDrop;
+    int numberToDrop;
+};
+
 #endif //PEDAROGUE_COMPONENTS_HPP

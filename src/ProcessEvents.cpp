@@ -80,6 +80,9 @@ void process_event(Engine *engine)
                     }
                 }
             }
+            case InventoryChanged: {
+                engine->getMInventoryPlayerSystem()->refresh_list();
+            }
         }
     }
 }
