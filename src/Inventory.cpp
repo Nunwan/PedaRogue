@@ -64,6 +64,14 @@ void CreateItemMenu::execute(Engine *engine)
 }
 
 
+CreateItemMenu::~CreateItemMenu()
+{
+    // Not sure that it will be not do some damage : not clear from mToRenderBox
+    itemMenu->clear_items();
+    delete itemMenu;
+}
+
+
 void EssaiPourri::execute(Engine *engine)
 {
     std::cout<< "essai" << std::endl;

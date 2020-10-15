@@ -101,6 +101,7 @@ public:
      */
     void destroy_list(UI_List* ui_list);
 
+
     /**
      * @brief               Push a list to the vector of rendering
      * @param ui_list       The list to render

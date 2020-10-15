@@ -79,6 +79,8 @@ private:
     UI_List* itemMenu;
     int x, y;
 public:
+    virtual ~CreateItemMenu();
+
     CreateItemMenu(Entity player,  std::string itemName, int x_parent, int y_parent);
     void execute(Engine *engine) override;
 };

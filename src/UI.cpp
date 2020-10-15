@@ -86,7 +86,9 @@ void UI::clear_last()
         mToRenderBox.pop_back();
         if (!back->isMPermanent())
         {
-            destroy_list(dynamic_cast<UI_List *>(back));
+            UI_List* list = dynamic_cast<UI_List *>(back);
+            list->clear_items();
+            delete list;
         }
         render();
     }
@@ -116,6 +118,7 @@ void UI::destroy_list(UI_List * ui_list)
         }
     }
     render();
+    ui_list->clear_items();
     delete ui_list;
 }
 
