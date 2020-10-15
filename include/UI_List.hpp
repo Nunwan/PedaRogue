@@ -126,6 +126,14 @@ public:
 
     virtual Command * choose() {};
     virtual bool isMPermanent() const = 0;
+
+    int getH() const;
+
+    int getW() const;
+
+    int getX() const;
+
+    int getY() const;
 };
 
 
@@ -139,6 +147,7 @@ public:
      * @brief   Construct a List for UI with the Title
      */
     UI_List(const std::string &mTitle, bool permanent);
+    UI_List(int x, int y, int w, int h, const std::string &mTitle, bool permanent);
 
     /**
      * @brief           Display the list at screen
@@ -146,15 +155,10 @@ public:
      */
     void render(std::shared_ptr<Window> window) override;
 
-    /**
-     * @brief           create the list with the item described in list
-     * @param list      list of items (key:value) which will become the list
-     */
-    virtual void createList(const std::unordered_map<std::string, int>& list);
 
     void clear_item(std::shared_ptr<Window> window, int y);
 
-    void push_item(std::string label, int number, Command* command);
+    void push_item(Item *item);
 
 
     /**
@@ -192,7 +196,7 @@ protected:
 /**
  * Vector of each line of the list, each item
  */
-std::vector<Item> mItems;
+std::vector<Item*> mItems;
 /**
  * The id of the item which is selected
  */

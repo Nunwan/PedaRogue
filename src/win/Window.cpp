@@ -64,7 +64,7 @@ void Window::clear_area(int x, int y, int w, int h)
 {
     int y_offset = mOffset[mSelectedWin].y;
     int x_offset = mOffset[mSelectedWin].x;
-    terminal_clear_area(x + x_offset, y + y_offset, x + x_offset + w, y + y_offset + h);
+    terminal_clear_area(x + x_offset, y + y_offset,  w, h);
 
 }
 

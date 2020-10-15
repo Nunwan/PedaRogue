@@ -11,7 +11,7 @@
 #include "FOVTools.hpp"
 
 #define MONSTERPROBA 0.1f
-#define OBJECTPROBA 0.1f
+#define OBJECTPROBA 0.5f
 
 
 

@@ -10,6 +10,7 @@ void DropItemCommand::execute(Engine *engine)
 {
     DropItem dropItem = {name, numberToDelete};
     engine->AddComponent(player, dropItem);
+    engine->mUI.clear_last();
 }
 
 

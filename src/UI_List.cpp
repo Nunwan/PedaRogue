@@ -41,10 +41,34 @@ void Box::render(std::shared_ptr<Window> window)
 }
 
 
+int Box::getH() const
+{
+    return h;
+}
+
+
+int Box::getW() const
+{
+    return w;
+}
+
+
+int Box::getX() const
+{
+    return x;
+}
+
+
+int Box::getY() const
+{
+    return y;
+}
+
+
 void UI_List::render(std::shared_ptr<Window> window)
 {
     Box::render(window);
-    int x_middle = (1 * WIDTH_SCREEN/ 3 - 2 )/ 2 - (mTitle.length() / 2);
+    int x_middle = ((x + w) / 2) - (mTitle.length() / 2);
     char* titlec = &mTitle[0];
     window->print(x_middle, y + 1, titlec, window->color_white);
     int y_it = y + 2;
@@ -52,10 +76,10 @@ void UI_List::render(std::shared_ptr<Window> window)
     for (auto& item : mItems) {
         if (i == mCurrentSelected) {
             window->print(x + 1, y_it, "> ", window->color_blue);
-            item.render(window, x + 3, y_it, x + w - 4);
+            item->render(window, x + 3, y_it, w - 4);
 
         } else {
-            item.render(window, x + 1, y_it, x + w - 2);
+            item->render(window, x + 1, y_it,  w - 2);
         }
         y_it++;
         i++;
@@ -63,20 +87,6 @@ void UI_List::render(std::shared_ptr<Window> window)
 
 }
 
-
-void UI_List::createList(const std::unordered_map<std::string, int>& list)
-{
-    if (mItems.size()) {
-        mItems.clear();
-    }
-    for (auto const& pair : list) {
-        mItems.emplace_back(pair.first, pair.second);
-    }
-    mCurrentSelected = 0;
-    if (mItems.size()) {
-        mItems[mCurrentSelected].selected();
-    }
-}
 
 
 void UI_List::clear_item(std::shared_ptr<Window> window, int y)
@@ -88,9 +98,9 @@ void UI_List::clear_item(std::shared_ptr<Window> window, int y)
 void UI_List::select_item(int offset)
 {
     if (mCurrentSelected + offset >= 0 && mCurrentSelected + offset < mItems.size()) {
-        mItems[mCurrentSelected].unselected();
+        mItems[mCurrentSelected]->unselected();
         mCurrentSelected += offset;
-        mItems[mCurrentSelected].selected();
+        mItems[mCurrentSelected]->selected();
     }
 }
 
@@ -107,22 +117,22 @@ void UI_List::select_previous()
 }
 
 
-UI_List::UI_List(const std::string &mTitle, bool permanent) : mTitle(mTitle), mPermanent(permanent)
+UI_List::UI_List(const std::string &mTitle, bool permanent) : mTitle(mTitle), mPermanent(permanent), mCurrentSelected(-1)
 {}
 
 
 Command * UI_List::choose()
 {
-    return mItems[mCurrentSelected].choosen();
+    return mItems[mCurrentSelected]->choosen();
 }
 
 
-void UI_List::push_item(std::string label, int number, Command* command)
+void UI_List::push_item(Item* item)
 {
-    mItems.emplace_back(label, number, command);
+    mItems.push_back(item);
     if (mItems.size() == 1) {
         mCurrentSelected = 0;
-        mItems.back().selected();
+        mItems.back()->selected();
     }
 
 }
@@ -130,6 +140,12 @@ void UI_List::push_item(std::string label, int number, Command* command)
 
 void UI_List::clear_items()
 {
+    auto it = mItems.begin();
+    while (it != mItems.end()) {
+        auto item = *it;
+        it++;
+        delete item;
+    }
     mItems.clear();
 }
 
@@ -137,6 +153,12 @@ void UI_List::clear_items()
 bool UI_List::isMPermanent() const
 {
     return mPermanent;
+}
+
+
+UI_List::UI_List(int x, int y, int w, int h, const std::string &mTitle, bool permanent): Box(w, h, x, y),
+mTitle(mTitle), mPermanent(permanent), mCurrentSelected(-1)
+{
 }
 
 

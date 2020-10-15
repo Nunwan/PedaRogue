@@ -143,6 +143,13 @@ bool UI::isEmpty()
 }
 
 
+UI_List *UI::create_list(int x, int y, int w, int h, std::string &title, bool permanent)
+{
+    auto new_list = new UI_List(x, y, w, h, title, permanent);
+    return new_list;
+}
+
+
 void UISelectUpCommand::execute(Engine *engine)
 {
     engine->mUI.getLastBox()->select_next();

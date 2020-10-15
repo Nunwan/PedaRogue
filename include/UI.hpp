@@ -5,6 +5,9 @@
 #ifndef PEDAROGUE_UI_HPP
 #define PEDAROGUE_UI_HPP
 
+#define WIDTH_MENU 20
+#define HEIGHT_MENU 10
+
 
 #include "Types.hpp"
 #include "Components.hpp"
@@ -90,6 +93,7 @@ public:
      * @return          Pointer to this new list
      */
     static UI_List *create_list(std::string &title, bool permanent = true);
+    static UI_List *create_list(int x , int y, int w, int h, std::string &title, bool permanent = true);
 
     /**
      * @brief               Free and destroy the list
